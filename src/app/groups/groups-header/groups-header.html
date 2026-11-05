@@ -1,0 +1,9 @@
+<div class="header">
+  <h2>Мои игры <img src="tgGifs/christmasTree.webp"></h2>
+  <div class="game-counter" [ngPlural]="groupCount() ?? 0">
+    <ng-template ngPluralCase="one">{{ groupCount() }} игра</ng-template>
+    <ng-template ngPluralCase="few">{{ groupCount() }} игры</ng-template>
+    <ng-template ngPluralCase="many">{{ groupCount() }} игр</ng-template>
+    <ng-template ngPluralCase="other">{{ groupCount() }} игры</ng-template>
+  </div>
+</div>

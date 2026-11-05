@@ -1,0 +1,35 @@
+@let groupCount = groups().length;
+
+<div class="component">
+  @if (haveGroups()) {
+    <app-groups-header [groupCount]="groupCount"></app-groups-header>
+    <div class="groups">
+      <p>Активные</p>
+      @for (item of groups(); track item) {
+        @defer (on viewport) {
+          <app-group-preview [data]="item"></app-group-preview>
+        } @placeholder (minimum 500ms) {
+          <app-group-placeholder></app-group-placeholder>
+        }
+      }
+    </div>
+    <div class="endedGroups">
+      <p>Завершённые</p>
+      @for (item of endedGroups(); track item) {
+        @defer (on viewport) {
+          <app-group-preview [data]="item"></app-group-preview>
+        } @placeholder (minimum 500ms) {
+          <app-group-placeholder></app-group-placeholder>
+        }
+      }
+    </div>
+  } @else {
+    <div class="no-groups">
+      <h2>У вас пока нет групп</h2>
+    </div>
+  }
+</div>
+
+<div class="bottom">
+  <button>+ Новая игра</button>
+</div>

@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+@import "tgColors";
+@import "tgVariables";
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
+  touch-action: pan-x pan-y;
+}
+
+body {
+  background-color: $tg-secondary-bg-color;
+  color: $tg-text-color;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: $viewportHeight;
+  margin: 0;
+  padding: $topSafeArea $rightSafeArea $bottomSafeArea $leftSafeArea !important;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+}
+
+router-outlet + * {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+button,
+a,
+img {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+
+  user-select: none;
+  -webkit-user-select: none;
+}

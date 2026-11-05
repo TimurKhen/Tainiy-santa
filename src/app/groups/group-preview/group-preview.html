@@ -1,0 +1,39 @@
+@let memberCount = data().membersId.length;
+@let typeDate = getTypeDate();
+
+<div class="container" [class.is-ended]="data().isEnded">
+  <div class="icon">
+    <img class="icon" [src]="setIcon(data().icon).icon">
+  </div>
+  <div class="info">
+    <h3>{{ data().name }}</h3>
+    <div class="main">
+      @if (isOwner()) {
+        <span class="tag owner">Организатор</span>
+      }
+      <div class="member-counter" [ngPlural]="memberCount ?? 0">
+        <ng-template ngPluralCase="one">{{ memberCount }} участник</ng-template>
+        <ng-template ngPluralCase="few">{{ memberCount }} участника</ng-template>
+        <ng-template ngPluralCase="many">{{ memberCount }} участников</ng-template>
+        <ng-template ngPluralCase="other">{{ memberCount }} участников</ng-template>
+      </div>
+    </div>
+    @if (!data().isEnded) {
+
+      <div class="tags">
+        @if (typeDate.type !== '') {
+          <span class="tag" [class]="typeDate.type">
+            @if (typeDate.type == 't') {
+              <img src="tgGifs/gift.webp"> Обмен сегодня в {{ typeDate.date | date:'HH:mm' }}
+            } @else if (typeDate.type == 'd') {
+              <img src="tgGifs/gift.webp"> Жеребьёвка {{ typeDate.date | date:'mediumDate' }}
+            } @else if (typeDate.type == 's') {
+              <img src="tgGifs/gift.webp"> Обмен {{ typeDate.date | date:'mediumDate' }}
+            }
+          </span>
+        }
+      </div>
+    }
+  </div>
+  <svg data-dc-tpl="25" width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="#A3A3A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path data-dc-tpl="26" d="m1 1 6 6-6 6"></path></svg>
+</div>

@@ -1,0 +1,84 @@
+@import "tgColors";
+
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: $tg-bg-color;
+
+  display: flex;
+  align-items: center;
+  //grid-template-columns: 1fr 4fr;
+  padding: 1rem;
+  border-radius: 16px;
+  gap: 1rem;
+
+  .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: $tg-secondary-bg-color;
+    border-radius: calc(16px - 0.5rem);
+    aspect-ratio: 1/1;
+
+    max-width: 60px;
+  }
+
+  .info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+
+    .main {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-direction: column;
+
+      .tag {
+        display: flex;
+        align-items: center;
+        height: 1lh;
+        gap: 0.4rem;
+        border-radius: 9999px;
+        padding: 0.8rem 0.2rem 0.8rem 0.6rem;
+
+        img {
+          width: auto;
+          height: 1lh;
+          vertical-align: middle;
+          //height: 1lh;
+          //align-self: flex-end;
+        }
+      }
+
+      .t {
+        background: rgb(245 231 231);
+        color: rgb(107 30 30);
+      }
+
+      .d {
+        background: rgb(255, 243, 214);
+        color: rgb(122, 82, 0);
+      }
+
+      .s {
+        background: rgb(231, 245, 236);
+        color: rgb(30, 107, 64);
+      }
+    }
+  }
+}
+
+.is-ended {
+  .icon {
+    width: 80%;
+  }
+  //padding: 0.5rem;
+}
