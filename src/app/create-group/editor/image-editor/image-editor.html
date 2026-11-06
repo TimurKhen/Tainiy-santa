@@ -1,0 +1,33 @@
+@if (isShow()) {
+  <vo-popup [isShow]="isShow()">
+    <div class="cropper-content">
+      <div class="cropper-editor">
+        @if (isCropping()) {
+          <image-cropper
+              [imageChangedEvent]="imageChangedEvent"
+              [maintainAspectRatio]="true"
+              [aspectRatio]="1 / 1"
+              [roundCropper]="true"
+              format="png"
+              (imageCropped)="imageCropped($event)"
+              (imageLoaded)="imageLoaded($event)"
+          ></image-cropper>
+        } @else {
+          <div class="block skeleton" (click)="selectNewFile()">
+            <p>Загрузите фото</p>
+          </div>
+        }
+              
+        @if (isCropping()) {
+          <button class="delete-btn" (click)="clear()">
+            Удалить
+          </button>
+        }
+      </div>
+      <div class="cropper-buttons">
+        <button class="save-btn" (click)="save()">Подтвердить</button>
+        <button class="cancel-btn" (click)="cancel()">Отменить</button>
+      </div>
+    </div>
+  </vo-popup>
+}
