@@ -3,9 +3,10 @@ import { Group } from '../interfaces/group/group';
 import { GroupPreview } from './group-preview/group-preview';
 import { GroupPlaceholder } from './group-placeholder/group-placeholder';
 import { GroupsHeader } from './groups-header/groups-header';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [GroupPreview, GroupPlaceholder, GroupsHeader],
+  imports: [GroupPreview, GroupPlaceholder, GroupsHeader, RouterLink],
   selector: 'app-groups',
   styleUrl: './groups.scss',
   templateUrl: './groups.html',
