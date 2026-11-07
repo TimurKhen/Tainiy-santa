@@ -1,7 +1,7 @@
 @if (isShow()) {
-    <div class="popup-container" animate.enter="show">
-        <div class="popup">
-            <ng-content></ng-content>
-        </div>
+  <div class="popup-container" #popupContainer animate.enter="fade-in" animate.leave="fade-out">
+    <div class="popup" animate.enter="show" animate.leave="hide">
+      <ng-content></ng-content>
     </div>
+  </div>
 }

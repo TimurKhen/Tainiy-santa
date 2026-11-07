@@ -9,41 +9,12 @@
       <p>Название</p>
       <input>
     </label>
-    <div class="select-icon">
-      <span class="emoji"></span>
-      <span class="emoji"></span>
-      <span class="emoji"></span>
-      <div class="user-icon">
-        <div class="avatar-container" (click)="openAvatarUpload()">
-          @if (avatarImage) {
-            <div class="avatar">
-              <img [src]="avatarImagePath" alt="Avatar">
-            </div>
-          } @else {
-            <div class="avatar-placeholder">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 4v16m8-8H4"/>
-              </svg>
-            </div>
-            <p>Аватар</p>
-          }
-        </div>
-      </div>
-    </div>
-
-
-
-    <button
-      [disabled]="!createForm.valid || !avatarImage"
-      (click)="onCreate($event)">Зарегистрироваться</button>
+    <app-icon-select></app-icon-select>
   </div>
+
+  <button
+    class="create-button"
+    [disabled]="!createForm.valid"
+    (click)="onCreate($event)">Зарегистрироваться</button>
 </div>
 
-@if (isCropperOpen) {
-  <app-avatar-cropper
-    #avatarCropper
-    [isOpen]="isCropperOpen"
-    (outputImage)="onImageCropped($event)"
-    (outputClose)="onCropperClose()">
-  </app-avatar-cropper>
-}

@@ -1,0 +1,16 @@
+.emoji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5em;
+  height: auto;
+  aspect-ratio: 1/1;
+  vertical-align: middle;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+  }
+}

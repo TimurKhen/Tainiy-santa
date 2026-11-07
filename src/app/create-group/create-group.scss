@@ -1,0 +1,27 @@
+@import "tgColors";
+@import "emojiInString";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  margin-bottom: 10dvh;
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.5rem;
+
+    h2 {
+      color: $tg-text-color;
+      @include emojiInString;
+    }
+  }
+
+  .form {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+}

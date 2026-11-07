@@ -1,7 +1,8 @@
-import { Component, Input, OnDestroy, OnInit, output, signal } from '@angular/core'
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
-import { ImageCroppedEvent, ImageCropperComponent, LoadedImage } from 'ngx-image-cropper'
-import { VoPopup } from '../../popup/popup'
+import { Component, ElementRef, inject, Input, OnDestroy, output, signal } from '@angular/core';
+import { ImageCroppedEvent, ImageCropperComponent } from '@luoxiao123/angular-image-cropper';
+import { VoPopup } from '../../popup/popup';
+
+const MAX_SOURCE_SIDE = 2048;
 
 @Component({
   selector: 'app-avatar-cropper',
@@ -10,97 +11,122 @@ import { VoPopup } from '../../popup/popup'
   styleUrl: './image-editor.scss',
 })
 export class ImageEditor implements OnDestroy {
+  imageFile = signal<File | undefined>(undefined);
+  bgColor = signal('#ffffff');
+  isCropping = signal(false);
+  isShow = signal(false);
+  isLoading = signal(false);
+  outputImage = output<File>();
+  outputClose = output<void>();
+  private host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private croppedBlob: Blob | null = null;
+
   @Input() set isOpen(value: boolean) {
     if (value) {
-      this.openPopup()
+      this.openPopup();
     } else {
-      this.isShow.set(false)
+      this.isShow.set(false);
     }
   }
 
-  imageChangedEvent: Event | null = null
-  croppedImage: SafeUrl = ''
-  imageObject: any = null
-
-  isCropping = signal<boolean>(false)
-  isShow = signal<boolean>(false)
-
-  outputImage = output<any>()
-  outputClose = output<void>()
-
-  constructor(private sanitizer: DomSanitizer) {}
-
   openPopup() {
-    this.selectNewFile()
-    this.isShow.set(true)
-    this.isCropping.set(false)
-    this.imageChangedEvent = null
+    this.resetCropper();
+    this.readBgColor();
+    this.isShow.set(true);
+    this.selectNewFile();
   }
 
   selectNewFile() {
-    this.triggerFileInput()
-  }
-
-  private triggerFileInput() {
-    const fileInput = document.createElement('input')
-    fileInput.type = 'file'
-    fileInput.accept = '.png, .jpg, .jpeg'
-    fileInput.onchange = (event: any) => {
-      if (event.target.files && event.target.files[0]) {
-        this.fileChangeEvent(event)
-        this.isCropping.set(true)
+    if (this.isLoading()) return;
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.png, .jpg, .jpeg';
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      this.isLoading.set(true);
+      try {
+        this.imageFile.set(await this.downscale(file));
+        this.isCropping.set(true);
+      } catch (e) {
+        console.error('Failed to load image', e);
+      } finally {
+        this.isLoading.set(false);
       }
-    }
-    fileInput.click()
-  }
-
-  fileChangeEvent(event: Event): void {
-    this.imageChangedEvent = event
+    };
+    input.click();
   }
 
   imageCropped(event: ImageCroppedEvent) {
-    if (event.blob && event.objectUrl) {
-      this.imageObject = event.blob;
-      this.croppedImage = this.sanitizer.bypassSecurityTrustUrl(event.objectUrl);
+    if (event.blob) {
+      this.croppedBlob = event.blob;
     }
   }
 
-  imageLoaded(image: LoadedImage) {
-  }
-
   save() {
-    if (this.imageObject) {
-      const imageFile = new File([this.imageObject], 'image.png', {
-        type: 'image/png',
-        lastModified: Date.now()
-      })
-      this.outputImage.emit(imageFile)
-      this.close()
+    if (this.croppedBlob) {
+      this.outputImage.emit(
+        new File([this.croppedBlob], 'image.png', { type: 'image/png', lastModified: Date.now() }),
+      );
+      this.close();
     }
   }
 
   cancel() {
-    this.close()
+    this.close();
   }
 
   clear() {
-    this.resetCropper()
+    this.resetCropper();
   }
 
-  private close() {
-    this.isShow.set(false)
-    this.outputClose.emit()
-    this.resetCropper()
-  }
-
-  private resetCropper() {
-    this.isCropping.set(false)
-    this.imageChangedEvent = null
-    this.croppedImage = ''
-    this.imageObject = null
+  close() {
+    this.isShow.set(false);
+    this.outputClose.emit();
+    setTimeout(() => {
+      this.resetCropper();
+    }, 300);
   }
 
   ngOnDestroy(): void {
-    this.resetCropper()
+    this.resetCropper();
+  }
+
+  private readBgColor() {
+    const value = getComputedStyle(this.host.nativeElement).getPropertyValue('--avatar-bg').trim();
+    this.bgColor.set(value || '#ffffff');
+  }
+
+  private async downscale(file: File): Promise<File> {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, MAX_SOURCE_SIDE / Math.max(bitmap.width, bitmap.height));
+
+    if (scale === 1) {
+      bitmap.close();
+      return file;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    const ctx = canvas.getContext('2d')!;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close();
+
+    const isPng = file.type === 'image/png';
+    const mime = isPng ? 'image/png' : 'image/jpeg';
+
+    const blob = await new Promise<Blob>((resolve, reject) =>
+      canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob failed'))), mime, 0.92),
+    );
+    return new File([blob], isPng ? 'source.png' : 'source.jpg', { type: mime });
+  }
+
+  private resetCropper() {
+    this.isCropping.set(false);
+    this.isLoading.set(false);
+    this.imageFile.set(undefined);
+    this.croppedBlob = null;
   }
 }

@@ -1,24 +1,24 @@
-// Базовые цвета
+// Basic
 $tg-bg-color: var(--tg-theme-bg-color, #fff);
 $tg-text-color: var(--tg-theme-text-color, #000);
 $tg-hint-color: var(--tg-theme-hint-color, #a2a2a5);
 $tg-link-color: var(--tg-theme-link-color, #50a3ff);
 
-// Цвета кнопок
+// Button
 $tg-button-color: var(--tg-theme-button-color, #5ac8fb);
 $tg-button-text-color: var(--tg-theme-button-text-color, #fff);
 
-// Дополнительные фоны
+// + bg
 $tg-secondary-bg-color: var(--tg-theme-secondary-bg-color, #f2f2f7);
 $tg-header-bg-color: var(--tg-theme-header-bg-color, #f9f9f9); // 7.0+
 $tg-bottom-bar-bg-color: var(--tg-theme-bottom-bar-bg-color); // 7.10+
 
-// Акценты и секции
-$tg-accent-text-color: var(--tg-theme-accent-text-color);
+// Accent
+$tg-accent-text-color: var(--tg-theme-accent-text-color, #ddf1f6);
 $tg-section-bg-color: var(--tg-theme-section-bg-color, #ffffff);
 $tg-section-header-text-color: var(--tg-theme-section-header-text-color);
 $tg-section-separator-color: var(--tg-theme-section-separator-color); // 7.6+
 
-// Тексты
+// Text
 $tg-subtitle-text-color: var(--tg-theme-subtitle-text-color);
 $tg-destructive-text-color: var(--tg-theme-destructive-text-color);
