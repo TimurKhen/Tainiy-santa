@@ -1,36 +1,31 @@
 <vo-popup [isShow]="isShow()" (closedEvent)="close()">
   <div class="cropper-content">
     <div class="cropper-editor">
-      @if (isCropping()) {
-        <image-cropper
-          [imageFile]="imageFile()"
-          [backgroundColor]="bgColor()"
-          [maintainAspectRatio]="true"
-          [containWithinAspectRatio]="true"
-          [aspectRatio]="1/1"
-          [roundCropper]="true"
-          [resizeToWidth]="512"
-          [onlyScaleDown]="true"
-          format="png"
-          (imageCropped)="imageCropped($event)"
-          (loadImageFailed)="clear()"
-
-        ></image-cropper>
+      @if (imageUrl()) {
+        <div class="viewport"
+             (pointerdown)="onPointerDown($event)"
+             (pointermove)="onPointerMove($event)"
+             (pointerup)="onPointerEnd($event)"
+             (pointercancel)="onPointerEnd($event)"
+             (wheel)="onWheel($event)">
+          <img [src]="imageUrl()" alt="" draggable="false"
+               [style.width.px]="imgW()" [style.height.px]="imgH()"
+               [style.transform]="transformCss()"
+               (load)="onImageLoad($event)" />
+          <div class="crop-frame"></div>
+        </div>
+        <button class="delete-btn" (click)="clear()">Удалить</button>
       } @else {
         <div class="block skeleton" (click)="selectNewFile()">
           <p>{{ isLoading() ? 'Загрузка…' : 'Загрузите фото' }}</p>
         </div>
       }
-
-      @if (isCropping()) {
-        <button class="delete-btn" (click)="clear()">
-          Удалить
-        </button>
-      }
     </div>
     <div class="cropper-buttons">
-      <button class="save-btn" (click)="save()">Подтвердить</button>
       <button class="cancel-btn" (click)="cancel()">Отменить</button>
+      <button class="save-btn" [disabled]="isSaving()" (click)="save()">
+        {{ isSaving() ? 'Сохранение…' : 'Подтвердить' }}
+      </button>
     </div>
   </div>
 </vo-popup>
