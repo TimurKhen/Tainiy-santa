@@ -37,10 +37,10 @@ export class Groups implements OnInit {
       membersId: [-9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 1, 2, 3],
       adminId: -9,
       data: {
-        swapDate: new Date(2026, 11, 30),
+        swapDate: new Date(2027, 11, 30),
         where: 'У Илюхи',
         money: 100,
-        distributionDate: new Date(2026, 5, 1),
+        distributionDate: new Date(2027, 5, 1),
       },
       isSelectedGifters: false,
       groupId: '',
