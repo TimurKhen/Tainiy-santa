@@ -11,11 +11,23 @@
     background: $tg-bg-color;
     border-radius: 16px;
 
+    hr {
+      justify-self: center;
+      align-self: center;
+      border-radius: 9999px;
+      width: 100%;
+      height: 2px;
+      background: $tg-section-bg-color;
+      font-size: 0;
+      border: 0;
+    }
+
     .select {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.2rem 0.8rem;
+      padding: 1rem 0.8rem;
+      position: relative;
 
       .title {
         display: flex;

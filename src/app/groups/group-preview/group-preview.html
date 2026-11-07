@@ -26,9 +26,9 @@
             @if (typeDate.type == 't') {
               <img src="tgGifs/gift.webp"> Обмен сегодня в {{ typeDate.date | date:'HH:mm' }}
             } @else if (typeDate.type == 'd') {
-              <img src="tgGifs/gift.webp"> Жеребьёвка {{ typeDate.date | datePipeWithCheck }}
+              <img src="tgGifs/gift.webp"> Жеребьёвка {{ typeDate.date | date:'mediumDate'}}
             } @else if (typeDate.type == 's') {
-              <img src="tgGifs/gift.webp"> Обмен {{ typeDate.date | datePipeWithCheck }}
+              <img src="tgGifs/gift.webp"> Обмен {{ typeDate.date | date:'mediumDate'}}
             }
           </span>
         }

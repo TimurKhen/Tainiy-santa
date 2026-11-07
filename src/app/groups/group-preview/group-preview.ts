@@ -2,10 +2,9 @@ import { Component, computed, effect, inject, input, OnInit, signal } from '@ang
 import { Group } from '../../interfaces/group/group';
 import { DatePipe, NgPlural, NgPluralCase } from '@angular/common';
 import { TypeDateService } from './type-date-service';
-import { ConditionalYearDatePipe } from '../../pipes/datePipeWithCheck/date-pipe-with-check-pipe';
 
 @Component({
-  imports: [DatePipe, NgPluralCase, NgPlural, ConditionalYearDatePipe],
+  imports: [DatePipe, NgPluralCase, NgPlural],
   selector: 'app-group-preview',
   templateUrl: './group-preview.html',
   styleUrl: './group-preview.scss',
