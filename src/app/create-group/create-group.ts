@@ -6,9 +6,10 @@ import { IconSelect } from './icon-select/icon-select';
 import { GiftBudget } from './gift-budget/gift-budget';
 import { BackButton } from '../telegram/backButton/back-button';
 import { Dates } from './dates/dates';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [ImageEditor, ReactiveFormsModule, TgEmoji, IconSelect, GiftBudget, Dates],
+  imports: [ImageEditor, ReactiveFormsModule, TgEmoji, IconSelect, GiftBudget, Dates, RouterLink],
   selector: 'app-create-group',
   styleUrl: './create-group.scss',
   templateUrl: './create-group.html',

@@ -23,6 +23,9 @@ export class GiftBudget {
       }, 100)
     } else {
       this.isSelectedUserPrice.set(false);
+      // if (document.activeElement === this.userPriceInput.nativeElement) {
+      //   this.userPriceInput.nativeElement.blur();
+      // }
     }
     this.selectedId.set(id);
   }

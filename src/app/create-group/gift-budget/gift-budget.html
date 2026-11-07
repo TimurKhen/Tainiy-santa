@@ -28,7 +28,8 @@
         <span class="tag input" animate.enter="fade-in" animate.leave="fade-out">
           ~<input
           #userPriceInput
-          inputmode="numeric"
+          onfocus="setTimeout(() => this.scrollIntoView({ block: 'center', behavior: 'smooth' }), 100)"
+          (keyup.enter)="userPriceInput.blur()"
           type="number"
           placeholder="0"
           [(ngModel)]="userPrice"

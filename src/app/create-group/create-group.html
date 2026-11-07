@@ -5,21 +5,38 @@
   </div>
 
   <div class="form" [formGroup]="createForm">
-    <label>
+    <label class="name">
       <p>Название</p>
-      <input>
+
+      <div class="tag">
+        <input
+          #nameInput
+          (keyup.enter)="nameInput.blur()"
+          placeholder="Название вашей игры"
+        >
+      </div>
     </label>
 
-    <app-icon-select></app-icon-select>
+    <div class="icons">
+      <p>Обложка</p>
+      <app-icon-select></app-icon-select>
+    </div>
 
     <app-gift-budget></app-gift-budget>
 
     <app-dates></app-dates>
   </div>
+</div>
 
+<div class="bottom">
   <button
     class="create-button"
     [disabled]="!createForm.valid"
-    (click)="onCreate($event)">Зарегистрироваться</button>
+    (click)="onCreate($event)">
+    @if (createForm.valid) {
+      Создать и пригласить
+    } @else {
+      Заполните все поля
+    }
+  </button>
 </div>
-
