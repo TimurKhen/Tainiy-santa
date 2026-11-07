@@ -40,9 +40,10 @@
     .tags {
       display: flex;
       flex-direction: column;
+      flex-wrap: wrap;
 
       .tag {
-        display: flex;
+        display: inline-flex;
         align-items: center;
         height: 1lh;
         gap: 0.4rem;

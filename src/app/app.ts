@@ -24,17 +24,6 @@ export class App implements OnInit, OnDestroy {
     this.tgService.ready();
     this.tgService.expand();
 
-    this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
-      .subscribe((event) => {
-        const currentUrl = event.urlAfterRedirects;
-        if (currentUrl === '/' || currentUrl === '') {
-          this.backButtonService.hide();
-        } else {
-          this.backButtonService.show();
-        }
-      });
-
     this.backButtonService.onClick(this.boundHandler);
   }
 

@@ -1,0 +1,76 @@
+@import "tgColors";
+@import "../formStyles";
+
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.8rem;
+    font-size: 0.8em;
+
+    .row {
+      display: flex;
+      width: 100%;
+      gap: 0.4rem;
+
+      > * {
+        flex: 1;
+      }
+    }
+
+    .tag {
+      @include tag;
+      text-align: center;
+    }
+
+    .active {
+      background: $tg-accent-text-color;
+      border: 1px solid color-mix(in srgb, $tg-accent-text-color, #000 15%);
+    }
+
+    .tag.input {
+      display: flex;
+      align-items: center;
+
+      input {
+        @include input;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.fade-in {
+  animation: show-animation 0.3s ease-out forwards;
+}
+.fade-out {
+  animation: hide-animation 0.3s ease-out forwards;
+}
+
+@keyframes show-animation {
+  0% {
+    max-width: 0;
+    opacity: 0;
+  }
+  100% {
+    max-width: 200px;
+    opacity: 1;
+  }
+}
+
+@keyframes hide-animation {
+  0% {
+    max-width: 200px;
+    opacity: 1;
+  }
+  100% {
+    max-width: 0;
+    opacity: 0;
+  }
+}

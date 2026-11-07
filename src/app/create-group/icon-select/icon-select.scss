@@ -27,9 +27,9 @@
   }
 
   .active {
-    background: #ddf1f6;
+    background: $tg-accent-text-color;
     border-radius: 16px;
-    border: 1px solid #5ac8fb;
+    border: 1px solid color-mix(in srgb, $tg-accent-text-color, #000 15%);
   }
 
   .user-icon {
