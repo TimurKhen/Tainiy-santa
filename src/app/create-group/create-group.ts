@@ -5,9 +5,10 @@ import { TgEmoji } from '../components/tg-emoji/tg-emoji';
 import { IconSelect } from './icon-select/icon-select';
 import { GiftBudget } from './gift-budget/gift-budget';
 import { BackButton } from '../telegram/backButton/back-button';
+import { Dates } from './dates/dates';
 
 @Component({
-  imports: [ImageEditor, ReactiveFormsModule, TgEmoji, IconSelect, GiftBudget],
+  imports: [ImageEditor, ReactiveFormsModule, TgEmoji, IconSelect, GiftBudget, Dates],
   selector: 'app-create-group',
   styleUrl: './create-group.scss',
   templateUrl: './create-group.html',
