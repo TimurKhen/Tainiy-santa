@@ -4,13 +4,17 @@
     <p>Задайте правила - их увидят все участники</p>
   </div>
 
-  <div class="form">
+  <div class="form" [formGroup]="createForm">
     <label>
       <p>Название</p>
       <input>
     </label>
-    <div class="select-icon">
-
-    </div>
+    <app-icon-select></app-icon-select>
   </div>
+
+  <button
+    class="create-button"
+    [disabled]="!createForm.valid"
+    (click)="onCreate($event)">Зарегистрироваться</button>
 </div>
+

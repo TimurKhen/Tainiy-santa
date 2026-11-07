@@ -1,0 +1,38 @@
+@import "tgColors";
+
+.select-icon {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: $tg-bg-color;
+  border-radius: 16px;
+  //justify-content: space-between;
+  align-items: center;
+  overflow: scroll;
+
+  .emoji {
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 1/1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3em;
+    padding: 1.5em;
+
+    background: $tg-secondary-bg-color;
+    border: 1px solid transparent;
+  }
+
+  .active {
+    background: #ddf1f6;
+    border-radius: 16px;
+    border: 1px solid #5ac8fb;
+  }
+
+  .user-icon {
+    display: flex;
+  }
+}

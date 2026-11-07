@@ -1,0 +1,12 @@
+@mixin emojiInString {
+  height: auto;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+
+  img {
+    vertical-align: bottom;
+    height: 1lh;
+    align-self: flex-end;
+  }
+}

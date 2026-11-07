@@ -1,0 +1,25 @@
+<div class="select-icon">
+  @for (item of icons(); track item; let index = $index) {
+    <span class="emoji"
+      [class.active]="index === this.currentIconIndex()"
+      (click)="onSelectedIcon(index)"
+    >
+      <app-tg-emoji [emoji]="updatePath(item)"></app-tg-emoji>️
+    </span>
+  }
+  <div class="user-icon">
+    <div class="avatar-container" (click)="openAvatarUpload()">
+      <div class="avatar-placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 4v16m8-8H4" />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-avatar-cropper
+  [isOpen]="isCropperOpen"
+  (outputImage)="onImageCropped($event)"
+  (outputClose)="onCropperClose()">
+</app-avatar-cropper>
