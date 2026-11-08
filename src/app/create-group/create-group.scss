@@ -34,6 +34,8 @@
 
       .tag {
         @include tag;
+        border-radius: 16px !important;
+        height: 1.5lh;
 
         input {
           @include input;
