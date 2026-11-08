@@ -34,7 +34,9 @@ export class CreateGroup {
     distributionDate: new FormControl<Date | null>(null, [Validators.required]),
     swapDate: new FormControl<Date | null>(null, [Validators.required]),
     icon: new FormControl<string | File>('', [Validators.required]),
+    place: new FormControl<string>('', [Validators.required]),
   });
+
   readonly isValid = toSignal(
     this.createForm.statusChanges.pipe(
       startWith(this.createForm.status),

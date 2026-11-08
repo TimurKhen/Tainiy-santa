@@ -18,6 +18,19 @@
       </div>
     </label>
 
+    <label class="place">
+      <p>Место проведения</p>
+
+      <div class="tag">
+        <input
+          formControlName="place"
+          #placeInput
+          (keyup.enter)="placeInput.blur()"
+          placeholder="Где будет проводиться обмен?"
+        >
+      </div>
+    </label>
+
     <div class="icons">
       <p>Обложка</p>
       <app-icon-select [control]="createForm.controls.icon"></app-icon-select>
