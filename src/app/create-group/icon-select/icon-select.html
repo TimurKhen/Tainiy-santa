@@ -1,0 +1,32 @@
+<div class="select-icon">
+  @for (item of icons(); track item.id; let index = $index) {
+    <span
+      class="emoji"
+      [class.active]="index === currentIconIndex()"
+      (click)="onSelectedIcon(index)"
+    >
+      @if (item.kind === 'preset') {
+        <app-tg-emoji [emoji]="item.src"></app-tg-emoji>
+      } @else {
+        <img class="custom-icon" [src]="item.src" alt="Custom icon">
+      }
+    </span>
+  }
+
+  <div class="user-icon emoji">
+    <div class="avatar-container" (click)="openAvatarUpload()">
+      <div class="avatar-placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 4v16m8-8H4" />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-avatar-cropper
+  [isOpen]="isCropperOpen()"
+  (outputImage)="onImageCropped($event)"
+  (outputClose)="onCropperClose()"
+>
+</app-avatar-cropper>

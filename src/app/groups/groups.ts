@@ -1,16 +1,20 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Group } from '../interfaces/group/group';
 import { GroupPreview } from './group-preview/group-preview';
 import { GroupPlaceholder } from './group-placeholder/group-placeholder';
 import { GroupsHeader } from './groups-header/groups-header';
+import { RouterLink } from '@angular/router';
+import { BackButton } from '../telegram/backButton/back-button';
 
 @Component({
-  imports: [GroupPreview, GroupPlaceholder, GroupsHeader],
+  imports: [GroupPreview, GroupPlaceholder, GroupsHeader, RouterLink],
   selector: 'app-groups',
   styleUrl: './groups.scss',
   templateUrl: './groups.html',
 })
-export class Groups {
+export class Groups implements OnInit {
+  private backButton = inject(BackButton);
+
   haveGroups = signal<boolean>(true);
   groups = signal<Group[]>([
     {
@@ -33,10 +37,10 @@ export class Groups {
       membersId: [-9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 1, 2, 3],
       adminId: -9,
       data: {
-        swapDate: new Date(2026, 11, 30),
+        swapDate: new Date(2027, 11, 30),
         where: 'У Илюхи',
         money: 100,
-        distributionDate: new Date(2026, 5, 1),
+        distributionDate: new Date(2027, 5, 1),
       },
       isSelectedGifters: false,
       groupId: '',
@@ -48,7 +52,7 @@ export class Groups {
       membersId: [-9, 1, 2, 3],
       adminId: -9,
       data: {
-        swapDate: new Date(2026, 10, 5, 22, 30),
+        swapDate: new Date(2026, 10, 7, 22, 30),
         where: 'У Илюхи',
         money: 100,
         distributionDate: new Date(2026, 10, 1),
@@ -76,4 +80,8 @@ export class Groups {
       icon: 'test',
     },
   ]);
+
+  ngOnInit() {
+    this.backButton.hide()
+  }
 }

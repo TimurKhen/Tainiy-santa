@@ -1,0 +1,44 @@
+<label>
+  <p>Бюджет подарка</p>
+  <div class="buttons">
+    <div class="row">
+      @for (item of prices(); track item; let index = $index) {
+        @if (index < 3) {
+          <span class="tag"
+                (click)="selectId(index)"
+                [class.active]="index == this.selectedId()">
+            ~{{ item }}₽
+          </span>
+        }
+      }
+    </div>
+
+    <div class="row">
+      @for (item of prices(); track item; let index = $index) {
+        @if (index === 3) {
+          <span class="tag"
+                (click)="selectId(index)"
+                [class.active]="index == this.selectedId()">
+            {{ item }}
+          </span>
+        }
+      }
+
+      @if (this.selectedId() === 3) {
+        <span class="tag input" animate.enter="fade-in" animate.leave="fade-out">
+          ~<input
+          #userPriceInput
+          onfocus="setTimeout(() => this.scrollIntoView({ block: 'center', behavior: 'smooth' }), 100)"
+          (keyup.enter)="userPriceInput.blur()"
+          type="number"
+          placeholder="0"
+          [(ngModel)]="userPrice"
+          (input)="validatePrice($event)"
+          [value]="userPrice() == 0 ? '' : userPrice()"
+        >₽
+        </span>
+      }
+    </div>
+
+  </div>
+</label>

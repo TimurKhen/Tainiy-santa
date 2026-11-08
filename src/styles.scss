@@ -6,6 +6,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -23,12 +24,17 @@ body {
   flex-direction: column;
   height: $viewportHeight;
   margin: 0;
-  padding: $topSafeArea $rightSafeArea $bottomSafeArea $leftSafeArea !important;
+
+  padding: max(12px, calc($topSafeArea + $topContentSafeArea * 1.5)) max(4px, $rightSafeArea) max(12px, calc($bottomSafeArea + $bottomContentSafeArea)) max(4px, $leftSafeArea);
+
+  box-sizing: border-box;
 }
 
 app-root {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 router-outlet + * {

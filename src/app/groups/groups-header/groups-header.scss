@@ -1,4 +1,5 @@
 @import "tgColors";
+@import "emojiInString";
 
 .header {
   width: 100%;
@@ -9,17 +10,8 @@
   padding: 0 10px;
 
   h2 {
-    height: auto;
-    display: flex;
-    align-items: baseline;
-    gap: 0.4rem;
+    @include emojiInString;
     color: $tg-text-color;
-
-    img {
-      vertical-align: bottom;
-      height: 1lh;
-      align-self: flex-end;
-    }
   }
 
   .game-counter {

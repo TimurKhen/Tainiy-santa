@@ -1,5 +1,11 @@
 $viewportHeight: var(--tg-viewport-height, 100dvh);
-$topSafeArea: var(--tg-safe-area-inset-top, 20px);
-$bottomSafeArea: var(--tg-safe-area-inset-bottom, 12px);
-$leftSafeArea: var(--tg-safe-area-inset-left, 4px);
-$rightSafeArea: var(--tg-safe-area-inset-right, 4px);
+
+$topSafeArea: var(--tg-safe-area-inset-top, 0px);
+$bottomSafeArea: var(--tg-safe-area-inset-bottom, 0px);
+$leftSafeArea: var(--tg-safe-area-inset-left, 0px);
+$rightSafeArea: var(--tg-safe-area-inset-right, 0px);
+
+$topContentSafeArea: var(--tg-content-safe-area-inset-top, 0px);
+$bottomContentSafeArea: var(--tg-content-safe-area-inset-bottom, 0px);
+$leftContentSafeArea: var(--tg-content-safe-area-inset-left, 0px);
+$rightContentSafeArea: var(--tg-content-safe-area-inset-right, 0px);

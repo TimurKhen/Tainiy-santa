@@ -1,0 +1,33 @@
+@import "tgColors";
+
+@mixin tag {
+  padding: 0.6rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  box-sizing: content-box;
+  background: $tg-bg-color;
+  color: $tg-text-color;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+
+  flex-grow: 1;
+  gap: 0.1rem;
+
+  font-family: inherit;
+  font-size: inherit;
+}
+
+@mixin input {
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  background: transparent;
+  width: 100%;
+  min-width: 20px;
+
+  color: $tg-text-color !important;
+}

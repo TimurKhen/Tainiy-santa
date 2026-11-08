@@ -1,1 +1,59 @@
-<p>create-group works!</p>
+<div class="container">
+  <div class="header">
+    <h2>Новая игра <img src="tgGifs/christmasTree.webp"></h2>
+    <p>Задайте правила - их увидят все участники</p>
+  </div>
+
+  <form class="form" [formGroup]="createForm">
+    <label class="name">
+      <p>Название</p>
+
+      <div class="tag">
+        <input
+          formControlName="name"
+          #nameInput
+          (keyup.enter)="nameInput.blur()"
+          placeholder="Название вашей игры"
+        >
+      </div>
+    </label>
+
+    <label class="place">
+      <p>Место проведения</p>
+
+      <div class="tag">
+        <input
+          formControlName="place"
+          #placeInput
+          (keyup.enter)="placeInput.blur()"
+          placeholder="Где будет проводиться обмен?"
+        >
+      </div>
+    </label>
+
+    <div class="icons">
+      <p>Обложка</p>
+      <app-icon-select [control]="createForm.controls.icon"></app-icon-select>
+    </div>
+
+    <app-gift-budget [control]="createForm.controls.budget"></app-gift-budget>
+
+    <app-dates
+      [distributionControl]="createForm.controls.distributionDate"
+      [swapControl]="createForm.controls.swapDate"
+    ></app-dates>
+  </form>
+</div>
+
+<div class="bottom">
+  <button
+    [disabled]="!isValid()"
+    class="create-button"
+    (click)="onCreate($event)">
+    @if (isValid()) {
+      Создать и пригласить
+    } @else {
+      Заполните все поля
+    }
+  </button>
+</div>

@@ -1,1 +1,34 @@
-<p>group works!</p>
+<div class="container">
+  <div class="header">
+    @if (gameData(); as data) {
+      <div class="icon">
+        <img class="icon" [src]="setIcon(data.icon).icon">
+      </div>
+      <div class="info">
+        <h3>{{ data.name }}</h3>
+        <div class="main">
+          @if (isOwner()) {
+            <span class="tag owner">Организатор</span>
+          }
+        </div>
+        @if (!data.isEnded) {
+          <div class="tags">
+            @if (gameTypeDate.type !== '') {
+              <span class="tag" [class]="gameTypeDate.type">
+              @if (gameTypeDate.type == 't') {
+                <img src="tgGifs/gift.webp"> Обмен сегодня в {{ gameTypeDate.date | date:'HH:mm' }}
+              } @else if (gameTypeDate.type == 'd') {
+                <img src="tgGifs/gift.webp"> Жеребьёвка {{ gameTypeDate.date | date:'mediumDate' }}
+              } @else if (gameTypeDate.type == 's') {
+                <img src="tgGifs/gift.webp"> Обмен {{ gameTypeDate.date | date:'mediumDate' }}
+              }
+            </span>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+
+</div>
