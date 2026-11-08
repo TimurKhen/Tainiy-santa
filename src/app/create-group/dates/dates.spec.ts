@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Dates } from './dates';
+import Dates from './dates';
 
 describe('Dates', () => {
   let component: Dates;

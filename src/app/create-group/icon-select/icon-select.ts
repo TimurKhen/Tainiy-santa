@@ -1,8 +1,14 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ImageEditor } from '../editor/image-editor/image-editor';
 import { TgEmoji } from '../../components/tg-emoji/tg-emoji';
-import { Router } from '@angular/router';
+
+type IconItem =
+  | { id: string; kind: 'preset'; name: string; src: string }
+  | { id: string; kind: 'custom'; file: File; objectUrl: string; src: SafeUrl };
+
+const PRESET_ICONS = ['snowflake', 'snowman', 'gift'];
 
 @Component({
   imports: [ImageEditor, TgEmoji],
@@ -10,54 +16,77 @@ import { Router } from '@angular/router';
   styleUrl: './icon-select.scss',
   templateUrl: './icon-select.html',
 })
-export class IconSelect {
-  avatarImage: File | null = null;
-  isCropperOpen = false;
+export class IconSelect implements OnInit, OnDestroy {
+  private sanitizer = inject(DomSanitizer);
 
-  currentIconIndex = signal<number>(0);
-  changeIcon = output<string | SafeUrl>();
+  control = input.required<FormControl<string | File | null>>();
 
-  icons = signal<string[] | SafeUrl[]>(['snowflake', 'snowman', 'gift']);
+  isCropperOpen = signal(false);
+  currentIconIndex = signal(0);
 
-  constructor(
-    private router: Router,
-    private sanitizer: DomSanitizer,
-  ) {}
+  icons = signal<IconItem[]>(
+    PRESET_ICONS.map((name) => ({
+      id: `preset-${name}`,
+      kind: 'preset' as const,
+      name,
+      src: `tgGifs/${name}.webp`,
+    })),
+  );
+
+  ngOnInit() {
+    this.onSelectedIcon(0);
+  }
 
   openAvatarUpload() {
-    this.isCropperOpen = true;
-  }
-
-  onImageCropped(imageUrl: File) {
-    this.avatarImage = imageUrl;
-    this.isCropperOpen = false;
-
-    this.onFileSelected(imageUrl);
-  }
-
-  onFileSelected(file: File) {
-    if (file) {
-      const unsafeUrl = URL.createObjectURL(file);
-      const imagePath = this.sanitizer.bypassSecurityTrustUrl(unsafeUrl);
-      this.icons.update((v) => [...v, imagePath]);
-      this.onSelectedIcon(this.icons().length - 1)
-    }
+    this.isCropperOpen.set(true);
   }
 
   onCropperClose() {
-    this.isCropperOpen = false;
+    this.isCropperOpen.set(false);
   }
 
-  onSelectedIcon(id: number) {
-    this.currentIconIndex.set(id);
-    this.changeIcon.emit(this.icons()[id]);
+  onImageCropped(image: File | Blob) {
+    this.isCropperOpen.set(false);
+
+    // Make sure the backend always receives a real File
+    const file =
+      image instanceof File
+        ? image
+        : new File([image], `icon-${Date.now()}.webp`, { type: image.type || 'image/webp' });
+
+    const objectUrl = URL.createObjectURL(file);
+
+    this.icons.update((list) => [
+      ...list,
+      {
+        id: `custom-${objectUrl}`,
+        kind: 'custom',
+        file,
+        objectUrl,
+        src: this.sanitizer.bypassSecurityTrustUrl(objectUrl),
+      },
+    ]);
+
+    this.onSelectedIcon(this.icons().length - 1);
   }
 
-  protected updatePath(item: string | SafeUrl): string | SafeUrl {
-    if (typeof item === 'string') {
-      return `tgGifs/${item}.webp`;
-    } else {
-      return item
+  onSelectedIcon(index: number) {
+    const item = this.icons()[index];
+    if (!item) return;
+
+    this.currentIconIndex.set(index);
+
+    // File for custom icons, preset name for built-in ones
+    this.control().setValue(item.kind === 'custom' ? item.file : item.name);
+    this.control().markAsTouched();
+    this.control().markAsDirty();
+  }
+
+  ngOnDestroy() {
+    for (const item of this.icons()) {
+      if (item.kind === 'custom') {
+        URL.revokeObjectURL(item.objectUrl);
+      }
     }
   }
 }

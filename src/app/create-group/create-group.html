@@ -4,12 +4,13 @@
     <p>Задайте правила - их увидят все участники</p>
   </div>
 
-  <div class="form" [formGroup]="createForm">
+  <form class="form" [formGroup]="createForm">
     <label class="name">
       <p>Название</p>
 
       <div class="tag">
         <input
+          formControlName="name"
           #nameInput
           (keyup.enter)="nameInput.blur()"
           placeholder="Название вашей игры"
@@ -19,21 +20,24 @@
 
     <div class="icons">
       <p>Обложка</p>
-      <app-icon-select></app-icon-select>
+      <app-icon-select [control]="createForm.controls.icon"></app-icon-select>
     </div>
 
-    <app-gift-budget></app-gift-budget>
+    <app-gift-budget [control]="createForm.controls.budget"></app-gift-budget>
 
-    <app-dates></app-dates>
-  </div>
+    <app-dates
+      [distributionControl]="createForm.controls.distributionDate"
+      [swapControl]="createForm.controls.swapDate"
+    ></app-dates>
+  </form>
 </div>
 
 <div class="bottom">
   <button
+    [disabled]="!isValid()"
     class="create-button"
-    [disabled]="!createForm.valid"
     (click)="onCreate($event)">
-    @if (createForm.valid) {
+    @if (isValid()) {
       Создать и пригласить
     } @else {
       Заполните все поля

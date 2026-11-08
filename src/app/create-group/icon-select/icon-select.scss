@@ -7,32 +7,52 @@
   padding: 1rem;
   background: $tg-bg-color;
   border-radius: 16px;
-  //justify-content: space-between;
   align-items: center;
-  overflow: scroll;
+  overflow-x: auto; // was "scroll", which always shows scrollbars
 
   .emoji {
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 4.5em;
+    aspect-ratio: 1 / 1;
+    padding: 0.2em;
     border-radius: 16px;
     overflow: hidden;
-    aspect-ratio: 1/1;
 
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 3em;
-    padding: 1.5em;
 
     background: $tg-secondary-bg-color;
     border: 1px solid transparent;
+
+    .custom-icon {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+      display: block;
+    }
   }
 
   .active {
     background: $tg-accent-text-color;
-    border-radius: 16px;
-    border: 1px solid color-mix(in srgb, $tg-accent-text-color, #000 15%);
+    border: 1px solid color-mix(in srgb, $tg-accent-text-color, #000 30%);
   }
 
   .user-icon {
+    background: $tg-bg-color;
+    border: 1px solid color-mix(in srgb, $tg-secondary-bg-color, #000 30%);
+    flex-shrink: 0;
     display: flex;
+
+    svg {
+      filter: none;
+    }
   }
+}
+
+:root.tg-light .user-icon svg,
+html.tg-light .user-icon svg {
+  filter: invert(1);
 }

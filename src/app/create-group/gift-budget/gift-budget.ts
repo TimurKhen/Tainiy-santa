@@ -1,5 +1,5 @@
-import { Component, ElementRef, model, signal, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ElementRef, input, model, signal, ViewChild } from '@angular/core';
+import { FormControl, FormsModule } from '@angular/forms';
 
 @Component({
   imports: [FormsModule],
@@ -8,10 +8,12 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './gift-budget.html',
 })
 export class GiftBudget {
+  control = input.required<FormControl<number | null>>();
+
   selectedId = signal<number>(0);
   isSelectedUserPrice = signal<boolean>(false);
   userPrice = model<number>(0);
-  prices = signal<(number | string)[]>(['~1000₽', '~3000₽', '~5000₽', 'Своя сумма']);
+  prices = signal<(number | string)[]>([1000, 3000, 5000, 'Своя сумма']);
 
   @ViewChild('userPriceInput') userPriceInput!: ElementRef;
 
@@ -20,24 +22,25 @@ export class GiftBudget {
       this.isSelectedUserPrice.set(true);
       setTimeout(() => {
         this.userPriceInput.nativeElement.focus();
-      }, 100)
+      }, 100);
     } else {
       this.isSelectedUserPrice.set(false);
-      // if (document.activeElement === this.userPriceInput.nativeElement) {
-      //   this.userPriceInput.nativeElement.blur();
-      // }
+      this.control().setValue(<number>this.prices()[id]);
     }
     this.selectedId.set(id);
+    this.control().markAsTouched();
   }
 
   validatePrice(event: Event) {
     const input = event.target as HTMLInputElement;
     let value = Number(input.value);
-    const max = 1000000000;
+    const max = 10 ** 12;
 
     if (value > max) {
       this.userPrice.set(max);
       input.value = String(max);
     }
+
+    this.control().setValue(<number>this.userPrice());
   }
 }

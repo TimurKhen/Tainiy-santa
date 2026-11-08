@@ -5,11 +5,22 @@ import { TgEmoji } from '../components/tg-emoji/tg-emoji';
 import { IconSelect } from './icon-select/icon-select';
 import { GiftBudget } from './gift-budget/gift-budget';
 import { BackButton } from '../telegram/backButton/back-button';
-import { Dates } from './dates/dates';
+import Dates from './dates/dates';
 import { RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, startWith } from 'rxjs';
 
 @Component({
-  imports: [ImageEditor, ReactiveFormsModule, TgEmoji, IconSelect, GiftBudget, Dates, RouterLink],
+  imports: [
+    ImageEditor,
+    ReactiveFormsModule,
+    TgEmoji,
+    IconSelect,
+    GiftBudget,
+    Dates,
+    RouterLink,
+    Dates,
+  ],
   selector: 'app-create-group',
   styleUrl: './create-group.scss',
   templateUrl: './create-group.html',
@@ -18,28 +29,29 @@ export class CreateGroup {
   private backButton = inject(BackButton);
 
   createForm = new FormGroup({
-    name: new FormControl<string>('', [Validators.email, Validators.required]),
+    name: new FormControl<string>('', [Validators.required]),
     budget: new FormControl<number>(1, [Validators.required]),
     distributionDate: new FormControl<Date | null>(null, [Validators.required]),
     swapDate: new FormControl<Date | null>(null, [Validators.required]),
     icon: new FormControl<string | File>('', [Validators.required]),
   });
+  readonly isValid = toSignal(
+    this.createForm.statusChanges.pipe(
+      startWith(this.createForm.status),
+      map((status) => status === 'VALID'),
+    ),
+    { initialValue: this.createForm.valid },
+  );
 
   onCreate(event: Event) {
     event.preventDefault();
+    const { icon } = this.createForm.getRawValue();
 
-    if (this.createForm.valid) {
-      const formValues = this.createForm.getRawValue();
-
-      // const userData: RegistrationData = {
-      //   ...(formValues as RegistrationData),
-      //   avatar: this.avatarImage,
-      // };
-
-      // this.userService.register(userData).subscribe((data) => {
-      //   console.log(data);
-      //   this.router.navigate(['/']);
-      // });
+    alert(icon instanceof File);
+    if (icon instanceof File) {
+      alert([icon.name, icon.type, icon.size]); // size > 0
+    } else {
+      alert(icon); // 'snowflake' | 'snowman' | 'gift'
     }
   }
 
