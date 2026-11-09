@@ -1,34 +1,58 @@
 <div class="container">
-  <div class="header">
-    @if (gameData(); as data) {
+  @if (gameData(); as data) {
+    <div class="header">
       <div class="icon">
         <img class="icon" [src]="setIcon(data.icon).icon">
       </div>
       <div class="info">
         <h3>{{ data.name }}</h3>
+        <p>Бюджет: ~{{ data.data.money }}₽</p>
         <div class="main">
           @if (isOwner()) {
-            <span class="tag owner">Организатор</span>
+            <span class="tag owner">👑 Вы организатор</span>
           }
         </div>
-        @if (!data.isEnded) {
-          <div class="tags">
-            @if (gameTypeDate.type !== '') {
-              <span class="tag" [class]="gameTypeDate.type">
-              @if (gameTypeDate.type == 't') {
-                <img src="tgGifs/gift.webp"> Обмен сегодня в {{ gameTypeDate.date | date:'HH:mm' }}
-              } @else if (gameTypeDate.type == 'd') {
-                <img src="tgGifs/gift.webp"> Жеребьёвка {{ gameTypeDate.date | date:'mediumDate' }}
-              } @else if (gameTypeDate.type == 's') {
-                <img src="tgGifs/gift.webp"> Обмен {{ gameTypeDate.date | date:'mediumDate' }}
-              }
-            </span>
-            }
+      </div>
+      <div class="exit-button">
+        <button class="exit">
+          <img src="icons/exit.svg" class="exit-icon">
+        </button>
+      </div>
+    </div>
+
+    @if (gameTypeDate(); as typeDate) {
+      <div class="dates">
+        <span class="date-object" [class.happened]="typeDate.type !== 'd'">
+          <div class="info">
+            <div class="icon distribution-icon">🎲</div>
+            <p>Распределение</p>
           </div>
-        }
+          <p class="date">{{ data.data.distributionDate | date:"mediumDate" }}</p>
+        </span>
+
+        <hr>
+
+        <span class="date-object" [class.happened]="typeDate.type === ''">
+          <div class="info">
+            <div class="icon swap-icon">🎁</div>
+            <p>Обмен</p>
+          </div>
+          <p class="date">{{ data.data.swapDate | date:"mediumDate" }}</p>
+        </span>
       </div>
     }
-  </div>
 
+    <div class="members">
+      @for (member of data.membersId; track member) {
+        <app-avatar [isOwner]="isOwner()" [userId]="member"></app-avatar>
+      }
+    </div>
+  }
+</div>
 
+<div class="bottom-buttons">
+  <button class="list">🗒️ Список желаний</button>
+  @if (isOwner()) {
+    <button class="make-distribution">🎲 Провести жеребьёвку</button>
+  }
 </div>

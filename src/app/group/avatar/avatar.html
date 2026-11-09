@@ -1,0 +1,23 @@
+@if (userResource.isLoading()) {
+  <div class="member skeleton">
+    <div class="info">
+      <div class="avatar-skeleton"></div>
+      <div class="text-skeleton"></div>
+    </div>
+  </div>
+} @else if (user(); as user) {
+  <div class="member">
+    <div class="info">
+      <div class="avatar">
+        <img [src]="user.photo_url" [alt]="user.first_name">
+      </div>
+      <p class="name">
+        <app-nickname [value]="user.first_name + ' ' + user.last_name" />
+      </p>
+    </div>
+
+    @if (isOwner()) {
+      <button class="delete-icon">Удалить</button>
+    }
+  </div>
+}

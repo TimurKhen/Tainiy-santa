@@ -1,7 +1,10 @@
 @let memberCount = data().membersId.length;
 @let typeDate = getTypeDate();
 
-<div class="container" [class.is-ended]="data().isEnded">
+<div class="container"
+  [class.is-ended]="data().isEnded"
+  [routerLink]="`/group/{{data().groupId}}/`"
+>
   <div class="icon">
     <img class="icon" [src]="setIcon(data().icon).icon">
   </div>
