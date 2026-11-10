@@ -5,8 +5,8 @@
   "ng": "ng",
   "start": "ng serve",
   "build": "ng build",
-  "build:gh": "ng build tainiy-santa --configuration github-pages --base-href /Tainiy-santa/",
-  "watch": "ng build --watch --configuration development",
+  "build:gh": "ng build tainiy-santa --base-href /Tainiy-santa/",
+  "watch": "ng build --watch",
   "test": "ng test"
 },
   "private": true,
