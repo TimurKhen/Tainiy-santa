@@ -2,9 +2,10 @@ import { Component, inject } from '@angular/core';
 import { Avatar } from '../../components/avatar/avatar';
 import { DatePipe } from '@angular/common';
 import { GroupContext } from '../../services/group-context';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [Avatar, DatePipe],
+  imports: [Avatar, DatePipe, RouterLink],
   selector: 'app-group-overview',
   styleUrl: './group-overview.scss',
   templateUrl: './group-overview.html',
