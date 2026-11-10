@@ -2,12 +2,13 @@
   "name": "tainiy-santa",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
-  },
+  "ng": "ng",
+  "start": "ng serve",
+  "build": "ng build",
+  "build:gh": "ng build tainiy-santa --configuration github-pages --base-href /Tainiy-santa/",
+  "watch": "ng build --watch --configuration development",
+  "test": "ng test"
+},
   "private": true,
   "packageManager": "npm@12.0.1",
   "dependencies": {
