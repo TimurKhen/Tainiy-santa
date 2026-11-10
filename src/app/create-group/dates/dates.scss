@@ -1,4 +1,5 @@
 @import "tgColors";
+@import "container";
 
 .container {
   display: flex;
@@ -6,28 +7,10 @@
   gap: 1rem;
 
   .dates {
-    display: flex;
-    flex-direction: column;
-    background: $tg-bg-color;
-    border-radius: 16px;
-
-    hr {
-      justify-self: center;
-      align-self: center;
-      border-radius: 9999px;
-      width: 100%;
-      height: 2px;
-      background: $tg-section-bg-color;
-      font-size: 0;
-      border: 0;
-    }
+    @include tg-container;
 
     .select {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 0.8rem;
-      position: relative;
+      @include tg-block;
 
       .title {
         display: flex;

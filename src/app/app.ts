@@ -16,8 +16,6 @@ export class App implements OnInit, OnDestroy {
 
   private tgService = inject(Telegram);
   private backButtonService = inject(BackButton);
-
-  private router = inject(Router);
   private location = inject(Location);
   private renderer = inject(Renderer2);
   private document = inject(DOCUMENT);
@@ -27,13 +25,17 @@ export class App implements OnInit, OnDestroy {
     this.tgService.ready();
     this.tgService.expand();
 
-    this.backButtonService.onClick(this.boundHandler);
-    this.tgService.tg.onEvent('themeChanged', this.themeHandler);
+    if (this.tgService.isAvailable) {
+      this.backButtonService.onClick(this.boundHandler);
+      this.tgService.tg.onEvent('themeChanged', this.themeHandler);
+    }
   }
 
   ngOnDestroy() {
-    this.backButtonService.offClick(this.boundHandler);
-    this.tgService.tg.offEvent('themeChanged', this.themeHandler);
+    if (this.tgService.isAvailable) {
+      this.backButtonService.offClick(this.boundHandler);
+      this.tgService.tg.offEvent('themeChanged', this.themeHandler);
+    }
   }
 
   private handleBackButton() {
@@ -41,11 +43,13 @@ export class App implements OnInit, OnDestroy {
   }
 
   private applyTheme() {
-    const scheme = this.tgService.tg.colorScheme;
-    const root = this.document.documentElement;
+    if (this.tgService.isAvailable) {
+      const scheme = this.tgService.tg.colorScheme;
+      const root = this.document.documentElement;
 
-    this.renderer.removeClass(root, 'tg-light');
-    this.renderer.removeClass(root, 'tg-dark');
-    this.renderer.addClass(root, `tg-${scheme}`);
+      this.renderer.removeClass(root, 'tg-light');
+      this.renderer.removeClass(root, 'tg-dark');
+      this.renderer.addClass(root, `tg-${scheme}`);
+    }
   }
 }

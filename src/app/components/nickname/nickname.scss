@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.viewport {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.text {
+  display: inline-block;
+  will-change: transform;
+
+  &.scrolling {
+    animation: nickname-scroll var(--duration) ease-in-out infinite alternate;
+  }
+}
+
+@keyframes nickname-scroll {
+  0%, 15%   { transform: translateX(0); }
+  85%, 100% { transform: translateX(calc(-1 * var(--shift))); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text.scrolling {
+    animation: none;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

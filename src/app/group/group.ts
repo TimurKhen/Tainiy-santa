@@ -3,9 +3,10 @@ import { DatePipe } from '@angular/common';
 import { TypeDateService } from '../groups/group-preview/type-date-service';
 import { Game } from '../api/games/game';
 import { Group } from '../interfaces/group/group';
+import { Avatar } from './avatar/avatar';
 
 @Component({
-  imports: [DatePipe],
+  imports: [DatePipe, Avatar],
   selector: 'app-group',
   styleUrl: './group.scss',
   templateUrl: './group.html',
@@ -14,7 +15,7 @@ export class GroupC implements OnInit {
   typeDateService = inject(TypeDateService);
   gameService = inject(Game);
   @Input() id!: string;
-  gameTypeDate: any;
+  gameTypeDate = signal<{ type: string; date: Date } | null>(null);
   gameData = signal<Group | null>(null);
   protected readonly isOwner = signal<boolean>(true);
 
@@ -30,7 +31,7 @@ export class GroupC implements OnInit {
   }
 
   getTypeDate(game: Group) {
-    this.gameTypeDate = this.typeDateService.isDistributionEnded(game);
+    this.gameTypeDate.set(this.typeDateService.isDistributionEnded(game));
   }
 
   protected setIcon(icon: string): { isUserAvatar: boolean; icon: string } {

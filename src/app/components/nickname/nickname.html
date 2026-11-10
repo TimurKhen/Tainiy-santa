@@ -1,0 +1,9 @@
+<span class="viewport" #viewport>
+  <span
+    class="text"
+    #text
+    [class.scrolling]="overflow()"
+    [style.--shift]="shift() + 'px'"
+    [style.--duration]="duration() + 's'"
+  >{{ value() | invisibleRemover }}</span>
+</span>

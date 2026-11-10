@@ -2,9 +2,10 @@ import { Component, computed, effect, inject, input, OnInit, signal } from '@ang
 import { Group } from '../../interfaces/group/group';
 import { DatePipe, NgPlural, NgPluralCase } from '@angular/common';
 import { TypeDateService } from './type-date-service';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [DatePipe, NgPluralCase, NgPlural],
+  imports: [DatePipe, NgPluralCase, NgPlural, RouterLink],
   selector: 'app-group-preview',
   templateUrl: './group-preview.html',
   styleUrl: './group-preview.scss',
