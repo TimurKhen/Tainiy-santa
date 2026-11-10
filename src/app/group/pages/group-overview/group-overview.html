@@ -1,0 +1,70 @@
+<div class="container">
+  @if (gameData(); as data) {
+    <div class="header">
+      <div class="icon">
+        <img class="icon" [src]="setIcon(data.icon).icon">
+      </div>
+      <div class="info">
+        <h3>{{ data.name }}</h3>
+        <p>Бюджет: ~{{ data.data.money }}₽</p>
+      </div>
+      <div class="exit-button">
+        <button class="exit">
+          <img src="icons/exit.svg" class="exit-icon">
+        </button>
+      </div>
+    </div>
+    @if (isOwner()) {
+      <div class="owner-buttons">
+        <button class="owner">
+          👑 Вы организатор
+        </button>
+
+        <button class="settings">
+          ⚙️ Изменить настройки игры
+        </button>
+      </div>
+    }
+
+    @if (gameTypeDate(); as typeDate) {
+      <div class="dates">
+        <span class="date-object" [class.happened]="typeDate.type !== 'd'">
+          <div class="info">
+            <div class="icon distribution-icon">🎲</div>
+            <p>Распределение</p>
+          </div>
+          <p class="date">{{ data.data.distributionDate | date:"mediumDate" }}</p>
+        </span>
+
+        <hr>
+
+        <span class="date-object" [class.happened]="typeDate.type === ''">
+          <div class="info">
+            <div class="icon swap-icon">🎁</div>
+            <p>Обмен</p>
+          </div>
+          <p class="date">{{ data.data.swapDate | date:"mediumDate" }}</p>
+        </span>
+      </div>
+    }
+
+    <div class="members-container">
+      <div class="members-header">
+        <p>Участников: {{ data.membersId.length }}</p>
+        <button>Скопировать ссылку на группу</button>
+      </div>
+      <div class="members">
+        @for (member of data.membersId; track member) {
+          <app-avatar [isOwner]="isOwner()" [userId]="member"></app-avatar>
+        }
+      </div>
+    </div>
+  }
+</div>
+
+<div class="bottom-buttons">
+  <button class="list">🗒️ Список желаний</button>
+  @if (isOwner()) {
+    <button class="make-distribution">🎲 Провести жеребьёвку</button>
+  }
+</div>

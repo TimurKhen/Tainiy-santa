@@ -5,10 +5,9 @@ import { HttpClient } from '@angular/common/http';
 
 @Service()
 export class Game {
-  private http = inject(HttpClient)
+  private http = inject(HttpClient);
 
-  getGame(): Observable<Group> {
-    // return this.http.get()
+  getGame(id: string): Observable<Group> {
     return of({
       name: 'Test',
       membersId: [-9, 1, 2, 3],
@@ -20,9 +19,9 @@ export class Game {
         distributionDate: new Date(2026, 11, 1),
       },
       isSelectedGifters: false,
-      groupId: '',
+      groupId: id,
       isEnded: false,
       icon: '',
-    })
+    });
   }
 }

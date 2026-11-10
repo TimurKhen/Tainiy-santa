@@ -1,0 +1,207 @@
+@import "tgColors";
+@import "colors";
+@import "container";
+@import "tgVariables";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  .header {
+    width: 90%;
+    height: 100%;
+    background-color: $tg-bg-color;
+
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 16px;
+    gap: 1rem;
+
+    .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      background: $tg-secondary-bg-color;
+      border-radius: calc(16px - 0.5rem);
+      aspect-ratio: 1/1;
+
+      max-width: 60px;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      //justify-content: space-between;
+      gap: 0.8rem;
+    }
+
+    .exit-button {
+      margin-left: auto;
+      display: flex;
+      align-self: flex-start;
+      background: $color-red;
+      padding: 0.25rem;
+      border-radius: 999px;
+
+      .exit {
+        width: 2rem;
+        height: 2rem;
+        background: none;
+        border: none;
+        outline: none;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          filter: invert(1);
+        }
+      }
+    }
+  }
+
+  .owner-buttons {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      padding: 0.4rem 0.8rem;
+      border: none;
+      outline: none;
+      border-radius: 12px;
+      font-size: 0.8em;
+      font-weight: 600;
+    }
+
+    .owner {
+      background: rgb(255, 243, 214);
+      color: rgb(122, 82, 0);
+    }
+
+    .settings {
+      background: color-mix(in srgb, $tg-accent-text-color, #000 15%);
+      border: 1px solid $tg-accent-text-color;
+      color: $tg-text-color;
+    }
+  }
+
+  .dates {
+    @include tg-container;
+    width: 90%;
+
+    .date-object {
+      @include tg-block;
+      width: 100%;
+
+      .info {
+        .icon {
+          height: auto;
+          width: auto;
+          aspect-ratio: 1/1;
+          border-radius: 9999px;
+          padding: 0.1rem;
+        }
+
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      //.date {
+      //  color: $tg-text-color;
+      //}
+    }
+  }
+
+  .members-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    .members-header {
+      width: 90%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7em;
+      background: none;
+
+      p {
+        color: $tg-subtitle-text-color;
+      }
+
+      button {
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        text-decoration: none;
+        outline: none;
+        padding: 0.2rem 1rem;
+        background: color-mix(in srgb, $tg-accent-text-color, #000 15%);
+        border: 1px solid $tg-accent-text-color;
+        color: $tg-text-color;
+      }
+    }
+
+    .members {
+      width: 90%;
+      @include tg-container;
+    }
+  }
+
+}
+
+:root.tg-light .exit-icon,
+html.tg-light .exit-icon {
+  filter: none;
+}
+
+.bottom-buttons {
+  position: fixed;
+  bottom: calc($bottomSafeArea + $bottomContentSafeArea);
+  width: 100%;
+  height: auto;
+  left: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 5%;
+  gap: 1.5rem;
+
+  button {
+    width: 90%;
+    height: 52px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    //font-size: 17px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    text-fit: grow;
+    max-width: 100%;
+  }
+
+  .list {
+    background: color-mix(in srgb, $tg-accent-text-color, #000 15%);
+    border: 1px solid $tg-accent-text-color;
+    color: $tg-text-color;
+  }
+
+  .make-distribution {
+    background: rgb(164, 38, 38);
+    color: rgb(255, 255, 255);
+  }
+}
