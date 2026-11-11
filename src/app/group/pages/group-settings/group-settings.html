@@ -1,0 +1,11 @@
+<div class="container">
+  @if (gameData(); as data) {
+    <div class="settings-container">
+      <p>Настройки</p>
+
+      <div class="settings">
+        <app-edit-text-input [icon]="'💰'" [label]="'Бюджет'" [valueInput]="String(data.data.money)"></app-edit-text-input>
+      </div>
+    </div>
+  }
+</div>

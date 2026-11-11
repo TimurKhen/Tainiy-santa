@@ -1,8 +1,8 @@
 import { Component, input, inject, OnInit, computed } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { UserService } from '../../api/user/user';
-import { Nickname } from '../../components/nickname/nickname';
-import { BackButton } from '../../telegram/backButton/back-button';
+import { UserService } from '../../../api/user/user';
+import { Nickname } from '../../../components/nickname/nickname';
+import { BackButton } from '../../../telegram/backButton/back-button';
 
 @Component({
   imports: [Nickname],
