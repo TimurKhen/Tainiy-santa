@@ -1,1 +1,69 @@
-<p>edit-date-input works!</p>
+<div class="input" (click)="changeValue()">
+  <div class="header-row">
+    <div class="label">
+      <p>{{ icon() }}</p>
+      <h3>{{ label() }}</h3>
+    </div>
+
+    <div class="value" [class.hidden]="isEditing()">
+      @if (valueFirst(); as fir) {
+        @if (valueSecond(); as sec) {
+          <p>{{ fir.value | date:'d MMM':'':'ru' }} → {{ sec.value | date:'d MMM':'':'ru' }}</p>
+          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="#A3A3A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m1 1 6 6-6 6"></path>
+          </svg>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="input-wrapper" [class.visible]="isEditing()">
+    @if (valueFirst(); as val) {
+      <div class="input-zone" (click)="$event.stopPropagation()">
+        <div class="text">
+          <p>{{ val.icon }}</p>
+          <h3>{{ val.label }}</h3>
+        </div>
+
+        <p>{{ val.value | date:'d MMM':'':'ru' }}</p>
+
+        <input
+          type="date"
+          class="native-calendar"
+          [(ngModel)]="val.value"
+          [min]="today()"
+        />
+      </div>
+    }
+
+    @if (valueSecond(); as val) {
+      <div class="input-zone" (click)="$event.stopPropagation()">
+        <div class="text">
+          <p>{{ val.icon }}</p>
+          <h3>{{ val.label }}</h3>
+        </div>
+
+        <p>{{ val.value | date:'d MMM':'':'ru' }}</p>
+
+        @if (valueFirst(); as first) {
+          <input
+            type="date"
+            class="native-calendar"
+            [(ngModel)]="val.value"
+            [min]="first.value"
+          />
+        }
+      </div>
+    }
+
+    <div class="actions">
+      <button class="ok" (click)="newValue($event)">
+        <img src="icons/ok.svg">
+      </button>
+
+      <button class="no" (click)="close($event)">
+        <img src="icons/no.svg">
+      </button>
+    </div>
+  </div>
+</div>
