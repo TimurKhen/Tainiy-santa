@@ -83,4 +83,27 @@ export class EditDateInput {
 
     this.isEditing.set(false);
   }
+
+  protected checkFirstSecondValue() {
+    const firstValue = this.valueFirst()?.value;
+    const secondValue = this.valueSecond()?.value;
+    const firstDate = new Date(firstValue || '');
+    const secondDate = new Date(secondValue || '');
+
+    if (secondDate < firstDate) {
+      secondDate.setTime(firstDate.getTime());
+      secondDate.setDate(secondDate.getDate() + 1);
+
+      const formattedDate = secondDate.toISOString().split('T')[0];
+
+      this.valueSecond.update((current) => {
+        if (!current) return null;
+
+        return {
+          ...current,
+          value: formattedDate,
+        };
+      });
+    }
+  }
 }

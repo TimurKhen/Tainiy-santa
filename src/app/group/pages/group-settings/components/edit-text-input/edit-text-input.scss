@@ -10,6 +10,7 @@
   gap: 0.5rem;
 
   .label {
+    user-select: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -53,6 +54,7 @@
   }
 
   .value {
+    user-select: none;
     display: flex;
     align-items: center;
     justify-content: flex-end;

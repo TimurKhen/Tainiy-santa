@@ -18,6 +18,7 @@
   }
 
   .label {
+    user-select: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -30,6 +31,7 @@
   }
 
   .value {
+    user-select: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -172,11 +174,11 @@
 }
 
 .show-input {
-  animation: input-in 0.3s linear both;
+  animation: input-in 0.4s linear both;
 }
 
 .hide-input {
-  animation: input-out 0.2s ease-in both;
+  animation: input-out 0.3s ease-in both;
 }
 
 @keyframes input-in {

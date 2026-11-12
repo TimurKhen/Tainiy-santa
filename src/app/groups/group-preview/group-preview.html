@@ -17,8 +17,8 @@
       <div class="member-counter" [ngPlural]="memberCount ?? 0">
         <ng-template ngPluralCase="one">{{ memberCount }} участник</ng-template>
         <ng-template ngPluralCase="few">{{ memberCount }} участника</ng-template>
-        <ng-template ngPluralCase="many">{{ memberCount }} участников</ng-template>
-        <ng-template ngPluralCase="other">{{ memberCount }} участников</ng-template>
+        <ng-template ngPluralCase="many">{{ memberCount | shortNumber}} участников</ng-template>
+        <ng-template ngPluralCase="other">{{ memberCount | shortNumber }} участников</ng-template>
       </div>
     </div>
     @if (!data().isEnded) {

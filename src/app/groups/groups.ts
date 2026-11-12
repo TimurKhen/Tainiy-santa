@@ -34,13 +34,15 @@ export class Groups implements OnInit {
     },
     {
       name: 'Test',
-      membersId: [-9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 1, 2, 3],
-      adminId: -9,
+      membersId: [
+        -9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 1, 2, 3, -9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      ],
+      adminId: -19,
       data: {
         swapDate: new Date(2027, 11, 30),
         where: 'У Илюхи',
         money: 100,
-        distributionDate: new Date(2027, 5, 1),
+        distributionDate: new Date(2025, 5, 1),
       },
       isSelectedGifters: false,
       groupId: '',
@@ -52,7 +54,7 @@ export class Groups implements OnInit {
       membersId: [-9, 1, 2, 3],
       adminId: -9,
       data: {
-        swapDate: new Date(2026, 10, 7, 22, 30),
+        swapDate: new Date(2026, 10, 12, 22, 30),
         where: 'У Илюхи',
         money: 100,
         distributionDate: new Date(2026, 10, 1),
@@ -82,6 +84,6 @@ export class Groups implements OnInit {
   ]);
 
   ngOnInit() {
-    this.backButton.hide()
+    this.backButton.hide();
   }
 }

@@ -28,6 +28,7 @@
         <p>{{ val.value | date:'d MMM':'':'ru' }}</p>
 
         <input
+          (input)="checkFirstSecondValue()"
           type="date"
           class="native-calendar"
           [(ngModel)]="val.value"

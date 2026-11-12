@@ -12,13 +12,10 @@ import { map, startWith } from 'rxjs';
 
 @Component({
   imports: [
-    ImageEditor,
     ReactiveFormsModule,
-    TgEmoji,
     IconSelect,
     GiftBudget,
     Dates,
-    RouterLink,
     Dates,
   ],
   selector: 'app-create-group',
@@ -51,7 +48,7 @@ export class CreateGroup {
 
     alert(icon instanceof File);
     if (icon instanceof File) {
-      alert([icon.name, icon.type, icon.size]); // size > 0
+      alert([icon.name, icon.type, icon.size]);
     } else {
       alert(icon); // 'snowflake' | 'snowman' | 'gift'
     }

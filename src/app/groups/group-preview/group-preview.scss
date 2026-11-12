@@ -34,7 +34,20 @@
 
     .main {
       display: flex;
+      align-items: center;
       gap: 0.8rem;
+
+      .owner {
+        display: inline-flex;
+        align-items: center;
+        height: 1lh;
+        gap: 0.4rem;
+        border-radius: 9999px;
+        padding: 0.8rem 0.6rem;
+
+        background: rgb(255, 243, 214);
+        color: rgb(122, 82, 0);
+      }
     }
 
     .tags {
