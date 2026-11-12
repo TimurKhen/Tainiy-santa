@@ -32,6 +32,15 @@ export class GroupContext {
 
     return this.gameService.getGame(id).pipe(
       tap((game) => {
+        game = {
+          ...game,
+          data: {
+            ...game.data,
+            distributionDate: new Date(game.data.distributionDate),
+            swapDate: new Date(game.data.swapDate),
+          },
+        };
+
         this.gameData.set(game);
         this.getTypeDate(game);
       }),
@@ -40,5 +49,24 @@ export class GroupContext {
 
   private getTypeDate(game: Group) {
     this.gameTypeDate.set(this.typeDateService.isDistributionEnded(game));
+  }
+
+  updateDates(distributionDate: Date, swapDate: Date) {
+    this.gameData.update((game) => {
+      if (!game) return game;
+
+      const updated = {
+        ...game,
+        data: {
+          ...game.data,
+          distributionDate,
+          swapDate,
+        },
+      };
+
+      this.getTypeDate(updated);
+
+      return updated;
+    });
   }
 }
