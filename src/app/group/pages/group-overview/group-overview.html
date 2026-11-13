@@ -78,7 +78,7 @@
 </div>
 
 <div class="bottom-buttons">
-  @if (isOwner()) {
+  @if (isOwner() && !isSelectedGifters()) {
     <button class="make-distribution">🎲 Провести жеребьёвку</button>
   }
 </div>
