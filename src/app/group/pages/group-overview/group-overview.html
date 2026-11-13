@@ -82,6 +82,7 @@
       <div class="members">
         @for (member of data.membersId; track member) {
           <app-avatar [isOwner]="isOwner() && !isSelectedGifters()" [userId]="member"></app-avatar>
+          <hr>
         }
       </div>
     </div>

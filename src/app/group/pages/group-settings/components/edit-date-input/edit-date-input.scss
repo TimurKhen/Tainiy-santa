@@ -50,6 +50,8 @@
   }
 
   .input-wrapper {
+    @include tg-container;
+    
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -82,6 +84,16 @@
       background: $tg-section-bg-color;
       box-sizing: border-box;
       cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:has(input:disabled) {
+        opacity: 0.5;
+        filter: grayscale(100%);
+        text-decoration: line-through;
+        color: $tg-hint-color; 
+        pointer-events: none;      
+        cursor: not-allowed;
+      }
 
       .text {
         display: flex;
