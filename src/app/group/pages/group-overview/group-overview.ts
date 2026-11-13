@@ -21,6 +21,7 @@ export class GroupOverview {
   isOwner = this.groupContext.isOwner;
   isSelectedGifters = computed(() => this.gameData()?.isSelectedGifters)
   whoGiftTo = signal<User | null>(null)
+  today = signal<Date>(new Date());
 
   constructor() {
     effect(() => {

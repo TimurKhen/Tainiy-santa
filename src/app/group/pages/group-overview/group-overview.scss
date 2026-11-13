@@ -177,6 +177,11 @@
       //  color: $tg-text-color;
       //}
     }
+
+    .happened {
+      text-decoration: line-through;
+      color: $tg-subtitle-text-color;
+    }
   }
 
   .members-container {
@@ -258,5 +263,19 @@ html.tg-light .exit-icon {
   .make-distribution {
     background: rgb(164, 38, 38);
     color: rgb(255, 255, 255);
+  }
+}
+
+
+.enter {animation: show-animation 0.8s ease-out;}
+
+@keyframes show-animation {
+  0% {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

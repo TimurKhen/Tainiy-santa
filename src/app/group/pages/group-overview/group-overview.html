@@ -41,27 +41,36 @@
       }
     }
 
-    @if (gameTypeDate(); as typeDate) {
-      <div class="dates">
-        <span class="date-object" [class.happened]="typeDate.type !== 'd'">
-          <div class="info">
-            <div class="icon distribution-icon">🎲</div>
-            <p>Распределение</p>
-          </div>
-          <p class="date">{{ data.data.distributionDate | date:"mediumDate" }}</p>
-        </span>
+    <div class="dates">
+      <span class="date-object" [class.happened]="data.data.distributionDate <= today()">
+        <div class="info">
+          <div class="icon distribution-icon">🎲</div>
+          <p>Распределение</p>
+        </div>
+        <p class="date">{{ data.data.distributionDate | date:"mediumDate" }}</p>
+      </span>
 
+      <hr>
+
+      <span class="date-object" [class.happened]="data.data.swapDate <= today()">
+        <div class="info">
+          <div class="icon swap-icon">🎁</div>
+          <p>Обмен</p>
+        </div>
+        <p class="date">{{ data.data.swapDate | date:"mediumDate" }}</p>
+      </span>
+
+      @if (data.data.swapDate <= today()) {
         <hr>
 
-        <span class="date-object" [class.happened]="typeDate.type === ''">
+        <span class="date-object" animate.enter="enter">
           <div class="info">
-            <div class="icon swap-icon">🎁</div>
-            <p>Обмен</p>
+            <div class="icon swap-icon">🎉</div>
+            <p>Ждём вас в следующем году</p>
           </div>
-          <p class="date">{{ data.data.swapDate | date:"mediumDate" }}</p>
         </span>
-      </div>
-    }
+      }
+    </div>
 
     <div class="members-container">
       <div class="members-header">
