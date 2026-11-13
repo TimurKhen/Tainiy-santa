@@ -8,11 +8,13 @@
         <h3>{{ data.name }}</h3>
         <p>Бюджет: ~{{ data.data.money }}₽</p>
       </div>
-      <div class="exit-button">
-        <button class="exit">
-          <img src="icons/exit.svg" class="exit-icon">
-        </button>
-      </div>
+      @if (!isSelectedGifters()) {
+        <div class="exit-button">
+          <button class="exit">
+            <img src="icons/exit.svg" class="exit-icon">
+          </button>
+        </div>
+      }
     </div>
     @if (isOwner()) {
       <div class="owner-buttons">
@@ -79,7 +81,7 @@
       </div>
       <div class="members">
         @for (member of data.membersId; track member) {
-          <app-avatar [isOwner]="isOwner()" [userId]="member"></app-avatar>
+          <app-avatar [isOwner]="isOwner() && !isSelectedGifters()" [userId]="member"></app-avatar>
         }
       </div>
     </div>
