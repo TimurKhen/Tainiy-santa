@@ -18,7 +18,7 @@ export class Game {
         money: 100,
         distributionDate: new Date(2026, 11, 1),
       },
-      isSelectedGifters: false,
+      isSelectedGifters: true,
       groupId: id,
       isEnded: false,
       icon: '',

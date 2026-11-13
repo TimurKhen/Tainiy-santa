@@ -26,6 +26,21 @@
       </div>
     }
 
+    @if (isSelectedGifters()) {
+      @if (whoGiftTo(); as giftingTo) {
+        <div class="giftTo">        
+          <div class="info">
+            <p><img src="tgGifs/gift.webp"> Вы дарите подарок:</p>
+            <app-nickname [value]="giftingTo.first_name + ' ' + giftingTo.last_name" />
+          </div>
+
+          <div class="avatar">
+            <img [src]="giftingTo.photo_url" [alt]="giftingTo.first_name">
+          </div>
+        </div>
+      }
+    }
+
     @if (gameTypeDate(); as typeDate) {
       <div class="dates">
         <span class="date-object" [class.happened]="typeDate.type !== 'd'">
@@ -63,7 +78,6 @@
 </div>
 
 <div class="bottom-buttons">
-  <button class="list">🗒️ Список желаний</button>
   @if (isOwner()) {
     <button class="make-distribution">🎲 Провести жеребьёвку</button>
   }
