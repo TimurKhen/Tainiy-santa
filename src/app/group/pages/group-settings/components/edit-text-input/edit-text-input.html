@@ -13,9 +13,8 @@
     <div class="input-wrapper" [class.visible]="isEditing()">
       <input
         #inputElement
-        onfocus="setTimeout(() => this.scrollIntoView({ block: 'center', behavior: 'smooth' }), 100)"
+        (focus)="scrollToCenter($event)"
         (keyup.enter)="newValue(null)"
-        [value]="value()"
         [(ngModel)]="value"
       >
 

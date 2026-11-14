@@ -8,6 +8,7 @@ import { UserService } from '../user/user';
 export class Game {
   private http = inject(HttpClient);
   private userService = inject(UserService);
+  private apiUrl = '/api/groups';
 
   getGames(): Observable<Group[]> {
     return this.userService.getGroups();
@@ -29,6 +30,8 @@ export class Game {
       isEnded: false,
       icon: '',
     });
+
+    return this.http.get<Group>(`${this.apiUrl}/${id}`);
   }
 
   createGame(gameInfo: {
@@ -73,10 +76,37 @@ export class Game {
       }),
     );
 
-    return this.http.post('/api/games', formData).pipe(
+    return this.http.post(this.apiUrl, formData).pipe(
       tap(() => {
         this.userService.clearCache();
       }),
     );
+  }
+
+  changeSettings(
+    id: string,
+    budget: number,
+    distributionDate: Date | null,
+    swapDate: Date | null,
+    place: string,
+  ) {
+    return this.http.patch(`${this.apiUrl}/${id}`, {
+      budget,
+      place,
+      distributionDate: distributionDate,
+      swapDate: swapDate,
+    });
+  }
+
+  deleteGame(id: string) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  makeDistribution(id: string) {
+    return this.http.post(`${this.apiUrl}/${id}distribution`, {});
+  }
+
+  leave(id: string) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

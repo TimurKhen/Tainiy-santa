@@ -51,19 +51,16 @@ export class GroupContext {
     this.gameTypeDate.set(this.typeDateService.isDistributionEnded(game));
   }
 
-  updateDates(distributionDate: Date, swapDate: Date) {
+  updateSettings(settings: {
+    money: number;
+    where: string;
+    distributionDate: Date;
+    swapDate: Date;
+  }) {
     this.gameData.update((game) => {
       if (!game) return game;
 
-      const updated = {
-        ...game,
-        data: {
-          ...game.data,
-          distributionDate,
-          swapDate,
-        },
-      };
-
+      const updated = { ...game, data: { ...game.data, ...settings } };
       this.getTypeDate(updated);
 
       return updated;
