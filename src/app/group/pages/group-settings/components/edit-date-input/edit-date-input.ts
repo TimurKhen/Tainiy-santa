@@ -106,4 +106,12 @@ export class EditDateInput {
       });
     }
   }
+  addDays(dateInput: string | Date, days: number): string {
+    const date = new Date(dateInput);
+    date.setDate(date.getDate() + days);
+    
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date.toISOString().split('T')[0];
+  }
+
 }

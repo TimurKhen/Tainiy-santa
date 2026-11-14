@@ -51,11 +51,11 @@
 
         @if (valueFirst(); as first) {
           <input
-            [disabled]="val.value <= today()"
+            [disabled]="val.value < today()"
             type="date"
             class="native-calendar"
             [(ngModel)]="val.value"
-            [min]="first.value"
+            [min]="today() > addDays(first.value, 1) ? today() : addDays(first.value, 1)"
           />
         }
       </div>

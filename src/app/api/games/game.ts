@@ -13,7 +13,7 @@ export class Game {
       membersId: [-9, 1, 2, 3],
       adminId: -9,
       data: {
-        swapDate: new Date(2026, 10, 3),
+        swapDate: new Date(2026, 11, 3),
         where: 'У Илюхи',
         money: 100,
         distributionDate: new Date(2026, 10, 1),
