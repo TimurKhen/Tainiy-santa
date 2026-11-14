@@ -4,6 +4,7 @@ import { Telegram } from './telegram/telegram';
 import { BackButton } from './telegram/backButton/back-button';
 import { filter } from 'rxjs';
 import { Location } from '@angular/common';
+import { UserService } from './api/user/user';
 
 @Component({
   selector: 'app-root',
@@ -19,11 +20,15 @@ export class App implements OnInit, OnDestroy {
   private location = inject(Location);
   private renderer = inject(Renderer2);
   private document = inject(DOCUMENT);
+  private userService = inject(UserService);
   private themeHandler = () => this.applyTheme();
 
   ngOnInit() {
     this.tgService.ready();
     this.tgService.expand();
+    this.userService.getMe().subscribe((groups) => {
+
+    })
 
     if (this.tgService.isAvailable) {
       this.backButtonService.onClick(this.boundHandler);

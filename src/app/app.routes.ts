@@ -3,7 +3,6 @@ import { Groups } from './groups/groups';
 import { CreateGroup } from './create-group/create-group';
 import { GroupC } from './group/group';
 import { GroupOverview } from './group/pages/group-overview/group-overview';
-import { Wishlist } from './group/pages/wishlist/wishlist';
 import { GroupSettings } from './group/pages/group-settings/group-settings';
 
 export const routes: Routes = [
@@ -22,10 +21,6 @@ export const routes: Routes = [
       {
         path: '',
         component: GroupOverview,
-      },
-      {
-        path: 'wishlist',
-        component: Wishlist,
       },
       {
         path: 'settings',

@@ -28,6 +28,8 @@
         <p>{{ val.value | date:'d MMM':'':'ru' }}</p>
 
         <input
+          [disabled]="val.value <= today()"
+          (input)="checkFirstSecondValue()"
           type="date"
           class="native-calendar"
           [(ngModel)]="val.value"
@@ -35,6 +37,8 @@
         />
       </div>
     }
+
+    <hr>
 
     @if (valueSecond(); as val) {
       <div class="input-zone" (click)="$event.stopPropagation()">
@@ -47,10 +51,11 @@
 
         @if (valueFirst(); as first) {
           <input
+            [disabled]="val.value < today()"
             type="date"
             class="native-calendar"
             [(ngModel)]="val.value"
-            [min]="first.value"
+            [min]="today() > addDays(first.value, 1) ? today() : addDays(first.value, 1)"
           />
         }
       </div>

@@ -7,7 +7,6 @@
 
   display: flex;
   flex-direction: column;
-  align-items: stretch;
   gap: 0.5rem;
 
   .header-row {
@@ -18,6 +17,8 @@
   }
 
   .label {
+    height: auto;
+    user-select: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -30,11 +31,12 @@
   }
 
   .value {
+    user-select: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     opacity: 1;
-    transition: opacity 200ms ease;
+    transition: opacity 400ms ease;
 
     p {
       margin: 0;
@@ -48,6 +50,8 @@
   }
 
   .input-wrapper {
+    @include tg-container;
+
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -59,8 +63,8 @@
     pointer-events: none;
 
     transition:
-      max-height 300ms ease,
-      opacity 200ms ease;
+      max-height 500ms ease,
+      opacity 500ms ease;
 
     &.visible {
       max-height: 300px;
@@ -80,6 +84,16 @@
       background: $tg-section-bg-color;
       box-sizing: border-box;
       cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:has(input:disabled) {
+        opacity: 0.5;
+        filter: grayscale(100%);
+        text-decoration: line-through;
+        color: $tg-hint-color; 
+        pointer-events: none;      
+        cursor: not-allowed;
+      }
 
       .text {
         display: flex;
@@ -172,11 +186,11 @@
 }
 
 .show-input {
-  animation: input-in 0.3s linear both;
+  animation: input-in 0.4s ease-out;
 }
 
 .hide-input {
-  animation: input-out 0.2s ease-in both;
+  animation: input-out 0.3s ease-in both;
 }
 
 @keyframes input-in {

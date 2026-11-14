@@ -3,7 +3,7 @@
 @mixin tg-container {
   display: flex;
   flex-direction: column;
-  background: $tg-bg-color;
+  background: $tg-section-bg-color;
   border-radius: 16px;
 
   hr {
@@ -12,7 +12,7 @@
     border-radius: 9999px;
     width: 100%;
     height: 2px;
-    background: $tg-section-bg-color;
+    background: $tg-section-separator-color;
     font-size: 0;
     border: 0;
   }

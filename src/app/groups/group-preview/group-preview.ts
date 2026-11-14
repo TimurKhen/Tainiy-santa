@@ -3,9 +3,10 @@ import { Group } from '../../interfaces/group/group';
 import { DatePipe, NgPlural, NgPluralCase } from '@angular/common';
 import { TypeDateService } from './type-date-service';
 import { RouterLink } from '@angular/router';
+import { ShortNumberPipe } from '../../pipes/short-number-pipe/short-number-pipe';
 
 @Component({
-  imports: [DatePipe, NgPluralCase, NgPlural, RouterLink],
+  imports: [DatePipe, NgPluralCase, NgPlural, RouterLink, ShortNumberPipe],
   selector: 'app-group-preview',
   templateUrl: './group-preview.html',
   styleUrl: './group-preview.scss',

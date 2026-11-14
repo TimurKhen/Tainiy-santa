@@ -47,7 +47,7 @@
 
 <div class="bottom">
   <button
-    [disabled]="!isValid()"
+    [disabled]="!isValid() || isCreating()"
     class="create-button"
     (click)="onCreate($event)">
     @if (isValid()) {
