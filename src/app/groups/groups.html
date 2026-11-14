@@ -1,11 +1,11 @@
-@let groupCount = groups().length;
+@let count = groupCount();
 
 <div class="container">
   @if (haveGroups()) {
-    <app-groups-header [groupCount]="groupCount"></app-groups-header>
+    <app-groups-header [groupCount]="count"></app-groups-header>
     <div class="groups">
       <p>Активные</p>
-      @for (item of groups(); track item) {
+      @for (item of groups(); track item.groupId) {
         @defer (on viewport) {
           <app-group-preview [data]="item"></app-group-preview>
         } @placeholder (minimum 500ms) {
@@ -15,7 +15,7 @@
     </div>
     <div class="endedGroups">
       <p>Завершённые</p>
-      @for (item of endedGroups(); track item) {
+      @for (item of endedGroups(); track item.groupId) {
         @defer (on viewport) {
           <app-group-preview [data]="item"></app-group-preview>
         } @placeholder (minimum 500ms) {

@@ -1,29 +1,24 @@
-import { Component, inject, ViewChild } from '@angular/core';
-import { ImageEditor } from './editor/image-editor/image-editor';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TgEmoji } from '../components/tg-emoji/tg-emoji';
 import { IconSelect } from './icon-select/icon-select';
 import { GiftBudget } from './gift-budget/gift-budget';
 import { BackButton } from '../telegram/backButton/back-button';
 import Dates from './dates/dates';
-import { RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, startWith } from 'rxjs';
+import { Game } from '../api/games/game';
+import { Location } from '@angular/common';
 
 @Component({
-  imports: [
-    ReactiveFormsModule,
-    IconSelect,
-    GiftBudget,
-    Dates,
-    Dates,
-  ],
+  imports: [ReactiveFormsModule, IconSelect, GiftBudget, Dates, Dates],
   selector: 'app-create-group',
   styleUrl: './create-group.scss',
   templateUrl: './create-group.html',
 })
 export class CreateGroup {
   private backButton = inject(BackButton);
+  private gameService = inject(Game);
+  private location = inject(Location);
 
   createForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required]),
@@ -42,16 +37,38 @@ export class CreateGroup {
     { initialValue: this.createForm.valid },
   );
 
+  isCreating = signal<boolean>(false);
+
   onCreate(event: Event) {
     event.preventDefault();
-    const { icon } = this.createForm.getRawValue();
+    this.isCreating.set(true);
 
-    alert(icon instanceof File);
-    if (icon instanceof File) {
-      alert([icon.name, icon.type, icon.size]);
-    } else {
-      alert(icon); // 'snowflake' | 'snowman' | 'gift'
+    if (this.createForm.invalid) {
+      this.createForm.markAllAsTouched();
+      return;
     }
+
+    const values = this.createForm.value as {
+      name: string;
+      budget: number;
+      distributionDate: Date | null;
+      swapDate: Date | null;
+      icon: string | File;
+      place: string;
+    };
+
+    this.gameService.createGame(values).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.isCreating.set(false);
+        this.location.back();
+      },
+      error: (err) => {
+        console.error(err);
+        this.isCreating.set(false);
+        alert('Неизвестная ошибка создания группы')
+      },
+    });
   }
 
   ngOnInit() {
