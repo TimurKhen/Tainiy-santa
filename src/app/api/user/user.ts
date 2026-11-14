@@ -2,8 +2,13 @@ import { inject, Service } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { delay, Observable, of, throwError } from 'rxjs';
 import { User } from '../../telegram/user';
+import { Group } from '../../interfaces/group/group';
 
 const MOCK_DELAY_MS = 1500;
+
+interface MeResponse extends User {
+  groups: Group[]
+}
 
 const MOCK_USERS: User[] = [
   {
@@ -57,5 +62,9 @@ export class UserService {
     return user
       ? of(user).pipe(delay(MOCK_DELAY_MS))
       : throwError(() => new Error(`User ${id} not found`)).pipe(delay(MOCK_DELAY_MS));
+  }
+
+  getMe(): Observable<MeResponse> {
+    return this.http.get<MeResponse>(`${this.apiUrl}/me`)
   }
 }

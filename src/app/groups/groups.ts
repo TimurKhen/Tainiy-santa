@@ -5,6 +5,7 @@ import { GroupPlaceholder } from './group-placeholder/group-placeholder';
 import { GroupsHeader } from './groups-header/groups-header';
 import { RouterLink } from '@angular/router';
 import { BackButton } from '../telegram/backButton/back-button';
+import { Game } from '../api/games/game';
 
 @Component({
   imports: [GroupPreview, GroupPlaceholder, GroupsHeader, RouterLink],
@@ -14,76 +15,29 @@ import { BackButton } from '../telegram/backButton/back-button';
 })
 export class Groups implements OnInit {
   private backButton = inject(BackButton);
+  private gameService = inject(Game);
 
   haveGroups = signal<boolean>(true);
-  groups = signal<Group[]>([
-    {
-      name: 'Test',
-      membersId: [-9, 1, 2, 3],
-      adminId: -9,
-      data: {
-        swapDate: new Date(2026, 11, 30),
-        where: 'У Илюхи',
-        money: 100,
-        distributionDate: new Date(2026, 11, 1),
-      },
-      isSelectedGifters: false,
-      groupId: '',
-      isEnded: false,
-      icon: '',
-    },
-    {
-      name: 'Test',
-      membersId: [
-        -9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 1, 2, 3, -9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      ],
-      adminId: -19,
-      data: {
-        swapDate: new Date(2027, 11, 30),
-        where: 'У Илюхи',
-        money: 100,
-        distributionDate: new Date(2025, 5, 1),
-      },
-      isSelectedGifters: false,
-      groupId: '',
-      isEnded: false,
-      icon: 'test',
-    },
-    {
-      name: 'Test',
-      membersId: [-9, 1, 2, 3],
-      adminId: -9,
-      data: {
-        swapDate: new Date(2026, 10, 12, 22, 30),
-        where: 'У Илюхи',
-        money: 100,
-        distributionDate: new Date(2026, 10, 1),
-      },
-      isSelectedGifters: false,
-      groupId: '',
-      isEnded: false,
-      icon: 'test',
-    },
-  ]);
-  endedGroups = signal<Group[]>([
-    {
-      name: 'Test 2',
-      membersId: [-9, 1, 2, 3],
-      adminId: -9,
-      data: {
-        swapDate: new Date(2025, 12, 30),
-        distributionDate: new Date(2025, 11, 11),
-        where: 'У Илюхи',
-        money: 1200,
-      },
-      isSelectedGifters: true,
-      groupId: '',
-      isEnded: true,
-      icon: 'test',
-    },
-  ]);
+  groups = signal<Group[]>([]);
+  endedGroups = signal<Group[]>([]);
 
   ngOnInit() {
     this.backButton.hide();
+
+    this.gameService.getGames().subscribe((v: Group[]) => {
+      const active = [];
+      const ended = [];
+
+      for (const group of v) {
+        if (group.isEnded) {
+          ended.push(group)
+        } else {
+          active.push(group)
+        }
+      }
+
+      this.groups.set(active)
+      this.endedGroups.set(ended)
+    })
   }
 }
