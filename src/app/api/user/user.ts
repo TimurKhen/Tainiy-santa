@@ -115,6 +115,8 @@ export class UserService {
       this.me$ = of(mockResponse).pipe(delay(400), shareReplay(1));
     }
     return this.me$;
+
+    return this.http.get<MeResponse>(`${this.apiUrl}/me`);
   }
 
   getGroups(): Observable<Group[]> {

@@ -8,6 +8,7 @@
           icon="💰"
           label="Бюджет"
           [valueInput]="String(data.data.money)"
+          (valueChange)="updateMoney($event)"
         />
 
         <hr>
@@ -21,13 +22,24 @@
         />
 
         <hr>
-        
+
         <app-edit-text-input
           icon="📍"
           label="Место"
-          [valueInput]="String(data.data.where)"
+          [valueInput]="data.data.where"
+          (valueChange)="updateWhere($event)"
         />
       </div>
     </div>
   }
+
+  <button class="delete-group" (click)="deleteGroup()">
+    <p>Удалить группу</p>
+  </button>
+</div>
+
+<div class="bottom-buttons">
+  <button (click)="save()" [disabled]="isSaving()">
+    {{ isSaving() ? 'Сохранение…' : 'Сохранить' }}
+  </button>
 </div>

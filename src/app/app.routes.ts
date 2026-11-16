@@ -21,6 +21,7 @@ export const routes: Routes = [
       {
         path: '',
         component: GroupOverview,
+        pathMatch: 'full'
       },
       {
         path: 'settings',
@@ -28,4 +29,5 @@ export const routes: Routes = [
       },
     ],
   },
+  { path: '**', component: Groups },
 ];
