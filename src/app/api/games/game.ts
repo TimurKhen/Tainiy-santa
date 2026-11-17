@@ -49,11 +49,11 @@ export class Game {
     formData.append('place', gameInfo.place);
 
     if (gameInfo.distributionDate) {
-      formData.append('distributionDate', gameInfo.distributionDate as any);
-    }
-    if (gameInfo.swapDate) {
-      formData.append('swapDate', gameInfo.swapDate as any);
-    }
+  formData.append('distributionDate', gameInfo.distributionDate.toISOString());
+}
+if (gameInfo.swapDate) {
+  formData.append('swapDate', gameInfo.swapDate.toISOString());
+}
 
     if (gameInfo.icon instanceof File) {
       formData.append('icon', gameInfo.icon, gameInfo.icon.name);
