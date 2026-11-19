@@ -19,7 +19,7 @@ export class Game {
   getGame(id: string): Observable<Group> {
     return of({
       name: 'Test',
-      membersId: [-9, 1, 2, 3],
+      membersId: [-9, 1, 2, 3, -9, 1, 2, 3, -9, 1, 2, 3, -9, 1, 2, 3],
       adminId: -9,
       data: {
         swapDate: new Date(2026, 11, 3),
