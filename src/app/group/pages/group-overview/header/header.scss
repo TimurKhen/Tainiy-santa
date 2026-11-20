@@ -2,12 +2,26 @@
 @import "colors";
 @import "tgVariables";
 
+// ---------- layout constants ----------
 $gap: 8px;
 $offset: calc(#{$topSafeArea} + #{$topContentSafeArea} + #{$gap});
 
+$pill-h: 30px;          // height of Telegram's top buttons (check in DevTools)
+$full-h: 92px;          // expanded: 60px icon + 2 * 16px padding
+$icon-full: 60px;
+$icon-compact: 24px;    // = $pill-h - 2 * $pad-compact
+$pad-full: 16px;
+$pad-compact: 3px;
+$width-full: 90%;
+$width-compact: 40%;    // centered, stays clear of Telegram's side buttons
+
+// How far the header moves up so that its center lines up with the buttons
+$lift: calc((#{$topContentSafeArea} + #{$pill-h}) / 2 + #{$gap});
+
+// ---------- host ----------
 :host {
   display: contents;
-  --p: 0;
+  --p: 0;               // 0 = expanded, 1 = compact (set from TS)
 }
 
 .sentinel {
@@ -17,32 +31,35 @@ $offset: calc(#{$topSafeArea} + #{$topContentSafeArea} + #{$gap});
 
 .slot {
   position: sticky;
-  top: $offset;
+  top: $offset;         // constant, never changes
   z-index: 100;
   width: 100%;
-  height: calc(60px + 2rem);
+  height: $full-h;      // reserves the expanded height, so content below never shifts
   pointer-events: none;
   contain: layout style;
 }
 
+// ---------- header ----------
 .header {
   position: relative;
   pointer-events: auto;
-  width: calc(90% - 40% * var(--p));
+  width: calc(#{$width-full} - #{$width-full - $width-compact} * var(--p));
+  height: calc(#{$full-h} - #{$full-h - $pill-h} * var(--p));       // 92px -> 30px
   margin-inline: auto;
   box-sizing: border-box;
   background-color: $tg-bg-color;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: calc(1rem - 0.75rem * var(--p));
-  border-radius: calc(16px + 24px * var(--p));
-  gap: 1rem;
+  padding-block: calc(#{$pad-full} - #{$pad-full - $pad-compact} * var(--p));
+  padding-inline: calc(16px - 6px * var(--p));
+  border-radius: calc(16px + 24px * var(--p));                      // -> pill
+  gap: calc(1rem - 0.4rem * var(--p));
 
-  transform: translateY(calc(-1 * #{$topContentSafeArea} * var(--p)));
+  transform: translateY(calc(-1 * #{$lift} * var(--p)));
   will-change: transform;
 
-
+  // shadow via opacity instead of animating box-shadow
   &::after {
     content: '';
     position: absolute;
@@ -58,10 +75,10 @@ $offset: calc(#{$topSafeArea} + #{$topContentSafeArea} + #{$gap});
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60px;
-    aspect-ratio: 1 / 1;
+    width: calc(#{$icon-full} - #{$icon-full - $icon-compact} * var(--p));
+    height: calc(#{$icon-full} - #{$icon-full - $icon-compact} * var(--p));
     background: $tg-secondary-bg-color;
-    border-radius: calc(8px + 22px * var(--p));
+    border-radius: calc(8px + 22px * var(--p));                     // square -> circle
 
     &__img {
       width: 100%;
@@ -71,13 +88,15 @@ $offset: calc(#{$topSafeArea} + #{$topContentSafeArea} + #{$gap});
   }
 
   .info {
-    flex: calc(1 - var(--p)) 1 auto;
+    flex: calc(1 - var(--p)) 1 auto;    // icon + title group centers as it compacts
     display: flex;
     flex-direction: column;
     min-width: 0;
 
     h3 {
       margin: 0;
+      font-size: calc(18px - 4px * var(--p));
+      line-height: 1.2;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -86,7 +105,7 @@ $offset: calc(#{$topSafeArea} + #{$topContentSafeArea} + #{$gap});
     &__budget {
       height: calc(1.5rem * (1 - var(--p)));
       margin-top: calc(0.8rem * (1 - var(--p)));
-      opacity: max(0, calc(1 - 2 * var(--p)));
+      opacity: max(0, calc(1 - 2 * var(--p)));    // fully faded by half-way
       overflow: hidden;
 
       p {
@@ -104,7 +123,8 @@ $offset: calc(#{$topSafeArea} + #{$topContentSafeArea} + #{$gap});
     padding: calc(0.25rem * (1 - var(--p)));
     border-radius: 999px;
     max-width: calc(3rem * (1 - var(--p)));
-    margin-left: calc(-1rem * var(--p));
+    // cancels the current flex gap, so the group stays truly centered
+    margin-left: calc(-1 * (1rem - 0.4rem * var(--p)) * var(--p));
     opacity: max(0, calc(1 - 3 * var(--p)));
     overflow: hidden;
 
