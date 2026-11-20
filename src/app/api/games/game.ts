@@ -3,11 +3,13 @@ import { delay, Observable, of, tap } from 'rxjs';
 import { Group } from '../../interfaces/group/group';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../user/user';
+import { FileSend } from '../file/file-send';
 
 @Service()
 export class Game {
   private http = inject(HttpClient);
   private userService = inject(UserService);
+  private fileSendService = inject(FileSend);
   private apiUrl = '/api/groups';
 
   getGames(): Observable<Group[]> {
@@ -17,7 +19,7 @@ export class Game {
   getGame(id: string): Observable<Group> {
     return of({
       name: 'Test',
-      membersId: [-9, 1, 2, 3],
+      membersId: [-9, 1, 2, 3, -9, 1, 2, 3, -9, 1, 2, 3, -9, 1, 2, 3],
       adminId: -9,
       data: {
         swapDate: new Date(2026, 11, 3),
@@ -49,14 +51,16 @@ export class Game {
     formData.append('place', gameInfo.place);
 
     if (gameInfo.distributionDate) {
-  formData.append('distributionDate', gameInfo.distributionDate.toISOString());
-}
-if (gameInfo.swapDate) {
-  formData.append('swapDate', gameInfo.swapDate.toISOString());
-}
+      formData.append('distributionDate', gameInfo.distributionDate.toISOString());
+    }
+    if (gameInfo.swapDate) {
+      formData.append('swapDate', gameInfo.swapDate.toISOString());
+    }
 
     if (gameInfo.icon instanceof File) {
-      formData.append('icon', gameInfo.icon, gameInfo.icon.name);
+      this.fileSendService.sendFile(gameInfo.icon).subscribe((v) => {
+        formData.append('icon', v);
+      })
     } else {
       formData.append('icon', gameInfo.icon);
     }

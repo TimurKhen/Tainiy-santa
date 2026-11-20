@@ -6,9 +6,10 @@ import { RouterLink } from '@angular/router';
 import { User } from '../../../telegram/user';
 import { Nickname } from '../../../components/nickname/nickname';
 import { TgEmoji } from '../../../components/tg-emoji/tg-emoji';
+import { Header } from './header/header';
 
 @Component({
-  imports: [Avatar, DatePipe, RouterLink, Nickname, TgEmoji],
+  imports: [Avatar, DatePipe, RouterLink, Nickname, TgEmoji, Header],
   selector: 'app-group-overview',
   styleUrl: './group-overview.scss',
   templateUrl: './group-overview.html',
@@ -19,16 +20,16 @@ export class GroupOverview {
   gameData = this.groupContext.gameData;
   gameTypeDate = this.groupContext.gameTypeDate;
   isOwner = this.groupContext.isOwner;
-  isSelectedGifters = computed(() => this.gameData()?.isSelectedGifters)
-  whoGiftTo = signal<User | null>(null)
+  isSelectedGifters = computed(() => this.gameData()?.isSelectedGifters);
+  whoGiftTo = signal<User | null>(null);
   today = signal<Date>(new Date());
 
   constructor() {
     effect(() => {
       if (this.isSelectedGifters()) {
-        this.getWhoGiftTo()
+        this.getWhoGiftTo();
       }
-    })
+    });
   }
 
   protected setIcon(icon: string): { isUserAvatar: boolean; icon: string } {
@@ -46,7 +47,12 @@ export class GroupOverview {
       last_name: 'Test',
       username: 'test',
       id: 123,
-      photo_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2cqMXjTyXdxKBgCpdLMxLB9rHVv_dP5yQekydezkr8gRUfog5ZIXUieQ&s=10'
-    })
+      photo_url:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2cqMXjTyXdxKBgCpdLMxLB9rHVv_dP5yQekydezkr8gRUfog5ZIXUieQ&s=10',
+    });
   }
+
+  onExit() {
+
+  };
 }

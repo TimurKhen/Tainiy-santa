@@ -1,0 +1,130 @@
+@import "tgColors";
+@import "colors";
+@import "tgVariables";
+
+$gap: 8px;
+$offset: calc(#{$topSafeArea} + #{$topContentSafeArea} + #{$gap});
+
+:host {
+  display: contents;
+  --p: 0;
+}
+
+.sentinel {
+  height: 1px;
+  margin-bottom: -1px;
+}
+
+.slot {
+  position: sticky;
+  top: $offset;
+  z-index: 100;
+  width: 100%;
+  height: calc(60px + 2rem);
+  pointer-events: none;
+  contain: layout style;
+}
+
+.header {
+  position: relative;
+  pointer-events: auto;
+  width: calc(90% - 40% * var(--p));
+  margin-inline: auto;
+  box-sizing: border-box;
+  background-color: $tg-bg-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(1rem - 0.75rem * var(--p));
+  border-radius: calc(16px + 24px * var(--p));
+  gap: 1rem;
+
+  transform: translateY(calc(-1 * #{$topContentSafeArea} * var(--p)));
+  will-change: transform;
+
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    opacity: var(--p);
+    pointer-events: none;
+  }
+
+  .icon {
+    flex: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    aspect-ratio: 1 / 1;
+    background: $tg-secondary-bg-color;
+    border-radius: calc(8px + 22px * var(--p));
+
+    &__img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .info {
+    flex: calc(1 - var(--p)) 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    h3 {
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &__budget {
+      height: calc(1.5rem * (1 - var(--p)));
+      margin-top: calc(0.8rem * (1 - var(--p)));
+      opacity: max(0, calc(1 - 2 * var(--p)));
+      overflow: hidden;
+
+      p {
+        margin: 0;
+        line-height: 1.5rem;
+      }
+    }
+  }
+
+  .exit-button {
+    flex: none;
+    display: flex;
+    align-self: flex-start;
+    background: $color-red;
+    padding: calc(0.25rem * (1 - var(--p)));
+    border-radius: 999px;
+    max-width: calc(3rem * (1 - var(--p)));
+    margin-left: calc(-1rem * var(--p));
+    opacity: max(0, calc(1 - 3 * var(--p)));
+    overflow: hidden;
+
+    .exit {
+      width: 2rem;
+      height: 2rem;
+      background: none;
+      border: none;
+      outline: none;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: invert(1);
+      }
+    }
+  }
+}
+
+:host(.is-stuck) .exit-button {
+  pointer-events: none;
+}

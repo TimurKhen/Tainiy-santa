@@ -1,21 +1,12 @@
 <div class="container">
   @if (gameData(); as data) {
-    <div class="header">
-      <div class="icon">
-        <img class="icon" [src]="setIcon(data.icon).icon">
-      </div>
-      <div class="info">
-        <h3>{{ data.name }}</h3>
-        <p>Бюджет: ~{{ data.data.money }}₽</p>
-      </div>
-      @if (!isSelectedGifters()) {
-        <div class="exit-button">
-          <button class="exit">
-            <img src="icons/exit.svg" class="exit-icon">
-          </button>
-        </div>
-      }
-    </div>
+    <app-header
+      [name]="data.name"
+      [money]="data.data.money"
+      [icon]="'tgGifs/christmasTree.webp'"
+      [canExit]="true"
+      (exit)="onExit()" />
+
     @if (isOwner()) {
       <div class="owner-buttons">
         <button class="owner">
@@ -30,7 +21,7 @@
 
     @if (isSelectedGifters()) {
       @if (whoGiftTo(); as giftingTo) {
-        <div class="giftTo">        
+        <div class="giftTo">
           <div class="info">
             <p><img src="tgGifs/gift.webp"> Вы дарите подарок:</p>
             <app-nickname [value]="giftingTo.first_name + ' ' + giftingTo.last_name" />
