@@ -1,7 +1,6 @@
 import { inject, Service } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { delay, map, Observable, of, shareReplay, throwError } from 'rxjs';
-import { User } from '../../telegram/user';
 import { Group } from '../../interfaces/group/group';
 
 export interface MeResponse {

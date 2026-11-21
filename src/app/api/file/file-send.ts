@@ -7,6 +7,6 @@ export class FileSend {
   private apiUrl = '/api/groups';
 
   sendFile(file: File) {
-    return this.http.post<string>(this.apiUrl, file, {responseType: 'text'});
+    return this.http.post<string>(this.apiUrl + '/upload', file, {responseType: 'text'});
   }
 }

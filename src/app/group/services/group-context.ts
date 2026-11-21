@@ -1,19 +1,18 @@
 import { computed, inject, Service, signal } from '@angular/core';
 import { Group } from '../../interfaces/group/group';
-import { Game } from '../../api/games/game';
 import { TypeDateService } from '../../groups/group-preview/type-date-service';
-import { of, tap } from 'rxjs';
+import { map, of, tap } from 'rxjs';
 import { Telegram } from '../../telegram/telegram';
 import { environment } from '../../../environments/environment';
+import { UserService } from '../../api/user/user';
 
 @Service()
 export class GroupContext {
-  private gameService = inject(Game);
+  private userService = inject(UserService);
   private tgService = inject(Telegram);
   private typeDateService = inject(TypeDateService);
 
   gameData = signal<Group | null>(null);
-
   gameTypeDate = signal<{ type: string; date: Date } | null>(null);
 
   isOwner = computed(() => {
@@ -30,14 +29,15 @@ export class GroupContext {
       return of(this.gameData());
     }
 
-    return this.gameService.getGame(id).pipe(
+    return this.userService.getGroups().pipe(
+      map((groups) => {
+        const found = groups.find((group) => group.id === id);
+        if (!found) {
+          throw new Error(`Группа с id=${id} не найдена у пользователя`);
+        }
+        return found;
+      }),
       tap((game) => {
-        game = {
-          ...game,
-          distribution_date: game.distribution_date,
-          swap_date: game.swap_date,
-        };
-
         this.gameData.set(game);
         this.getTypeDate(game);
       }),

@@ -18,7 +18,6 @@ export class GroupOverview {
   groupContext = inject(GroupContext);
 
   gameData = this.groupContext.gameData;
-  gameTypeDate = this.groupContext.gameTypeDate;
   isOwner = this.groupContext.isOwner;
   isSelectedGifters = computed(() => this.gameData()?.is_selected_gifters);
   whoGiftTo = signal<User | null>(null);

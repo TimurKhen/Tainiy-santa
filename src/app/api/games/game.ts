@@ -1,7 +1,7 @@
 import { inject, Service } from '@angular/core';
-import { delay, Observable, of, tap } from 'rxjs';
+import { delay, Observable, of, switchMap, tap } from 'rxjs';
 import { Group } from '../../interfaces/group/group';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserService } from '../user/user';
 import { FileSend } from '../file/file-send';
 
@@ -28,28 +28,33 @@ export class Game {
     icon: string | File;
     place: string;
   }): Observable<any> {
-    const formData = new FormData();
+    const icon$: Observable<string> =
+      gameInfo.icon instanceof File
+        ? this.fileSendService.sendFile(gameInfo.icon)
+        : of(gameInfo.icon);
 
-    formData.append('name', gameInfo.name);
-    formData.append('budget', gameInfo.budget.toString());
-    formData.append('place', gameInfo.place);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
 
-    if (gameInfo.distributionDate) {
-      formData.append('distributionDate', gameInfo.distributionDate.toISOString());
-    }
-    if (gameInfo.swapDate) {
-      formData.append('swapDate', gameInfo.swapDate.toISOString());
-    }
+    return icon$.pipe(
+      switchMap((icon) => {
+        const payload = {
+          name: gameInfo.name,
+          money: gameInfo.budget,
+          place: gameInfo.place,
+          icon,
+          ...(gameInfo.distributionDate && {
+            distribution_date: gameInfo.distributionDate.toISOString(),
+          }),
+          ...(gameInfo.swapDate && {
+            swap_date: gameInfo.swapDate.toISOString(),
+          }),
+        };
 
-    if (gameInfo.icon instanceof File) {
-      this.fileSendService.sendFile(gameInfo.icon).subscribe((v) => {
-        formData.append('icon', v);
-      });
-    } else {
-      formData.append('icon', gameInfo.icon);
-    }
-
-    return this.http.post(this.apiUrl, formData);
+        return this.http.post(this.apiUrl + '/create', payload, { headers });
+      }),
+    );
   }
 
   changeSettings(
