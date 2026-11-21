@@ -82,6 +82,14 @@
 
 <div class="bottom-buttons">
   @if (isOwner() && !isSelectedGifters()) {
-    <button class="make-distribution">🎲 Провести жеребьёвку</button>
+    <button class="make-distribution" (click)="makeDistribution()">🎲 Провести жеребьёвку</button>
+  } @else {
+    @if (gameData(); as data) {
+      @if (isSelectedGifters()) {
+        <button>🎁 Обмен {{ data.swap_date | date:"mediumDate" }}</button>
+      } @else {
+        <button>🎲 Жеребьёвка {{ data.distribution_date | date:"mediumDate" }}</button>
+      }
+    }
   }
 </div>

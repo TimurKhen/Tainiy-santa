@@ -16,10 +16,6 @@ export class Game {
     return this.userService.getGroups();
   }
 
-  getGame(id: number): Observable<Group> {
-    return this.http.get<Group>(`${this.apiUrl}/${id}`);
-  }
-
   createGame(gameInfo: {
     name: string;
     budget: number;

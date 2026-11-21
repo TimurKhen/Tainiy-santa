@@ -44,6 +44,10 @@ export class GroupContext {
     );
   }
 
+  clearCache(): void {
+    this.gameData.set(null);
+  }
+
   private getTypeDate(game: Group) {
     this.gameTypeDate.set(this.typeDateService.isDistributionEnded(game));
   }
