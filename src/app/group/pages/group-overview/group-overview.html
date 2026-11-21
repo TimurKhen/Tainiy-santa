@@ -74,6 +74,7 @@
         @for (member of data.users; track member.id ?? member) {
           <div class="member-row" [class.removing]="isRemoving(member.id)">
             <app-avatar
+              [currentUserId]="currentUserId"
               [isOwner]="isOwner() && !isSelectedGifters()"
               [user]="member"
               [isOpen]="activeMemberId() === member.id"

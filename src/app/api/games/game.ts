@@ -54,7 +54,12 @@ export class Game {
   }
 
   changeSettings(group: Group) {
-    return this.http.put(this.apiUrl, group);
+    const payload = {
+      ...group,
+      group_id: group.id,
+    };
+
+    return this.http.put(`${this.apiUrl}/update`, payload);
   }
 
   deleteGame(id: number) {

@@ -8,6 +8,7 @@ import { Header } from './header/header';
 import { MeResponse } from '../../../api/user/user';
 import { Game } from '../../../api/games/game';
 import { BackButton } from '../../../telegram/backButton/back-button';
+import { Telegram } from '../../../telegram/telegram';
 
 @Component({
   imports: [Avatar, DatePipe, RouterLink, Nickname, Header],
@@ -20,6 +21,7 @@ export class GroupOverview implements OnInit {
   private gameService = inject(Game);
   private router = inject(Router);
   private backButtonService = inject(BackButton);
+  private tgService = inject(Telegram)
 
   whoGiftTo = signal<MeResponse | null>(null);
   today = signal<Date>(new Date());
@@ -28,6 +30,7 @@ export class GroupOverview implements OnInit {
   gameData = this.groupContext.gameData;
   isSelectedGifters = computed(() => this.gameData()?.is_selected_gifters);
   isOwner = this.groupContext.isOwner;
+  currentUserId = this.tgService.user.id
 
   constructor() {
     effect(() => {
