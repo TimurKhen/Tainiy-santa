@@ -100,7 +100,7 @@ $offset: calc(#{$topSafeArea} + #{$topContentSafeArea} + #{$gap});
   .exit-button {
     flex: none;
     display: flex;
-    align-self: flex-start;
+    //align-self: flex-start;
     background: $color-red;
     padding: calc(0.25rem * (1 - var(--p)));
     border-radius: 999px;

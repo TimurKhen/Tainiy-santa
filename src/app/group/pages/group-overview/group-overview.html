@@ -34,6 +34,23 @@
       }
     }
 
+    <div class="extra">
+      <span class="object">
+        <div class="info">
+          <div class="icon">📍</div>
+          <p>Место</p>
+        </div>
+        <p class="date">{{ data.place }}</p>
+      </span>
+      <span class="object">
+        <div class="info">
+          <div class="icon">💰</div>
+          <p>Бюджет</p>
+        </div>
+        <p class="date">{{ data.money }} ₽</p>
+      </span>
+    </div>
+
     <div class="dates">
       <span class="date-object" [class.happened]="getDate(data.distribution_date) <= today()">
         <div class="info">

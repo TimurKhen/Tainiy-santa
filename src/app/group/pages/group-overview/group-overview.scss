@@ -115,11 +115,11 @@
     }
   }
 
-  .dates {
+  .dates, .extra {
     @include tg-container;
     width: 90%;
 
-    .date-object {
+    .date-object, .object {
       @include tg-block;
       width: 100%;
 
