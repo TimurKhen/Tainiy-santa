@@ -2,18 +2,18 @@
   @if (gameData(); as data) {
     <app-header
       [name]="data.name"
-      [money]="data.data.money"
-      [icon]="'tgGifs/christmasTree.webp'"
+      [money]="data.money"
+      [icon]="setGroupIcon(data.icon)"
       [canExit]="true"
       (exit)="onExit()" />
 
     @if (isOwner()) {
       <div class="owner-buttons">
-        <button class="owner">
+        <span class="owner">
           👑 Вы организатор
-        </button>
+        </span>
 
-        <button class="settings" routerLink="./settings">
+        <button type="button" class="settings" routerLink="./settings">
           ⚙️ Изменить настройки игры
         </button>
       </div>
@@ -35,25 +35,25 @@
     }
 
     <div class="dates">
-      <span class="date-object" [class.happened]="data.data.distributionDate <= today()">
+      <span class="date-object" [class.happened]="getDate(data.distribution_date) <= today()">
         <div class="info">
           <div class="icon distribution-icon">🎲</div>
           <p>Распределение</p>
         </div>
-        <p class="date">{{ data.data.distributionDate | date:"mediumDate" }}</p>
+        <p class="date">{{ data.distribution_date | date:"mediumDate" }}</p>
       </span>
 
       <hr>
 
-      <span class="date-object" [class.happened]="data.data.swapDate <= today()">
+      <span class="date-object" [class.happened]="getDate(data.swap_date) <= today()">
         <div class="info">
           <div class="icon swap-icon">🎁</div>
           <p>Обмен</p>
         </div>
-        <p class="date">{{ data.data.swapDate | date:"mediumDate" }}</p>
+        <p class="date">{{ data.swap_date | date:"mediumDate" }}</p>
       </span>
 
-      @if (data.data.swapDate <= today()) {
+      @if (getDate(data.swap_date) <= today()) {
         <hr>
 
         <span class="date-object" animate.enter="enter">
@@ -67,12 +67,12 @@
 
     <div class="members-container">
       <div class="members-header">
-        <p>Участников: {{ data.membersId.length }}</p>
+        <p>Участников: {{ data.users.length }}</p>
         <button>Скопировать ссылку на группу</button>
       </div>
       <div class="members">
-        @for (member of data.membersId; track member) {
-          <app-avatar [isOwner]="isOwner() && !isSelectedGifters()" [userId]="member"></app-avatar>
+        @for (member of data.users; track member) {
+          <app-avatar [isOwner]="isOwner() && !isSelectedGifters()" [user]="member"></app-avatar>
           <hr>
         }
       </div>
@@ -82,6 +82,14 @@
 
 <div class="bottom-buttons">
   @if (isOwner() && !isSelectedGifters()) {
-    <button class="make-distribution">🎲 Провести жеребьёвку</button>
+    <button class="make-distribution" (click)="makeDistribution()">🎲 Провести жеребьёвку</button>
+  } @else {
+    @if (gameData(); as data) {
+      @if (isSelectedGifters()) {
+        <button>🎁 Обмен {{ data.swap_date | date:"mediumDate" }}</button>
+      } @else {
+        <button>🎲 Жеребьёвка {{ data.distribution_date | date:"mediumDate" }}</button>
+      }
+    }
   }
 </div>

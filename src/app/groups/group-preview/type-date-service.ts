@@ -5,8 +5,8 @@ import { Group } from '../../interfaces/group/group';
 export class TypeDateService {
   isDistributionEnded(data: Group) {
     const currentDate = new Date();
-    const rawDistDate = data.data.distributionDate;
-    const rawSwapDate = data.data.swapDate;
+    const rawDistDate = data.distribution_date;
+    const rawSwapDate = data.swap_date;
 
     const distributionDate = rawDistDate ? new Date(rawDistDate) : null;
     const swapDate = rawSwapDate ? new Date(rawSwapDate) : null;

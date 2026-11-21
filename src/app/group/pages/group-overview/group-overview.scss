@@ -77,26 +77,41 @@
   .owner-buttons {
     width: 90%;
     display: flex;
-    justify-content: space-between;
+    align-items: stretch;
+    gap: 0.5rem;
 
-    button {
-      padding: 0.4rem 0.8rem;
-      border: none;
-      outline: none;
+    .owner,
+    .settings {
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      padding: 0.5rem 0.65rem;
       border-radius: 12px;
-      font-size: 0.8em;
+      font-size: clamp(0.68rem, 2.9vw, 0.8rem);
       font-weight: 600;
+      line-height: 1.2;
+      white-space: nowrap;
+      min-width: 0;
     }
 
     .owner {
+      flex-shrink: 0;
       background: rgb(255, 243, 214);
       color: rgb(122, 82, 0);
+      user-select: none;
     }
 
     .settings {
+      flex: 1 1 auto;
+      cursor: pointer;
+      outline: none;
       background: color-mix(in srgb, $tg-accent-text-color, #000 15%);
       border: 1px solid $tg-accent-text-color;
       color: $tg-text-color;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -145,25 +160,39 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.7em;
-      background: none;
+      gap: 0.5rem;
+      min-width: 0;
 
       p {
+        margin: 0;
+        font-size: 0.8rem;
         color: $tg-subtitle-text-color;
+        white-space: nowrap;
       }
 
       button {
+        box-sizing: border-box;
+        flex-shrink: 0;
         border-radius: 12px;
-        display: flex;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
+        gap: 0.35rem;
+        font-size: clamp(0.68rem, 2.8vw, 0.78rem);
         font-weight: 600;
-        text-decoration: none;
+        line-height: 1.2;
+        white-space: nowrap;
+        cursor: pointer;
         outline: none;
-        padding: 0.2rem 1rem;
+        padding: 0.4rem 0.75rem;
         background: color-mix(in srgb, $tg-accent-text-color, #000 15%);
         border: 1px solid $tg-accent-text-color;
         color: $tg-text-color;
+        transition: transform 0.12s ease, opacity 0.15s ease;
+
+        &:active {
+          transform: scale(0.97);
+        }
       }
     }
 

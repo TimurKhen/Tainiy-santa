@@ -25,8 +25,8 @@ export class Groups implements OnInit {
   private allGroups$ = this.gameService.getGames();
 
   private groupsList = toSignal(this.allGroups$, { initialValue: [] as Group[] });
-  groups = computed(() => this.groupsList().filter((g) => !g.isEnded));
-  endedGroups = computed(() => this.groupsList().filter((g) => g.isEnded));
+  groups = computed(() => this.groupsList().filter((g) => !g.is_ended));
+  endedGroups = computed(() => this.groupsList().filter((g) => g.is_ended));
   haveGroups = computed(() => this.groupsList().length > 0);
   groupCount = computed(() => this.groupsList().length);
 }

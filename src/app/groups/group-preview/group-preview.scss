@@ -1,98 +1,130 @@
 @import "tgColors";
 
 .container {
+  box-sizing: border-box;
   width: 100%;
-  height: 100%;
   background-color: $tg-bg-color;
-
   display: flex;
-  align-items: center;
-  //grid-template-columns: 1fr 4fr;
-  padding: 1rem;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.9rem 1rem;
   border-radius: 16px;
-  gap: 1rem;
+  cursor: pointer;
 
-  .icon {
+  .top-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-width: 0;
+  }
+
+  .icon-box {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
     display: flex;
     justify-content: center;
     align-items: center;
-
     background: $tg-secondary-bg-color;
-    border-radius: calc(16px - 0.5rem);
-    aspect-ratio: 1/1;
+    border-radius: 12px;
+    overflow: hidden;
 
-    max-width: 60px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 
   .info {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 0.4rem;
-    font-size: 0.9rem;
+    gap: 0.35rem;
+
+    .title {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.25;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
     .main {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.85rem;
 
-      .owner {
-        display: inline-flex;
-        align-items: center;
-        height: 1lh;
-        gap: 0.4rem;
-        border-radius: 9999px;
-        padding: 0.8rem 0.6rem;
+      .member-counter {
+        white-space: nowrap;
+      }
+    }
+  }
 
-        background: rgb(255, 243, 214);
-        color: rgb(122, 82, 0);
+  .chevron {
+    flex-shrink: 0;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.82rem;
+    line-height: 1.25;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    &.owner {
+      background: rgb(255, 243, 214);
+      color: rgb(122, 82, 0);
+      white-space: nowrap;
+    }
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding-left: calc(56px + 0.85rem);
+
+    .date-badge {
+      img {
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        object-fit: contain;
+      }
+
+      span {
+        min-width: 0;
       }
     }
 
-    .tags {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
+    .t {
+      background: rgb(245, 231, 231);
+      color: rgb(107, 30, 30);
+    }
 
-      .tag {
-        display: inline-flex;
-        align-items: center;
-        height: 1lh;
-        gap: 0.4rem;
-        border-radius: 9999px;
-        padding: 0.8rem 0.2rem 0.8rem 0.6rem;
+    .d {
+      background: rgb(255, 243, 214);
+      color: rgb(122, 82, 0);
+    }
 
-        img {
-          width: auto;
-          height: 1lh;
-          vertical-align: middle;
-          //height: 1lh;
-          //align-self: flex-end;
-        }
-      }
-
-      .t {
-        background: rgb(245 231 231);
-        color: rgb(107 30 30);
-      }
-
-      .d {
-        background: rgb(255, 243, 214);
-        color: rgb(122, 82, 0);
-      }
-
-      .s {
-        background: rgb(231, 245, 236);
-        color: rgb(30, 107, 64);
-      }
+    .s {
+      background: rgb(231, 245, 236);
+      color: rgb(30, 107, 64);
     }
   }
 }
 
 .is-ended {
-  .icon {
-    width: 80%;
+  .icon-box {
+    opacity: 0.75;
   }
-  //padding: 0.5rem;
 }

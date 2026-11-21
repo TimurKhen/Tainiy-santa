@@ -1,19 +1,18 @@
 import { computed, inject, Service, signal } from '@angular/core';
 import { Group } from '../../interfaces/group/group';
-import { Game } from '../../api/games/game';
 import { TypeDateService } from '../../groups/group-preview/type-date-service';
-import { of, tap } from 'rxjs';
+import { map, of, tap } from 'rxjs';
 import { Telegram } from '../../telegram/telegram';
 import { environment } from '../../../environments/environment';
+import { UserService } from '../../api/user/user';
 
 @Service()
 export class GroupContext {
-  private gameService = inject(Game);
+  private userService = inject(UserService);
   private tgService = inject(Telegram);
   private typeDateService = inject(TypeDateService);
 
   gameData = signal<Group | null>(null);
-
   gameTypeDate = signal<{ type: string; date: Date } | null>(null);
 
   isOwner = computed(() => {
@@ -22,29 +21,31 @@ export class GroupContext {
 
     if (environment.debugOwner) return true;
 
-    return !!game && !!user && game.adminId === user.id;
+    return !!game && !!user && game.admin_id === user.id;
   });
 
-  ensureLoaded(id: string) {
-    if (this.gameData()?.groupId === id) {
+  ensureLoaded(id: number) {
+    if (this.gameData()?.id === id) {
       return of(this.gameData());
     }
 
-    return this.gameService.getGame(id).pipe(
+    return this.userService.getGroups().pipe(
+      map((groups) => {
+        const found = groups.find((group) => group.id === id);
+        if (!found) {
+          throw new Error(`Группа с id=${id} не найдена у пользователя`);
+        }
+        return found;
+      }),
       tap((game) => {
-        game = {
-          ...game,
-          data: {
-            ...game.data,
-            distributionDate: new Date(game.data.distributionDate),
-            swapDate: new Date(game.data.swapDate),
-          },
-        };
-
         this.gameData.set(game);
         this.getTypeDate(game);
       }),
     );
+  }
+
+  clearCache(): void {
+    this.gameData.set(null);
   }
 
   private getTypeDate(game: Group) {
@@ -54,15 +55,16 @@ export class GroupContext {
   updateSettings(settings: {
     money: number;
     where: string;
-    distributionDate: Date;
-    swapDate: Date;
+    distributionDate: string;
+    swapDate: string;
   }) {
     this.gameData.update((game) => {
-      if (!game) return game;
+      const updated: Group = {
+        ...game!,
+        ...settings,
+      };
 
-      const updated = { ...game, data: { ...game.data, ...settings } };
       this.getTypeDate(updated);
-
       return updated;
     });
   }
