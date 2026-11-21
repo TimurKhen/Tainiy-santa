@@ -53,30 +53,32 @@ export class Game {
     );
   }
 
-  changeSettings(
-    id: number,
-    budget: number,
-    distributionDate: string,
-    swapDate: string,
-    place: string,
-  ) {
-    return this.http.patch(`${this.apiUrl}/${id}`, {
-      budget,
-      place,
-      distribution_date: distributionDate,
-      swap_date: swapDate,
-    });
+  changeSettings(group: Group) {
+    return this.http.put(this.apiUrl, group);
   }
 
   deleteGame(id: number) {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+    return this.http.delete(`${this.apiUrl}/delete`, {
+      body: { group_id: id },
+    });
   }
 
   makeDistribution(id: number) {
-    return this.http.post(`${this.apiUrl}/distribution/${id}`, {});
+    return this.http.post(`${this.apiUrl}/distribution`, {
+      group_id: id,
+    });
   }
 
   leave(id: number) {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+    return this.http.post(`${this.apiUrl}/leave`, {
+      group_id: id,
+    });
+  }
+
+  removeUser(groupId: number, userId: number) {
+    return this.http.post(`${this.apiUrl}/delete_user`, {
+      group_id: groupId,
+      user_id: userId,
+    });
   }
 }

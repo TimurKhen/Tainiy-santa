@@ -7,9 +7,10 @@ import { RouterLink } from '@angular/router';
 import { BackButton } from '../telegram/backButton/back-button';
 import { Game } from '../api/games/game';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
-  imports: [GroupPreview, GroupPlaceholder, GroupsHeader, RouterLink],
+  imports: [GroupPreview, GroupPlaceholder, GroupsHeader, RouterLink, NgTemplateOutlet],
   selector: 'app-groups',
   styleUrl: './groups.scss',
   templateUrl: './groups.html',

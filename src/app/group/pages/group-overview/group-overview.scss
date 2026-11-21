@@ -155,6 +155,7 @@
     align-items: center;
     gap: 1rem;
 
+
     .members-header {
       width: 90%;
       display: flex;
@@ -199,6 +200,24 @@
     .members {
       width: 90%;
       @include tg-container;
+
+      .member-row {
+        max-height: 120px;
+        opacity: 1;
+        overflow: hidden;
+        transition:
+          max-height 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.22s ease,
+          transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+          margin 0.28s ease;
+
+        &.removing {
+          max-height: 0;
+          opacity: 0;
+          transform: translateX(16px);
+          pointer-events: none;
+        }
+      }
     }
   }
 

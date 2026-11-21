@@ -25,8 +25,8 @@ export class Telegram {
   get user(): User {
     if (!this.isAvailable) {
       return {
-        id: -9,
-        first_name: 'Разработчик',
+        id: 123321456,
+        first_name: 'Vasia',
         last_name: 'Локальный',
         username: 'dev_local',
         language_code: 'ru',

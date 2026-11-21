@@ -1,32 +1,46 @@
 @let count = groupCount();
 
+<ng-template #noGroups let-title="title">
+  <div class="no-groups">
+    <img src="tgGifs/christmasTree.webp">
+    <h2>{{ title }}</h2>
+    <p>Создайте свою!</p>
+  </div>
+</ng-template>
+
 <div class="container">
   @if (haveGroups()) {
     <app-groups-header [groupCount]="count"></app-groups-header>
+
     <div class="groups">
-      <p>Активные</p>
-      @for (item of groups(); track item.id) {
-        @defer (on viewport) {
-          <app-group-preview [data]="item"></app-group-preview>
-        } @placeholder (minimum 500ms) {
-          <app-group-placeholder></app-group-placeholder>
+      @if (groups().length > 0) {
+        <p>Активные</p>
+        @for (item of groups(); track item.id) {
+          @defer (on viewport) {
+            <app-group-preview [data]="item"></app-group-preview>
+          } @placeholder (minimum 500ms) {
+            <app-group-placeholder></app-group-placeholder>
+          }
         }
+      } @else {
+        <ng-container *ngTemplateOutlet="noGroups; context: { title: 'Нет активных игр' }"></ng-container>
       }
     </div>
+
     <div class="endedGroups">
-      <p>Завершённые</p>
-      @for (item of endedGroups(); track item.id) {
-        @defer (on viewport) {
-          <app-group-preview [data]="item"></app-group-preview>
-        } @placeholder (minimum 500ms) {
-          <app-group-placeholder></app-group-placeholder>
+      @if (endedGroups().length > 0) {
+        <p>Завершённые</p>
+        @for (item of endedGroups(); track item.id) {
+          @defer (on viewport) {
+            <app-group-preview [data]="item"></app-group-preview>
+          } @placeholder (minimum 500ms) {
+            <app-group-placeholder></app-group-placeholder>
+          }
         }
       }
     </div>
   } @else {
-    <div class="no-groups">
-      <h2>У вас пока нет групп</h2>
-    </div>
+    <ng-container *ngTemplateOutlet="noGroups; context: { title: 'У вас пока нет игр' }"></ng-container>
   }
 </div>
 

@@ -15,13 +15,11 @@ export default class Dates {
   distributionDate = model<string | null>(null);
   swapDate = model<string | null>(null);
 
-  // Минимум для жеребьёвки — завтра (today + 1)
   minDistributionDate = signal<string>(this.addDaysToLocalDate(new Date(), 1));
-
-  // Минимум для обмена, когда жеребьёвка ещё не выбрана — послезавтра (today + 2)
+  maxDistributionDate = computed<string | null>(() => {
+    return this.swapDate() || null;
+  });
   private minSwapDefault = signal<string>(this.addDaysToLocalDate(new Date(), 2));
-
-  // Минимум для обмена: (выбранная жеребьёвка + 1 день) или послезавтра
   minSwapDate = computed<string>(() => {
     const distStr = this.distributionDate();
     if (!distStr) {
@@ -32,13 +30,7 @@ export default class Dates {
     return this.addDaysToLocalDate(baseDate, 1);
   });
 
-  // Максимум для жеребьёвки — выбранная дата обмена (или null, если не задана)
-  maxDistributionDate = computed<string | null>(() => {
-    return this.swapDate() || null;
-  });
-
   constructor() {
-    // Если дата жеребьёвки сдвинулась и текущая дата обмена стала меньше минимума — корректируем её
     effect(() => {
       const minSwap = this.minSwapDate();
       const currentSwap = this.swapDate();
@@ -77,7 +69,7 @@ export default class Dates {
 
   private parseDateString(dateStr: string): Date {
     const [year, month, day] = dateStr.split('-').map(Number);
-    return new Date(year, month - 1, day);
+    return new Date(Date.UTC(year, month - 1, day));
   }
 
   private addDaysToLocalDate(date: Date, days: number): string {

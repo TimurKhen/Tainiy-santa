@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { GroupContext } from '../../services/group-context';
 import { EditTextInput } from './components/edit-text-input/edit-text-input';
 import { EditDateInput } from './components/edit-date-input/edit-date-input';
@@ -6,6 +6,8 @@ import { Game } from '../../../api/games/game';
 import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { Telegram } from '../../../telegram/telegram';
+import { BackButton } from '../../../telegram/backButton/back-button';
 
 interface SmallInput {
   icon: string;
@@ -19,11 +21,19 @@ interface SmallInput {
   styleUrl: './group-settings.scss',
   templateUrl: './group-settings.html',
 })
-export class GroupSettings {
+export class GroupSettings implements OnInit {
   private groupContext = inject(GroupContext);
   private gameService = inject(Game);
+  private backButtonService = inject(BackButton);
 
-  constructor(private router: Router, private location: Location) {}
+  constructor(
+    private router: Router,
+    private location: Location,
+  ) {}
+
+  ngOnInit() {
+    this.backButtonService.show()
+  }
 
   gameData = this.groupContext.gameData;
 
@@ -62,27 +72,27 @@ export class GroupSettings {
     if (!game || this.isSaving()) return;
 
     const dates = this.draftDates();
-    const settings = {
+    const updatedGroup = {
+      ...game,
       money: this.draftMoney() ?? game.money,
-      where: this.draftWhere() ?? game.place,
-      distributionDate: dates?.distribution ?? game.distribution_date,
-      swapDate: dates?.swap ?? game.swap_date,
+      place: this.draftWhere() ?? game.place,
+      distribution_date: dates?.distribution ?? game.distribution_date,
+      swap_date: dates?.swap ?? game.swap_date,
     };
 
     this.isSaving.set(true);
 
     this.gameService
-      .changeSettings(
-        game.id,
-        settings.money,
-        settings.distributionDate,
-        settings.swapDate,
-        settings.where,
-      )
+      .changeSettings(updatedGroup)
       .pipe(finalize(() => this.isSaving.set(false)))
       .subscribe({
         next: () => {
-          this.groupContext.updateSettings(settings);
+          this.groupContext.updateSettings({
+            money: updatedGroup.money,
+            where: updatedGroup.place,
+            distributionDate: updatedGroup.distribution_date,
+            swapDate: updatedGroup.swap_date,
+          });
           this.draftDates.set(null);
           this.draftMoney.set(null);
           this.draftWhere.set(null);
@@ -95,20 +105,15 @@ export class GroupSettings {
       });
   }
 
-  private parseDate(value: string | Date): Date {
-    if (value instanceof Date) return value;
-
-    const [year, month, day] = value.split('-').map(Number);
-
-    return new Date(year, month - 1, day);
-  }
-
   protected deleteGroup() {
-    const isConfirmed = confirm('Вы уверены, что хотите удалить эту игру?');
+    const isConfirmed = window.confirm(
+      'Вы уверены, что хотите удалить эту игру?',
+    );
 
     if (isConfirmed) {
-      this.gameService.deleteGame(this.groupContext.gameData()?.id || -1);
-      this.router.navigate(['/']);
+      this.gameService.deleteGame(this.groupContext.gameData()?.id || -1).subscribe(() => {
+        this.router.navigate(['/']);
+      });
     }
   }
 

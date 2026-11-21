@@ -21,4 +21,4 @@ $tg-section-separator-color: var(--tg-theme-section-separator-color); // 7.6+
 
 // Text
 $tg-subtitle-text-color: var(--tg-theme-subtitle-text-color);
-$tg-destructive-text-color: var(--tg-theme-destructive-text-color);
+$tg-destructive-text-color: var(--tg-theme-destructive-text-color, rgb(177 53 53));

@@ -26,7 +26,8 @@
         type="date"
         class="native-calendar"
         [disabled]="firstLocked()"
-        [min]="today()"
+        [min]="minFirst()"
+        [max]="maxFirst()"
         [ngModel]="firstValue()"
         (ngModelChange)="onFirstChange($event)"
       />
@@ -47,6 +48,7 @@
         class="native-calendar"
         [disabled]="secondLocked()"
         [min]="minSecond()"
+        [max]="maxSecond()"
         [ngModel]="secondValue()"
         (ngModelChange)="onSecondChange($event)"
       />

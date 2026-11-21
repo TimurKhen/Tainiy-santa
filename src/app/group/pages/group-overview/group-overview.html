@@ -71,9 +71,18 @@
         <button>Скопировать ссылку на группу</button>
       </div>
       <div class="members">
-        @for (member of data.users; track member) {
-          <app-avatar [isOwner]="isOwner() && !isSelectedGifters()" [user]="member"></app-avatar>
-          <hr>
+        @for (member of data.users; track member.id ?? member) {
+          <div class="member-row" [class.removing]="isRemoving(member.id)">
+            <app-avatar
+              [isOwner]="isOwner() && !isSelectedGifters()"
+              [user]="member"
+              [isOpen]="activeMemberId() === member.id"
+              (toggle)="onToggleMemberMenu(member.id)"
+              (makeAdmin)="onMakeAdmin($event)"
+              (removeUser)="onRemoveUser($event)"
+            />
+            <hr>
+          </div>
         }
       </div>
     </div>

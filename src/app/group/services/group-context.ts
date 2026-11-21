@@ -21,6 +21,8 @@ export class GroupContext {
 
     if (environment.debugOwner) return true;
 
+    console.log(user, game)
+
     return !!game && !!user && game.admin_id === user.id;
   });
 

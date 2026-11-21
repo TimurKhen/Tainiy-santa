@@ -39,6 +39,8 @@ export class GroupPreview implements OnInit {
   checkUser() {}
 
   getTypeDate() {
-    return this.typeDateService.isDistributionEnded(this.data());
+    const v = this.typeDateService.isDistributionEnded(this.data());
+    console.log(v)
+    return v
   }
 }

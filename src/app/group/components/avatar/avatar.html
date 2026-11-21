@@ -1,16 +1,55 @@
-@if (user(); as user) {
-  <div class="member">
-    <div class="info">
+@if (user(); as u) {
+  <div class="member" [class.is-open]="isOpen() && isOwner()">
+    <button
+      type="button"
+      class="trigger"
+      [class.interactive]="isOwner()"
+      [attr.aria-expanded]="isOwner() ? isOpen() : null"
+      (click)="onAvatarClick($event)"
+    >
       <div class="avatar">
-        <img [src]="user.photo_url" [alt]="user.first_name">
+        <img [src]="u.photo_url" [alt]="u.first_name">
       </div>
-      <p class="name">
-        <app-nickname [value]="user.first_name + ' ' + user.last_name" />
+    </button>
+
+    <div class="content-slot">
+      <p class="name" [class.hidden]="isOpen() && isOwner()">
+        <app-nickname [value]="fullName()" />
       </p>
+
+      @if (isOwner()) {
+        <div class="actions" [class.open]="isOpen()">
+          <button
+            type="button"
+            class="action-btn admin-btn"
+            [tabIndex]="isOpen() ? 0 : -1"
+            (click)="onMakeAdmin($event)"
+          >
+            Передать права
+          </button>
+
+          <button
+            type="button"
+            class="action-btn delete-btn"
+            [tabIndex]="isOpen() ? 0 : -1"
+            (click)="onDelete($event)"
+          >
+            Удалить
+          </button>
+        </div>
+      }
     </div>
 
     @if (isOwner()) {
-      <button class="delete-btn">Удалить</button>
+      <button
+        type="button"
+        class="chevron-btn"
+        aria-label="Действия с участником"
+        [attr.aria-expanded]="isOpen()"
+        (click)="onAvatarClick($event)"
+      >
+        <span class="chevron" aria-hidden="true">›</span>
+      </button>
     }
   </div>
 }
