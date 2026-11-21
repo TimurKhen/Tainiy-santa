@@ -1,6 +1,5 @@
-import { Component, input, inject, OnInit, computed } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { MeResponse, UserService } from '../../../api/user/user';
+import { Component, input, inject, OnInit } from '@angular/core';
+import { MeResponse } from '../../../api/user/user';
 import { Nickname } from '../../../components/nickname/nickname';
 import { BackButton } from '../../../telegram/backButton/back-button';
 

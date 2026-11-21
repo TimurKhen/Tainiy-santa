@@ -9,11 +9,11 @@
 
     @if (isOwner()) {
       <div class="owner-buttons">
-        <button class="owner">
+        <span class="owner">
           👑 Вы организатор
-        </button>
+        </span>
 
-        <button class="settings" routerLink="./settings">
+        <button type="button" class="settings" routerLink="./settings">
           ⚙️ Изменить настройки игры
         </button>
       </div>
@@ -82,6 +82,14 @@
 
 <div class="bottom-buttons">
   @if (isOwner() && !isSelectedGifters()) {
-    <button class="make-distribution">🎲 Провести жеребьёвку</button>
+    <button class="make-distribution" (click)="makeDistribution()">🎲 Провести жеребьёвку</button>
+  } @else {
+    @if (gameData(); as data) {
+      @if (isSelectedGifters()) {
+        <button>🎁 Обмен {{ data.swap_date | date:"mediumDate" }}</button>
+      } @else {
+        <button>🎲 Жеребьёвка {{ data.distribution_date | date:"mediumDate" }}</button>
+      }
+    }
   }
 </div>

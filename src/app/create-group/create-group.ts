@@ -22,7 +22,7 @@ export class CreateGroup {
 
   createForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required]),
-    budget: new FormControl<number>(1, [Validators.required]),
+    budget: new FormControl<number>(1000, [Validators.required]),
     distributionDate: new FormControl<Date | null>(null, [Validators.required]),
     swapDate: new FormControl<Date | null>(null, [Validators.required]),
     icon: new FormControl<string | File>('', [Validators.required]),

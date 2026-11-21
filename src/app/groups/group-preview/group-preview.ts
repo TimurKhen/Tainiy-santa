@@ -19,15 +19,15 @@ export class GroupPreview implements OnInit {
   protected readonly isOwner = signal<boolean>(true);
 
   protected setIcon(icon: string): { isUserAvatar: boolean; icon: string } {
-    if (icon.length > 0) {
+    if (icon === 'snowflake' || icon === 'snowman' || icon === 'gift') {
       return {
-        isUserAvatar: true,
-        icon: environment.baseURL + '/' + this.data().icon,
+        isUserAvatar: false,
+        icon: `tgGifs/${icon}.webp`,
       };
     } else {
       return {
-        isUserAvatar: false,
-        icon: 'tgGifs/christmasTree.webp',
+        isUserAvatar: true,
+        icon: this.data().icon,
       };
     }
   }

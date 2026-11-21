@@ -2,11 +2,13 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Avatar } from '../../components/avatar/avatar';
 import { DatePipe } from '@angular/common';
 import { GroupContext } from '../../services/group-context';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { User } from '../../../telegram/user';
 import { Nickname } from '../../../components/nickname/nickname';
 import { TgEmoji } from '../../../components/tg-emoji/tg-emoji';
 import { Header } from './header/header';
+import { MeResponse } from '../../../api/user/user';
+import { Game } from '../../../api/games/game';
 
 @Component({
   imports: [Avatar, DatePipe, RouterLink, Nickname, TgEmoji, Header],
@@ -15,13 +17,14 @@ import { Header } from './header/header';
   templateUrl: './group-overview.html',
 })
 export class GroupOverview {
-  groupContext = inject(GroupContext);
+  private groupContext = inject(GroupContext);
+  private gameService = inject(Game)
+  private router = inject(Router);
 
   gameData = this.groupContext.gameData;
-  gameTypeDate = this.groupContext.gameTypeDate;
   isOwner = this.groupContext.isOwner;
   isSelectedGifters = computed(() => this.gameData()?.is_selected_gifters);
-  whoGiftTo = signal<User | null>(null);
+  whoGiftTo = signal<MeResponse | null>(null);
   today = signal<Date>(new Date());
 
   constructor() {
@@ -39,24 +42,8 @@ export class GroupOverview {
     return icon
   }
 
-  protected setIcon(icon: string): { isUserAvatar: boolean; icon: string } {
-    return {
-      isUserAvatar: false,
-      icon: 'tgGifs/christmasTree.webp',
-    };
-  }
-
   protected getWhoGiftTo() {
-    this.whoGiftTo.set({
-      allows_write_to_pm: true,
-      first_name: 'Iluha',
-      language_code: 'ru',
-      last_name: 'Test',
-      username: 'test',
-      id: 123,
-      photo_url:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2cqMXjTyXdxKBgCpdLMxLB9rHVv_dP5yQekydezkr8gRUfog5ZIXUieQ&s=10',
-    });
+    this.whoGiftTo.set(this.gameData()?.recipient!);
   }
 
   getDate(string: string): Date {
@@ -64,6 +51,25 @@ export class GroupOverview {
   }
 
   onExit() {
-
+    this.gameService.leave(this.gameData()?.id!).subscribe({
+      next: () => {
+        this.router.createUrlTree(['/']);
+      },
+      error: (err) => {
+        alert(`Ошибка при выходе: ${err}`);
+      },
+    });
   };
+
+  makeDistribution() {
+    this.gameService.makeDistribution(this.gameData()?.id!).subscribe({
+      next: () => {
+        this.groupContext.clearCache();
+        this.groupContext.ensureLoaded(this.gameData()?.id!);
+      },
+      error: (err) => {
+        alert(`Ошибка при выходе: ${err}`);
+      },
+    });
+  }
 }

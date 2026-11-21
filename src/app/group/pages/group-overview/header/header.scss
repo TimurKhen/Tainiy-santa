@@ -62,6 +62,7 @@ $offset: calc(#{$topSafeArea} + #{$topContentSafeArea} + #{$gap});
     aspect-ratio: 1 / 1;
     background: $tg-secondary-bg-color;
     border-radius: calc(8px + 22px * var(--p));
+    overflow: hidden;
 
     &__img {
       width: 100%;
