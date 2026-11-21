@@ -1,11 +1,4 @@
-@if (userResource.isLoading()) {
-  <div class="member skeleton">
-    <div class="info">
-      <div class="avatar-skeleton"></div>
-      <div class="text-skeleton"></div>
-    </div>
-  </div>
-} @else if (user(); as user) {
+@if (user(); as user) {
   <div class="member">
     <div class="info">
       <div class="avatar">

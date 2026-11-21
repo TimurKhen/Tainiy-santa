@@ -5,7 +5,7 @@
     <app-groups-header [groupCount]="count"></app-groups-header>
     <div class="groups">
       <p>Активные</p>
-      @for (item of groups(); track item.groupId) {
+      @for (item of groups(); track item.id) {
         @defer (on viewport) {
           <app-group-preview [data]="item"></app-group-preview>
         } @placeholder (minimum 500ms) {
@@ -15,7 +15,7 @@
     </div>
     <div class="endedGroups">
       <p>Завершённые</p>
-      @for (item of endedGroups(); track item.groupId) {
+      @for (item of endedGroups(); track item.id) {
         @defer (on viewport) {
           <app-group-preview [data]="item"></app-group-preview>
         } @placeholder (minimum 500ms) {

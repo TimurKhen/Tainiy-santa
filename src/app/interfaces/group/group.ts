@@ -1,15 +1,16 @@
+import { MeResponse } from '../../api/user/user';
+
 export interface Group {
-  groupId: string; // UUIDv4
+  id: number;
   name: string;
-  membersId: number[];
-  adminId: number;
-  data: {
-    swapDate: Date;
-    distributionDate: Date;
-    where: string;
-    money: number;
-  };
-  isSelectedGifters: boolean;
-  isEnded: boolean;
+  admin_id: number;
+  swap_date: string;
+  distribution_date: string;
+  place: string;
+  money: number;
+  is_selected_gifters: boolean;
+  is_ended: boolean;
   icon: string;
+  users: MeResponse[];
+  recipient: MeResponse | null;
 }

@@ -22,11 +22,11 @@ export class GroupContext {
 
     if (environment.debugOwner) return true;
 
-    return !!game && !!user && game.adminId === user.id;
+    return !!game && !!user && game.admin_id === user.id;
   });
 
-  ensureLoaded(id: string) {
-    if (this.gameData()?.groupId === id) {
+  ensureLoaded(id: number) {
+    if (this.gameData()?.id === id) {
       return of(this.gameData());
     }
 
@@ -34,11 +34,8 @@ export class GroupContext {
       tap((game) => {
         game = {
           ...game,
-          data: {
-            ...game.data,
-            distributionDate: new Date(game.data.distributionDate),
-            swapDate: new Date(game.data.swapDate),
-          },
+          distribution_date: game.distribution_date,
+          swap_date: game.swap_date,
         };
 
         this.gameData.set(game);
@@ -54,15 +51,16 @@ export class GroupContext {
   updateSettings(settings: {
     money: number;
     where: string;
-    distributionDate: Date;
-    swapDate: Date;
+    distributionDate: string;
+    swapDate: string;
   }) {
     this.gameData.update((game) => {
-      if (!game) return game;
+      const updated: Group = {
+        ...game!,
+        ...settings,
+      };
 
-      const updated = { ...game, data: { ...game.data, ...settings } };
       this.getTypeDate(updated);
-
       return updated;
     });
   }

@@ -5,6 +5,7 @@ import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './api/interceptors/auth.interceptor';
+import { apiInterceptor } from './api/api.interceptor';
 
 registerLocaleData(localeRu);
 
@@ -12,7 +13,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([apiInterceptor, authInterceptor])),
     {
       provide: LOCALE_ID,
       useValue: 'ru',

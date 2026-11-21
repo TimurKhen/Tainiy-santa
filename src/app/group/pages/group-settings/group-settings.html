@@ -7,7 +7,7 @@
         <app-edit-text-input
           icon="💰"
           label="Бюджет"
-          [valueInput]="String(data.data.money)"
+          [valueInput]="String(data.money)"
           (valueChange)="updateMoney($event)"
         />
 
@@ -26,7 +26,7 @@
         <app-edit-text-input
           icon="📍"
           label="Место"
-          [valueInput]="data.data.where"
+          [valueInput]="data.place"
           (valueChange)="updateWhere($event)"
         />
       </div>

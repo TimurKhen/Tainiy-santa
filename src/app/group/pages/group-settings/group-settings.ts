@@ -27,36 +27,26 @@ export class GroupSettings {
 
   gameData = this.groupContext.gameData;
 
-  private draftDates = signal<{ distribution: Date; swap: Date } | null>(null);
+  private draftDates = signal<{ distribution: string; swap: string } | null>(null);
   private draftMoney = signal<number | null>(null);
   private draftWhere = signal<string | null>(null);
 
   protected isSaving = signal(false);
 
   distribution = computed<SmallInput>(() => {
-    const date = this.draftDates()?.distribution ?? this.gameData()!.data.distributionDate;
-    return { icon: '🎲', label: 'Жеребьёвка', value: this.formatDate(date) };
+    const date = this.draftDates()?.distribution ?? this.gameData()!.distribution_date;
+    return { icon: '🎲', label: 'Жеребьёвка', value: date };
   });
 
   exchange = computed<SmallInput>(() => {
-    const date = this.draftDates()?.swap ?? this.gameData()!.data.swapDate;
-    return { icon: '🎁', label: 'Обмен', value: this.formatDate(date) };
+    const date = this.draftDates()?.swap ?? this.gameData()!.swap_date;
+    return { icon: '🎁', label: 'Обмен', value: date };
   });
-
-  private formatDate(date: Date): string {
-    const d = new Date(date);
-
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-  }
 
   updateDates(event: { first: SmallInput; second: SmallInput }) {
     this.draftDates.set({
-      distribution: this.parseDate(event.first.value),
-      swap: this.parseDate(event.second.value),
+      distribution: event.first.value,
+      swap: event.second.value,
     });
   }
 
@@ -73,17 +63,17 @@ export class GroupSettings {
 
     const dates = this.draftDates();
     const settings = {
-      money: this.draftMoney() ?? game.data.money,
-      where: this.draftWhere() ?? game.data.where,
-      distributionDate: dates?.distribution ?? game.data.distributionDate,
-      swapDate: dates?.swap ?? game.data.swapDate,
+      money: this.draftMoney() ?? game.money,
+      where: this.draftWhere() ?? game.place,
+      distributionDate: dates?.distribution ?? game.distribution_date,
+      swapDate: dates?.swap ?? game.swap_date,
     };
 
     this.isSaving.set(true);
 
     this.gameService
       .changeSettings(
-        game.groupId,
+        game.id,
         settings.money,
         settings.distributionDate,
         settings.swapDate,
@@ -117,7 +107,7 @@ export class GroupSettings {
     const isConfirmed = confirm('Вы уверены, что хотите удалить эту игру?');
 
     if (isConfirmed) {
-      this.gameService.deleteGame(this.groupContext.gameData()?.groupId || '-1');
+      this.gameService.deleteGame(this.groupContext.gameData()?.id || -1);
       this.router.navigate(['/']);
     }
   }

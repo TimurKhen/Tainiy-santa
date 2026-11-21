@@ -20,7 +20,7 @@ export class GroupOverview {
   gameData = this.groupContext.gameData;
   gameTypeDate = this.groupContext.gameTypeDate;
   isOwner = this.groupContext.isOwner;
-  isSelectedGifters = computed(() => this.gameData()?.isSelectedGifters);
+  isSelectedGifters = computed(() => this.gameData()?.is_selected_gifters);
   whoGiftTo = signal<User | null>(null);
   today = signal<Date>(new Date());
 
@@ -30,6 +30,13 @@ export class GroupOverview {
         this.getWhoGiftTo();
       }
     });
+  }
+
+  protected setGroupIcon(icon: string): string {
+    if (icon === 'snowflake' || icon === 'snowman' || icon === 'gift') {
+      return `tgGifs/${icon}.webp`
+    }
+    return icon
   }
 
   protected setIcon(icon: string): { isUserAvatar: boolean; icon: string } {
@@ -50,6 +57,10 @@ export class GroupOverview {
       photo_url:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2cqMXjTyXdxKBgCpdLMxLB9rHVv_dP5yQekydezkr8gRUfog5ZIXUieQ&s=10',
     });
+  }
+
+  getDate(string: string): Date {
+    return new Date(string);
   }
 
   onExit() {

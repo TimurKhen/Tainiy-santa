@@ -17,7 +17,7 @@ export class GroupC implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
-      this.groupContext.ensureLoaded(id).subscribe({
+      this.groupContext.ensureLoaded(parseInt(id)).subscribe({
         error: (error) => {
           console.error('Не удалось загрузить группу:', error);
         },

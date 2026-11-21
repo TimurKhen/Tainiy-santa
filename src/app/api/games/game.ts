@@ -16,23 +16,7 @@ export class Game {
     return this.userService.getGroups();
   }
 
-  getGame(id: string): Observable<Group> {
-    return of({
-      name: 'Test',
-      membersId: [-9, 1, 2, 3, -9, 1, 2, 3, -9, 1, 2, 3, -9, 1, 2, 3],
-      adminId: -9,
-      data: {
-        swapDate: new Date(2026, 11, 3),
-        where: 'У Илюхи',
-        money: 100,
-        distributionDate: new Date(2026, 10, 1),
-      },
-      isSelectedGifters: true,
-      groupId: id,
-      isEnded: false,
-      icon: '',
-    });
-
+  getGame(id: number): Observable<Group> {
     return this.http.get<Group>(`${this.apiUrl}/${id}`);
   }
 
@@ -60,57 +44,38 @@ export class Game {
     if (gameInfo.icon instanceof File) {
       this.fileSendService.sendFile(gameInfo.icon).subscribe((v) => {
         formData.append('icon', v);
-      })
+      });
     } else {
       formData.append('icon', gameInfo.icon);
     }
 
-    return of({ success: true, id: Date.now() }).pipe(
-      delay(600),
-      tap(() => {
-        this.userService.addMockGroup({
-          name: gameInfo.name,
-          budget: gameInfo.budget,
-          place: gameInfo.place,
-          swapDate: gameInfo.swapDate,
-          distributionDate: gameInfo.distributionDate,
-        });
-
-        this.userService.clearCache();
-      }),
-    );
-
-    return this.http.post(this.apiUrl, formData).pipe(
-      tap(() => {
-        this.userService.clearCache();
-      }),
-    );
+    return this.http.post(this.apiUrl, formData);
   }
 
   changeSettings(
-    id: string,
+    id: number,
     budget: number,
-    distributionDate: Date | null,
-    swapDate: Date | null,
+    distributionDate: string,
+    swapDate: string,
     place: string,
   ) {
     return this.http.patch(`${this.apiUrl}/${id}`, {
       budget,
       place,
-      distributionDate: distributionDate,
-      swapDate: swapDate,
+      distribution_date: distributionDate,
+      swap_date: swapDate,
     });
   }
 
-  deleteGame(id: string) {
+  deleteGame(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  makeDistribution(id: string) {
-    return this.http.post(`${this.apiUrl}/${id}distribution`, {});
+  makeDistribution(id: number) {
+    return this.http.post(`${this.apiUrl}/distribution/${id}`, {});
   }
 
-  leave(id: string) {
+  leave(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

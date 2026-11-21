@@ -13,7 +13,7 @@ export const groupOwnerGuard: CanActivateFn = (route) => {
     return router.createUrlTree(['/']);
   }
 
-  return groupContext.ensureLoaded(id).pipe(
+  return groupContext.ensureLoaded(parseInt(id)).pipe(
     map(() => {
       return groupContext.isOwner() ? true : router.createUrlTree(['/group', id]);
     }),

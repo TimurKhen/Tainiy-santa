@@ -4,6 +4,7 @@ import { DatePipe, NgPlural, NgPluralCase } from '@angular/common';
 import { TypeDateService } from './type-date-service';
 import { RouterLink } from '@angular/router';
 import { ShortNumberPipe } from '../../pipes/short-number-pipe/short-number-pipe';
+import { environment } from '../../../environments/environment';
 
 @Component({
   imports: [DatePipe, NgPluralCase, NgPlural, RouterLink, ShortNumberPipe],
@@ -17,15 +18,11 @@ export class GroupPreview implements OnInit {
   data = input.required<Group>();
   protected readonly isOwner = signal<boolean>(true);
 
-  protected getUserAvatar(userId: number) {
-    return 'https://i.pinimg.com/236x/5f/6c/3c/5f6c3cc8d9074f47ca871aaa5e1d168b.jpg';
-  }
-
   protected setIcon(icon: string): { isUserAvatar: boolean; icon: string } {
     if (icon.length > 0) {
       return {
         isUserAvatar: true,
-        icon: this.getUserAvatar(1),
+        icon: environment.baseURL + '/' + this.data().icon,
       };
     } else {
       return {

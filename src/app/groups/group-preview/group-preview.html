@@ -1,9 +1,9 @@
-@let memberCount = data().membersId.length;
+@let memberCount = data().users.length;
 @let typeDate = getTypeDate();
 
 <div class="container"
-  [class.is-ended]="data().isEnded"
-  [routerLink]="`/group/{{data().groupId}}/`"
+  [class.is-ended]="data().is_ended"
+  [routerLink]="`/group/{{data().id}}/`"
 >
   <div class="icon">
     <img class="icon" [src]="setIcon(data().icon).icon">
@@ -21,7 +21,7 @@
         <ng-template ngPluralCase="other">{{ memberCount | shortNumber }} участников</ng-template>
       </div>
     </div>
-    @if (!data().isEnded) {
+    @if (!data().is_ended) {
       <div class="tags">
         @if (typeDate.type !== '') {
           <span class="tag" [class]="typeDate.type">
