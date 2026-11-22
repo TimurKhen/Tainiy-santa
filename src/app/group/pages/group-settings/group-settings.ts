@@ -112,7 +112,7 @@ export class GroupSettings implements OnInit {
 
     if (isConfirmed) {
       this.gameService.deleteGame(this.groupContext.gameData()?.id || -1).subscribe(() => {
-        this.router.navigate(['/']);
+        this.router.createUrlTree(['/']);
       });
     }
   }

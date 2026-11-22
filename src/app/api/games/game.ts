@@ -63,9 +63,7 @@ export class Game {
   }
 
   deleteGame(id: number) {
-    return this.http.delete(`${this.apiUrl}/delete`, {
-      body: { group_id: id },
-    });
+    return this.http.delete(`${this.apiUrl}/delete/${id}`);
   }
 
   makeDistribution(id: number) {

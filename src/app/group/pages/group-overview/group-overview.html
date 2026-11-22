@@ -13,9 +13,11 @@
           👑 Вы организатор
         </span>
 
-        <button type="button" class="settings" routerLink="./settings">
-          ⚙️ Изменить настройки игры
-        </button>
+        @if (!data.is_ended) {
+          <button type="button" class="settings" routerLink="./settings">
+            ⚙️ Изменить настройки игры
+          </button>
+        }
       </div>
     }
 
@@ -23,7 +25,11 @@
       @if (whoGiftTo(); as giftingTo) {
         <div class="giftTo">
           <div class="info">
-            <p><img src="tgGifs/gift.webp"> Вы дарите подарок:</p>
+            @if (data.is_ended) {
+              <p><img src="tgGifs/gift.webp"> Вы дарили подарок:</p>
+            } @else {
+              <p><img src="tgGifs/gift.webp"> Вы дарите подарок:</p>
+            }
             <app-nickname [value]="giftingTo.first_name + ' ' + giftingTo.last_name" />
           </div>
 
@@ -92,7 +98,7 @@
           <div class="member-row" [class.removing]="isRemoving(member.id)">
             <app-avatar
               [currentUserId]="currentUserId"
-              [isOwner]="isOwner() && !isSelectedGifters()"
+              [isOwner]="isOwner() && !isSelectedGifters() && !data.is_ended"
               [user]="member"
               [isOpen]="activeMemberId() === member.id"
               (toggle)="onToggleMemberMenu(member.id)"
