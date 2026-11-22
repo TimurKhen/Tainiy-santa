@@ -57,14 +57,11 @@
         height: 1lh;
         gap: 0.4rem;
         border-radius: 9999px;
-        // padding: 0.8rem 0.2rem 0.8rem 0.6rem;
 
         img {
           width: auto;
           height: 1lh;
           vertical-align: middle;
-          //height: 1lh;
-          //align-self: flex-end;
         }
       }
 
@@ -124,7 +121,12 @@
       @include tg-block;
       width: 100%;
 
+      app-nickname {
+        width: 60%;
+      }
+
       .info {
+
         .icon {
           height: auto;
           width: auto;
@@ -138,9 +140,9 @@
         gap: 0.5rem;
       }
 
-      //.date {
-      //  color: $tg-text-color;
-      //}
+      .date {
+        color: $tg-text-color;
+      }
     }
 
     .happened {
@@ -248,15 +250,17 @@ html.tg-light .exit-icon {
     //font-size: 17px;
     font-weight: 600;
     text-decoration: none;
-    border: none;
+    //border: none;
     outline: none;
     text-fit: grow;
     max-width: 100%;
     background: $tg-section-bg-color;
+    border: 1px solid $tg-section-separator-color;
     color: $tg-text-color;
   }
 
   .make-distribution {
+    border: none;
     background: rgb(164, 38, 38);
     color: rgb(255, 255, 255);
   }

@@ -6,13 +6,19 @@
 }
 
 .viewport {
-  display: block;
+  display: flex;
+  justify-content: flex-start;
   overflow: hidden;
   white-space: nowrap;
+
+  &.align-right {
+    justify-content: flex-end;
+  }
 }
 
 .text {
-  display: inline-block;
+  flex: 0 0 auto;
+  max-width: max-content;
   will-change: transform;
 
   &.scrolling {
@@ -26,8 +32,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .viewport.align-right .text.scrolling {
+    margin-right: auto;
+  }
+
   .text.scrolling {
     animation: none;
+    flex: 0 1 auto;
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;

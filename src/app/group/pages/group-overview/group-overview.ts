@@ -74,6 +74,7 @@ export class GroupOverview implements OnInit {
         });
       },
       error: (err) => {
+        console.error('Distribution error:', err);
         alert(`Ошибка при жеребьёвке: ${err.code ?? err.message ?? err}`);
       },
     });
