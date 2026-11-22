@@ -22,12 +22,12 @@ export class CreateGroup {
   private location = inject(Location);
 
   createForm = new FormGroup({
-    name: new FormControl<string>('', [Validators.required]),
-    budget: new FormControl<number>(1000, [Validators.required]),
+    name: new FormControl<string>('', [Validators.required, Validators.maxLength(20)]),
+    budget: new FormControl<number>(1000, [Validators.required, Validators.max(1_000_000)]),
     distributionDate: new FormControl<Date | null>(null, [Validators.required]),
     swapDate: new FormControl<Date | null>(null, [Validators.required]),
     icon: new FormControl<string | File>('', [Validators.required]),
-    place: new FormControl<string>('', [Validators.required]),
+    place: new FormControl<string>('', [Validators.required, Validators.maxLength(20)]),
   });
 
   readonly isValid = toSignal(
@@ -42,12 +42,13 @@ export class CreateGroup {
 
   onCreate(event: Event) {
     event.preventDefault();
-    this.isCreating.set(true);
 
     if (this.createForm.invalid) {
       this.createForm.markAllAsTouched();
       return;
     }
+
+    this.isCreating.set(true);
 
     const values = this.createForm.value as {
       name: string;
@@ -60,7 +61,6 @@ export class CreateGroup {
 
     this.gameService.createGame(values).subscribe({
       next: (response) => {
-        console.log(response);
         this.isCreating.set(false);
         this.location.back();
       },

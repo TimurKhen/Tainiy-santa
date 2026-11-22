@@ -12,10 +12,22 @@
         <input
           formControlName="name"
           #nameInput
+          maxlength="20"
           (keyup.enter)="nameInput.blur()"
           placeholder="Название вашей игры"
         >
       </div>
+
+      @let nameControl = createForm.controls.name;
+      @if (nameControl.touched && nameControl.invalid) {
+        <span class="error">
+          @if (nameControl.hasError('required')) {
+            Введите название игры
+          } @else if (nameControl.hasError('maxlength')) {
+            Название не должно быть длиннее 20 символов
+          }
+        </span>
+      }
     </label>
 
     <label class="place">
@@ -25,10 +37,22 @@
         <input
           formControlName="place"
           #placeInput
+          maxlength="20"
           (keyup.enter)="placeInput.blur()"
           placeholder="Где будет проводиться обмен?"
         >
       </div>
+
+      @let placeControl = createForm.controls.place;
+      @if (placeControl.touched && placeControl.invalid) {
+        <span class="error">
+          @if (placeControl.hasError('required')) {
+            Укажите место проведения
+          } @else if (placeControl.hasError('maxlength')) {
+            Место не должно быть длиннее 20 символов
+          }
+        </span>
+      }
     </label>
 
     <div class="icons">

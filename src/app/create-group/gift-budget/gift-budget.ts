@@ -35,7 +35,7 @@ export class GiftBudget {
   validatePrice(event: Event) {
     const input = event.target as HTMLInputElement;
     let value = Number(input.value);
-    const max = 10 ** 12;
+    const max = 1_000_000;
 
     if (value > max) {
       this.userPrice.set(max);
