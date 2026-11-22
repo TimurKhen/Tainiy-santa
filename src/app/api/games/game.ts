@@ -67,9 +67,7 @@ export class Game {
   }
 
   makeDistribution(id: number) {
-    return this.http.post(`${this.apiUrl}/distribution`, {
-      group_id: id,
-    });
+    return this.http.post(`${this.apiUrl}/distribution/${id}`, {}, {responseType: 'text'});
   }
 
   leave(id: number) {
