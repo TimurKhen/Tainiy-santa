@@ -1,0 +1,56 @@
+<div class="skeleton-wrapper" aria-busy="true" aria-label="Загрузка информации о группе">
+  <div class="skeleton-header">
+    <div class="skeleton-box skeleton-avatar-lg"></div>
+    <div class="skeleton-col">
+      <div class="skeleton-box skeleton-title"></div>
+      <div class="skeleton-box skeleton-subtitle"></div>
+    </div>
+  </div>
+
+  <div class="skeleton-card skeleton-gift">
+    <div class="skeleton-col">
+      <div class="skeleton-box skeleton-line-sm"></div>
+      <div class="skeleton-box skeleton-line-md"></div>
+    </div>
+    <div class="skeleton-box skeleton-avatar-md"></div>
+  </div>
+
+  <div class="skeleton-group-card">
+    <div class="skeleton-row">
+      <div class="skeleton-box skeleton-line-md"></div>
+      <div class="skeleton-box skeleton-line-sm"></div>
+    </div>
+    <hr>
+    <div class="skeleton-row">
+      <div class="skeleton-box skeleton-line-md"></div>
+      <div class="skeleton-box skeleton-line-sm"></div>
+    </div>
+  </div>
+
+  <div class="skeleton-group-card">
+    <div class="skeleton-row">
+      <div class="skeleton-box skeleton-line-md"></div>
+      <div class="skeleton-box skeleton-line-sm"></div>
+    </div>
+    <hr>
+    <div class="skeleton-row">
+      <div class="skeleton-box skeleton-line-md"></div>
+      <div class="skeleton-box skeleton-line-sm"></div>
+    </div>
+  </div>
+
+  <div class="skeleton-members">
+    <div class="skeleton-row">
+      <div class="skeleton-box skeleton-line-sm"></div>
+      <div class="skeleton-box skeleton-pill"></div>
+    </div>
+    <div class="skeleton-group-card">
+      @for (_ of [1, 2, 3]; track $index) {
+        <div class="skeleton-member">
+          <div class="skeleton-box skeleton-avatar-sm"></div>
+          <div class="skeleton-box skeleton-line-md"></div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

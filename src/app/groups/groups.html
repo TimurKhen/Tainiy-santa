@@ -8,8 +8,19 @@
   </div>
 </ng-template>
 
+<ng-template #loadingState>
+  <div class="loading-state">
+    <p>Загрузка игр...</p>
+    @for (_ of [1, 2, 3]; track $index) {
+      <app-group-placeholder></app-group-placeholder>
+    }
+  </div>
+</ng-template>
+
 <div class="container">
-  @if (haveGroups()) {
+  @if (isLoading()) {
+    <ng-container *ngTemplateOutlet="loadingState"></ng-container>
+  } @else if (haveGroups()) {
     <app-groups-header [groupCount]="count"></app-groups-header>
 
     <div class="groups">

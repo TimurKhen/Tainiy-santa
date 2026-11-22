@@ -9,9 +9,9 @@
   align-items: center;
   gap: 1.5rem;
 
-  //app-header {
-  //  width: 100%;
-  //}
+  app-skeleton {
+    width: 90%;
+  }
 
   .giftTo {
     width: 90%;
@@ -255,6 +255,8 @@ html.tg-light .exit-icon {
     outline: none;
     text-fit: grow;
     max-width: 100%;
+    background: $tg-section-bg-color;
+    color: $tg-text-color;
   }
 
   .make-distribution {

@@ -85,7 +85,7 @@
     <div class="members-container">
       <div class="members-header">
         <p>Участников: {{ data.users.length }}</p>
-        <button>Скопировать ссылку на группу</button>
+        <button>Скопировать ссылку на игру</button>
       </div>
       <div class="members">
         @for (member of data.users; track member.id ?? member) {
@@ -104,19 +104,27 @@
         }
       </div>
     </div>
+  } @else {
+    <app-skeleton></app-skeleton>
   }
 </div>
 
 <div class="bottom-buttons">
-  @if (isOwner() && !isSelectedGifters()) {
-    <button class="make-distribution" (click)="makeDistribution()">🎲 Провести жеребьёвку</button>
-  } @else {
-    @if (gameData(); as data) {
+  @if (gameData(); as data) {
+    @if (isOwner() && !isSelectedGifters()) {
+      @if (data.users.length >= 2) {
+        <button class="make-distribution" (click)="makeDistribution()">🎲 Провести жеребьёвку</button>
+      } @else {
+        <button>Одному сыграть не получится</button>
+      }
+    } @else {
       @if (isSelectedGifters()) {
         <button>🎁 Обмен {{ data.swap_date | date:"mediumDate" }}</button>
       } @else {
         <button>🎲 Жеребьёвка {{ data.distribution_date | date:"mediumDate" }}</button>
       }
     }
+  } @else {
+    <div class="skeleton-box skeleton-bottom-btn"></div>
   }
 </div>
