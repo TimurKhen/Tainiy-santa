@@ -2,7 +2,13 @@
 
 <ng-template #noGroups let-title="title">
   <div class="no-groups">
-    <img src="tgGifs/tree.webp">
+    <img *ngIf="!treeLoaded" src="tgSvg/tree.svg" alt="" />
+    <img
+      [src]="'tgGifs/tree.webp'"
+      [style.display]="treeLoaded ? 'block' : 'none'"
+      (load)="treeLoaded = true"
+      alt=""
+    />
     <h2>{{ title }}</h2>
     <p>Создайте свою!</p>
   </div>
@@ -56,5 +62,5 @@
 </div>
 
 <div class="bottom">
-  <button routerLink="/create">+ Новая игра</button>
+  <button matRipple routerLink="/create">+ Новая игра</button>
 </div>

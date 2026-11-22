@@ -8,9 +8,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map, startWith } from 'rxjs';
 import { Game } from '../api/games/game';
 import { Location } from '@angular/common';
+import { MatRipple } from '@angular/material/core';
 
 @Component({
-  imports: [ReactiveFormsModule, IconSelect, GiftBudget, Dates, Dates],
+  imports: [ReactiveFormsModule, IconSelect, GiftBudget, Dates, Dates, MatRipple],
   selector: 'app-create-group',
   styleUrl: './create-group.scss',
   templateUrl: './create-group.html',
@@ -66,7 +67,7 @@ export class CreateGroup {
       error: (err) => {
         console.error(err);
         this.isCreating.set(false);
-        alert('Неизвестная ошибка создания группы')
+        alert('Неизвестная ошибка создания группы');
       },
     });
   }

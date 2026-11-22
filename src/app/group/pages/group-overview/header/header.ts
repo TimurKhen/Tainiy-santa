@@ -10,11 +10,12 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { MatRipple } from '@angular/material/core';
 
 const DISTANCE = 80;
 
 @Component({
-  imports: [],
+  imports: [MatRipple],
   selector: 'app-header',
   styleUrl: './header.scss',
   templateUrl: './header.html',

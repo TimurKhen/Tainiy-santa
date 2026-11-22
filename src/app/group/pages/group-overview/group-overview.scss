@@ -190,10 +190,6 @@
         border: 1px solid $tg-accent-text-color;
         color: $tg-text-color;
         transition: transform 0.12s ease, opacity 0.15s ease;
-
-        &:active {
-          transform: scale(0.97);
-        }
       }
     }
 

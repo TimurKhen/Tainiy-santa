@@ -1,8 +1,9 @@
 import { Component, ElementRef, input, model, signal, ViewChild } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
+import { MatRipple } from '@angular/material/core';
 
 @Component({
-  imports: [FormsModule],
+  imports: [FormsModule, MatRipple],
   selector: 'app-gift-budget',
   styleUrl: './gift-budget.scss',
   templateUrl: './gift-budget.html',

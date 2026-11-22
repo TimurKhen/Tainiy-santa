@@ -5,6 +5,7 @@
       @for (item of prices(); track item; let index = $index) {
         @if (index < 3) {
           <span class="tag"
+                matRipple
                 (click)="selectId(index)"
                 [class.active]="index == this.selectedId()">
             ~{{ item }}₽
@@ -17,6 +18,7 @@
       @for (item of prices(); track item; let index = $index) {
         @if (index === 3) {
           <span class="tag"
+                matRipple
                 (click)="selectId(index)"
                 [class.active]="index == this.selectedId()">
             {{ item }}

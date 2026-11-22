@@ -19,10 +19,10 @@ export class GroupPreview implements OnInit {
   protected readonly isOwner = signal<boolean>(true);
 
   protected setIcon(icon: string): { isUserAvatar: boolean; icon: string } {
-    if (icon === 'snowflake' || icon === 'snowman' || icon === 'gift') {
+    if (icon === 'tree' || icon === 'snowman' || icon === 'nonoice') {
       return {
         isUserAvatar: false,
-        icon: `tgGifs/${icon}.webp`,
+        icon: `tgSvg/${icon}.svg`,
       };
     } else {
       return {

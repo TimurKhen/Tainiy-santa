@@ -4,7 +4,7 @@
       [name]="data.name"
       [money]="data.money"
       [icon]="setGroupIcon(data.icon)"
-      [canExit]="true"
+      [canExit]="!isOwner() && !isSelectedGifters() || data.is_ended"
       (exit)="onExit()" />
 
     @if (isOwner()) {
@@ -14,7 +14,7 @@
         </span>
 
         @if (!data.is_ended) {
-          <button type="button" class="settings" routerLink="./settings">
+          <button matRipple type="button" class="settings" routerLink="./settings">
             ⚙️ Изменить настройки игры
           </button>
         }
@@ -48,6 +48,7 @@
         </div>
         <p class="date">{{ data.place }}</p>
       </span>
+      <hr>
       <span class="object">
         <div class="info">
           <div class="icon">💰</div>
@@ -91,7 +92,7 @@
     <div class="members-container">
       <div class="members-header">
         <p>Участников: {{ data.users.length }}</p>
-        <button>Скопировать ссылку на игру</button>
+        <button matRipple (click)="copyToClipboard()">Скопировать ссылку на игру</button>
       </div>
       <div class="members">
         @for (member of data.users; track member.id ?? member) {
@@ -119,7 +120,7 @@
   @if (gameData(); as data) {
     @if (isOwner() && !isSelectedGifters()) {
       @if (data.users.length >= 2) {
-        <button class="make-distribution" (click)="makeDistribution()">🎲 Провести жеребьёвку</button>
+        <button matRipple class="make-distribution" (click)="makeDistribution()">🎲 Провести жеребьёвку</button>
       } @else {
         <button>Одному сыграть не получится</button>
       }

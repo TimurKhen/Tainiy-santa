@@ -7,9 +7,10 @@ import { BackButton } from '../telegram/backButton/back-button';
 import { Game } from '../api/games/game';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NgTemplateOutlet } from '@angular/common';
+import { MatRipple } from '@angular/material/core';
 
 @Component({
-  imports: [GroupPreview, GroupPlaceholder, GroupsHeader, RouterLink, NgTemplateOutlet],
+  imports: [GroupPreview, GroupPlaceholder, GroupsHeader, RouterLink, NgTemplateOutlet, MatRipple],
   selector: 'app-groups',
   styleUrl: './groups.scss',
   templateUrl: './groups.html',
@@ -17,6 +18,7 @@ import { NgTemplateOutlet } from '@angular/common';
 export class Groups implements OnInit {
   private backButton = inject(BackButton);
   private gameService = inject(Game);
+  treeLoaded = false;
 
   ngOnInit() {
     this.backButton.hide();

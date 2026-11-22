@@ -49,6 +49,7 @@
   <button
     [disabled]="!isValid() || isCreating()"
     class="create-button"
+    matRipple
     (click)="onCreate($event)">
     @if (isValid()) {
       Создать и пригласить

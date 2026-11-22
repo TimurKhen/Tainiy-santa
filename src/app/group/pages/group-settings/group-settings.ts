@@ -32,7 +32,7 @@ export class GroupSettings implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.backButtonService.show()
+    this.backButtonService.show();
   }
 
   gameData = this.groupContext.gameData;
@@ -53,6 +53,24 @@ export class GroupSettings implements OnInit {
     return { icon: '🎁', label: 'Обмен', value: date };
   });
 
+  protected hasChanges = computed(() => {
+    const game = this.gameData();
+    if (!game) return false;
+
+    const money = this.draftMoney() ?? game.money;
+    const place = this.draftWhere() ?? game.place;
+    const dates = this.draftDates();
+    const distributionDate = dates?.distribution ?? game.distribution_date;
+    const swapDate = dates?.swap ?? game.swap_date;
+
+    return (
+      money !== game.money ||
+      place !== game.place ||
+      distributionDate !== game.distribution_date ||
+      swapDate !== game.swap_date
+    );
+  });
+
   updateDates(event: { first: SmallInput; second: SmallInput }) {
     this.draftDates.set({
       distribution: event.first.value,
@@ -61,15 +79,22 @@ export class GroupSettings implements OnInit {
   }
 
   updateMoney(value: string) {
-    this.draftMoney.set(parseInt(value));
+    const trimmed = value.trim();
+    if (!trimmed) {
+      this.draftMoney.set(null);
+      return;
+    }
+    const parsed = Number(trimmed);
+    this.draftMoney.set(Number.isNaN(parsed) ? null : parsed);
   }
+
   updateWhere(value: string) {
     this.draftWhere.set(value);
   }
 
   save() {
     const game = this.gameData();
-    if (!game || this.isSaving()) return;
+    if (!game || this.isSaving() || !this.hasChanges()) return;
 
     const dates = this.draftDates();
     const updatedGroup = {
@@ -97,6 +122,9 @@ export class GroupSettings implements OnInit {
           this.draftMoney.set(null);
           this.draftWhere.set(null);
 
+          this.groupContext.ensureLoaded(this.gameData()?.id!, true).subscribe({
+            error: (err) => console.error('Не удалось обновить данные группы:', err),
+          });
           this.location.back();
         },
         error: () => {
@@ -106,9 +134,7 @@ export class GroupSettings implements OnInit {
   }
 
   protected deleteGroup() {
-    const isConfirmed = window.confirm(
-      'Вы уверены, что хотите удалить эту игру?',
-    );
+    const isConfirmed = window.confirm('Вы уверены, что хотите удалить эту игру?');
 
     if (isConfirmed) {
       this.gameService.deleteGame(this.groupContext.gameData()?.id || -1).subscribe(() => {

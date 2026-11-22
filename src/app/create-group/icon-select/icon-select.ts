@@ -3,15 +3,16 @@ import { FormControl } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ImageEditor } from '../editor/image-editor/image-editor';
 import { TgEmoji } from '../../components/tg-emoji/tg-emoji';
+import { MatRipple } from '@angular/material/core';
 
 type IconItem =
   | { id: string; kind: 'preset'; name: string; src: string }
   | { id: string; kind: 'custom'; file: File; objectUrl: string; src: SafeUrl };
 
-const PRESET_ICONS = ['snowflake', 'snowman', 'gift'];
+const PRESET_ICONS = ['tree', 'snowman', 'nonoice'];
 
 @Component({
-  imports: [ImageEditor, TgEmoji],
+  imports: [ImageEditor, TgEmoji, MatRipple],
   selector: 'app-icon-select',
   styleUrl: './icon-select.scss',
   templateUrl: './icon-select.html',
@@ -29,7 +30,7 @@ export class IconSelect implements OnInit, OnDestroy {
       id: `preset-${name}`,
       kind: 'preset' as const,
       name,
-      src: `tgGifs/${name}.webp`,
+      src: `tgSvg/${name}.svg`,
     })),
   );
 
@@ -48,7 +49,6 @@ export class IconSelect implements OnInit, OnDestroy {
   onImageCropped(image: File | Blob) {
     this.isCropperOpen.set(false);
 
-    // Make sure the backend always receives a real File
     const file =
       image instanceof File
         ? image
@@ -76,7 +76,6 @@ export class IconSelect implements OnInit, OnDestroy {
 
     this.currentIconIndex.set(index);
 
-    // File for custom icons, preset name for built-in ones
     this.control().setValue(item.kind === 'custom' ? item.file : item.name);
     this.control().markAsTouched();
     this.control().markAsDirty();
