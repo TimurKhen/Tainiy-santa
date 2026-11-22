@@ -5,9 +5,10 @@ import { TypeDateService } from './type-date-service';
 import { RouterLink } from '@angular/router';
 import { ShortNumberPipe } from '../../pipes/short-number-pipe/short-number-pipe';
 import { environment } from '../../../environments/environment';
+import { Nickname } from '../../components/nickname/nickname';
 
 @Component({
-  imports: [DatePipe, NgPluralCase, NgPlural, RouterLink, ShortNumberPipe],
+  imports: [DatePipe, NgPluralCase, NgPlural, RouterLink, ShortNumberPipe, Nickname],
   selector: 'app-group-preview',
   templateUrl: './group-preview.html',
   styleUrl: './group-preview.scss',
@@ -40,7 +41,7 @@ export class GroupPreview implements OnInit {
 
   getTypeDate() {
     const v = this.typeDateService.isDistributionEnded(this.data());
-    console.log(v)
-    return v
+    console.log(v);
+    return v;
   }
 }

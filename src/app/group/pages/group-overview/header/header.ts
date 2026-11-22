@@ -11,11 +11,12 @@ import {
   viewChild,
 } from '@angular/core';
 import { MatRipple } from '@angular/material/core';
+import { Nickname } from '../../../../components/nickname/nickname';
 
 const DISTANCE = 80;
 
 @Component({
-  imports: [MatRipple],
+  imports: [MatRipple, Nickname],
   selector: 'app-header',
   styleUrl: './header.scss',
   templateUrl: './header.html',

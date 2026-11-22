@@ -17,6 +17,7 @@ import { InvisibleRemoverPipe } from '../../pipes/invisibleRemover/invisible-rem
 })
 export class Nickname implements OnDestroy {
   value = input.required<string | null | undefined>();
+  align = input<'left' | 'right'>('left');
 
   private viewport = viewChild.required<ElementRef<HTMLElement>>('viewport');
   private text = viewChild.required<ElementRef<HTMLElement>>('text');
@@ -30,6 +31,7 @@ export class Nickname implements OnDestroy {
   constructor() {
     afterRenderEffect(() => {
       this.value();
+      this.align();
       this.measure();
 
       if (!this.resizeObserver) {
@@ -41,8 +43,11 @@ export class Nickname implements OnDestroy {
   }
 
   private measure() {
-    const viewportWidth = this.viewport().nativeElement.clientWidth;
-    const textWidth = this.text().nativeElement.scrollWidth;
+    const viewportEl = this.viewport().nativeElement;
+    const textEl = this.text().nativeElement;
+
+    const viewportWidth = viewportEl.clientWidth;
+    const textWidth = textEl.scrollWidth;
     const distance = Math.max(0, textWidth - viewportWidth);
 
     this.overflow.set(distance > 0);
