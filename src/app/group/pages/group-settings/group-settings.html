@@ -38,8 +38,10 @@
   </button>
 </div>
 
-<div class="bottom-buttons">
-  <button (click)="save()" [disabled]="isSaving()">
-    {{ isSaving() ? 'Сохранение…' : 'Сохранить' }}
-  </button>
-</div>
+@if (!isTyping()) {
+  <div class="bottom-buttons">
+    <button (click)="save()" [disabled]="isSaving()">
+      {{ isSaving() ? 'Сохранение…' : 'Сохранить' }}
+    </button>
+  </div>
+}

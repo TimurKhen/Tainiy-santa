@@ -14,7 +14,6 @@ const toIso = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.
 
 const normalizeIso = (val: string | null | undefined): string => {
   if (!val) return '';
-  // На случай если приходит ISO-строка вроде "2026-11-22T00:00:00.000Z"
   if (/^\d{4}-\d{2}-\d{2}/.test(val)) {
     return val.slice(0, 10);
   }
@@ -42,7 +41,6 @@ export class EditDateInput {
   first = input.required<SmallInput>();
   second = input.required<SmallInput>();
 
-  /** Максимально допустимая дата в формате YYYY-MM-DD (опционально) */
   maxDate = input<string | null>(null);
 
   valueChange = output<{ first: SmallInput; second: SmallInput }>();
@@ -60,18 +58,16 @@ export class EditDateInput {
 
   protected firstLocked = computed(() => {
     const initialFirst = normalizeIso(this.first().value);
-    return !!initialFirst && initialFirst < this.today();
+    return !!initialFirst && initialFirst <= this.today();
   });
 
   protected secondLocked = computed(() => {
     const initialSecond = normalizeIso(this.second().value);
-    return !!initialSecond && initialSecond < this.today();
+    return !!initialSecond && initialSecond <= this.today();
   });
 
-  /** Минимум для первой даты: завтра (чтобы не выбрать сегодня/прошлое) */
   protected minFirst = computed(() => this.tomorrow());
 
-  /** Максимум для первой даты: maxDate или (second - 1 день), если second задан */
   protected maxFirst = computed<string | null>(() => {
     const maxCap = this.normalizedMax();
     const currentSecond = this.secondValue();
@@ -83,14 +79,12 @@ export class EditDateInput {
     return maxCap ?? dayBeforeSecond;
   });
 
-  /** Минимум для второй даты: (first + 1 день) или послезавтра */
   protected minSecond = computed(() => {
     const first = this.firstValue();
     const afterFirst = first ? addDays(first, 1) : this.dayAfterTomorrow();
     return afterFirst > this.dayAfterTomorrow() ? afterFirst : this.dayAfterTomorrow();
   });
 
-  /** Максимум для второй даты: заданный maxDate */
   protected maxSecond = computed<string | null>(() => this.normalizedMax());
 
   protected isValid = computed(() => {

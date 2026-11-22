@@ -1,4 +1,12 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  HostListener,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { GroupContext } from '../../services/group-context';
 import { EditTextInput } from './components/edit-text-input/edit-text-input';
 import { EditDateInput } from './components/edit-date-input/edit-date-input';
@@ -41,7 +49,11 @@ export class GroupSettings implements OnInit {
   private draftMoney = signal<number | null>(null);
   private draftWhere = signal<string | null>(null);
 
+  private isInputFocused = signal(false);
+  private isViewportShrunk = signal(false);
+
   protected isSaving = signal(false);
+  protected isTyping = computed(() => this.isInputFocused() || this.isViewportShrunk());
 
   distribution = computed<SmallInput>(() => {
     const date = this.draftDates()?.distribution ?? this.gameData()!.distribution_date;
@@ -79,7 +91,7 @@ export class GroupSettings implements OnInit {
   }
 
   updateMoney(value: string) {
-    const trimmed = value.trim();
+    const trimmed = value.trim().replace(/\D/g, '');
     if (!trimmed) {
       this.draftMoney.set(null);
       return;
@@ -94,7 +106,11 @@ export class GroupSettings implements OnInit {
 
   save() {
     const game = this.gameData();
-    if (!game || this.isSaving() || !this.hasChanges()) return;
+    if (!this.hasChanges()) {
+      this.location.back();
+      return;
+    }
+    if (!game || this.isSaving()) return;
 
     const dates = this.draftDates();
     const updatedGroup = {
@@ -126,6 +142,7 @@ export class GroupSettings implements OnInit {
             error: (err) => console.error('Не удалось обновить данные группы:', err),
           });
           this.location.back();
+          return;
         },
         error: () => {
           alert('Не удалось сохранить настройки');
@@ -141,6 +158,41 @@ export class GroupSettings implements OnInit {
         this.router.createUrlTree(['/']);
       });
     }
+  }
+
+  @HostListener('focusin', ['$event'])
+  onFocusIn(event: FocusEvent) {
+    if (this.isTextInput(event.target)) {
+      this.isInputFocused.set(true);
+    }
+  }
+
+  @HostListener('focusout')
+  onFocusOut() {
+    queueMicrotask(() => {
+      const active = document.activeElement;
+      this.isInputFocused.set(this.isTextInput(active));
+    });
+  }
+
+  private isTextInput(target: EventTarget | null): boolean {
+    if (!(target instanceof HTMLElement)) return false;
+    if (target.isContentEditable) return true;
+    if (target instanceof HTMLTextAreaElement) return true;
+    if (target instanceof HTMLInputElement) {
+      const nonTextTypes = [
+        'checkbox',
+        'radio',
+        'range',
+        'file',
+        'button',
+        'submit',
+        'reset',
+        'color',
+      ];
+      return !nonTextTypes.includes(target.type);
+    }
+    return false;
   }
 
   protected readonly String = String;
