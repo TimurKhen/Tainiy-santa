@@ -21,13 +21,11 @@ export class GroupContext {
 
     if (environment.debugOwner) return true;
 
-    console.log(user, game)
-
     return !!game && !!user && game.admin_id === user.id;
   });
 
-  ensureLoaded(id: number) {
-    if (this.gameData()?.id === id) {
+  ensureLoaded(id: number, mustMake = false) {
+    if (!mustMake && this.gameData()?.id === id) {
       return of(this.gameData());
     }
 

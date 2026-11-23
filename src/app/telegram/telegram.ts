@@ -1,5 +1,6 @@
 import { Service } from '@angular/core';
 import { User } from './user';
+import { environment } from '../../environments/environment';
 
 declare global {
   interface Window {
@@ -23,7 +24,7 @@ export class Telegram {
   }
 
   get user(): User {
-    if (!this.isAvailable) {
+    if (!this.isAvailable || !environment.isProduction) {
       return {
         id: 123321456,
         first_name: 'Vasia',

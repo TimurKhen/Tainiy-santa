@@ -11,6 +11,7 @@ import { Telegram } from '../../../telegram/telegram';
   templateUrl: './avatar.html',
 })
 export class Avatar {
+  currentUserId = input.required<number>();
   user = input.required<any>();
   isOwner = input<boolean>(false);
   isOpen = input<boolean>(false);
@@ -23,9 +24,10 @@ export class Avatar {
     const u = this.user();
     return `${u.first_name ?? ''} ${u.last_name ?? ''}`.trim();
   });
+  isCurrentUser = computed(() => this.currentUserId() === this.user().id);
 
   onAvatarClick(event: Event) {
-    if (!this.isOwner()) return;
+    if (!this.isOwner() || this.isCurrentUser()) return;
     event.stopPropagation();
     this.toggle.emit();
   }

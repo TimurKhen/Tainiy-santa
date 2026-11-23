@@ -1,6 +1,7 @@
 <div class="select-icon">
   @for (item of icons(); track item.id; let index = $index) {
     <span
+      matRipple
       class="emoji"
       [class.active]="index === currentIconIndex()"
       (click)="onSelectedIcon(index)"

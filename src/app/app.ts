@@ -1,8 +1,7 @@
-import { Component, DOCUMENT, inject, OnDestroy, OnInit, Renderer2, signal } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { Component, DOCUMENT, inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { Telegram } from './telegram/telegram';
 import { BackButton } from './telegram/backButton/back-button';
-import { filter } from 'rxjs';
 import { Location } from '@angular/common';
 import { UserService } from './api/user/user';
 
@@ -26,9 +25,7 @@ export class App implements OnInit, OnDestroy {
   ngOnInit() {
     this.tgService.ready();
     this.tgService.expand();
-    this.userService.getMe().subscribe((groups) => {
-
-    })
+    this.userService.getMe().subscribe()
 
     if (this.tgService.isAvailable) {
       this.backButtonService.onClick(this.boundHandler);

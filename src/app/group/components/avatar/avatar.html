@@ -17,7 +17,7 @@
         <app-nickname [value]="fullName()" />
       </p>
 
-      @if (isOwner()) {
+      @if (isOwner() && !isCurrentUser()) {
         <div class="actions" [class.open]="isOpen()">
           <button
             type="button"
@@ -40,7 +40,7 @@
       }
     </div>
 
-    @if (isOwner()) {
+    @if (isOwner() && !isCurrentUser()) {
       <button
         type="button"
         class="chevron-btn"
@@ -50,6 +50,10 @@
       >
         <span class="chevron" aria-hidden="true">›</span>
       </button>
+    }
+
+    @if (isCurrentUser()) {
+      <p>Вы</p>
     }
   </div>
 }

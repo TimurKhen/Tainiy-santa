@@ -1,0 +1,150 @@
+@import "tgColors";
+
+.skeleton-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 0.5rem;
+  padding-bottom: 5rem;
+}
+
+.skeleton-box {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background: $tg-secondary-bg-color;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, $tg-text-color, transparent 90%),
+      transparent
+    );
+    animation: skeleton-shimmer 1.3s infinite ease-in-out;
+  }
+}
+
+.skeleton-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.skeleton-card,
+.skeleton-group-card {
+  background: $tg-bg-color;
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  hr {
+    margin: 0;
+    opacity: 0.25;
+  }
+}
+
+.skeleton-gift {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.skeleton-members {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skeleton-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.skeleton-member {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.skeleton-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+}
+
+.skeleton-avatar-lg {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.skeleton-avatar-md {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.skeleton-avatar-sm {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.skeleton-title {
+  width: 60%;
+  height: 18px;
+}
+
+.skeleton-subtitle {
+  width: 35%;
+  height: 13px;
+}
+
+.skeleton-line-md {
+  width: 55%;
+  height: 15px;
+}
+
+.skeleton-line-sm {
+  width: 28%;
+  height: 14px;
+}
+
+.skeleton-pill {
+  width: 110px;
+  height: 28px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.skeleton-bottom-btn {
+  width: 90%;
+  height: 52px;
+  border-radius: 16px;
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-box::after {
+    animation: none;
+  }
+}

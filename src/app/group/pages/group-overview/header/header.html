@@ -7,15 +7,13 @@
     </div>
 
     <div class="info">
-      <h3>{{ name() }}</h3>
-      <div class="info__budget">
-        <p>Бюджет: ~{{ money() }}₽</p>
-      </div>
+<!--      <h3>{{ name() }}</h3>-->
+      <app-nickname [value]="name()" />
     </div>
 
     @if (canExit()) {
       <div class="exit-button">
-        <button class="exit" type="button" aria-label="Выйти" (click)="exit.emit()">
+        <button matRipple class="exit" type="button" aria-label="Выйти" (click)="exit.emit()">
           <img src="icons/exit.svg" class="exit-icon" alt="">
         </button>
       </div>

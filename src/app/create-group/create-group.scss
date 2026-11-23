@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding-bottom: 10dvh;
+  padding-bottom: 20dvh;
 
   .header {
     display: flex;
@@ -80,4 +80,11 @@
       background: rgb(107 48 48);
     }
   }
+}
+
+.error {
+  margin-top: -0.5rem;
+  padding-left: 0.5rem;
+  font-size: 0.85rem;
+  color: #ff6b6b;
 }

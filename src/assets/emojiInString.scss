@@ -1,12 +1,15 @@
-@mixin emojiInString {
+@mixin emojiInString($line-height: 1.2, $gap: 0.4rem) {
+  display: inline-flex;
+  align-items: center;
+  gap: $gap;
   height: auto;
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
+  line-height: $line-height;
 
   img {
-    vertical-align: bottom;
-    height: 1lh;
-    align-self: flex-end;
+    display: block;
+    flex: 0 0 auto;
+    height: 1.25lh;
+    //width: auto;
+    //aspect-ratio: 1/1;
   }
 }

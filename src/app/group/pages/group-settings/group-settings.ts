@@ -1,4 +1,12 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  HostListener,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { GroupContext } from '../../services/group-context';
 import { EditTextInput } from './components/edit-text-input/edit-text-input';
 import { EditDateInput } from './components/edit-date-input/edit-date-input';
@@ -32,7 +40,7 @@ export class GroupSettings implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.backButtonService.show()
+    this.backButtonService.show();
   }
 
   gameData = this.groupContext.gameData;
@@ -41,7 +49,11 @@ export class GroupSettings implements OnInit {
   private draftMoney = signal<number | null>(null);
   private draftWhere = signal<string | null>(null);
 
+  private isInputFocused = signal(false);
+  private isViewportShrunk = signal(false);
+
   protected isSaving = signal(false);
+  protected isTyping = computed(() => this.isInputFocused() || this.isViewportShrunk());
 
   distribution = computed<SmallInput>(() => {
     const date = this.draftDates()?.distribution ?? this.gameData()!.distribution_date;
@@ -53,6 +65,24 @@ export class GroupSettings implements OnInit {
     return { icon: '🎁', label: 'Обмен', value: date };
   });
 
+  protected hasChanges = computed(() => {
+    const game = this.gameData();
+    if (!game) return false;
+
+    const money = this.draftMoney() ?? game.money;
+    const place = this.draftWhere() ?? game.place;
+    const dates = this.draftDates();
+    const distributionDate = dates?.distribution ?? game.distribution_date;
+    const swapDate = dates?.swap ?? game.swap_date;
+
+    return (
+      money !== game.money ||
+      place !== game.place ||
+      distributionDate !== game.distribution_date ||
+      swapDate !== game.swap_date
+    );
+  });
+
   updateDates(event: { first: SmallInput; second: SmallInput }) {
     this.draftDates.set({
       distribution: event.first.value,
@@ -61,14 +91,25 @@ export class GroupSettings implements OnInit {
   }
 
   updateMoney(value: string) {
-    this.draftMoney.set(parseInt(value));
+    const trimmed = value.trim().replace(/\D/g, '');
+    if (!trimmed) {
+      this.draftMoney.set(null);
+      return;
+    }
+    const parsed = Number(trimmed);
+    this.draftMoney.set(Number.isNaN(parsed) ? null : parsed);
   }
+
   updateWhere(value: string) {
     this.draftWhere.set(value);
   }
 
   save() {
     const game = this.gameData();
+    if (!this.hasChanges()) {
+      this.location.back();
+      return;
+    }
     if (!game || this.isSaving()) return;
 
     const dates = this.draftDates();
@@ -97,7 +138,11 @@ export class GroupSettings implements OnInit {
           this.draftMoney.set(null);
           this.draftWhere.set(null);
 
+          this.groupContext.ensureLoaded(this.gameData()?.id!, true).subscribe({
+            error: (err) => console.error('Не удалось обновить данные группы:', err),
+          });
           this.location.back();
+          return;
         },
         error: () => {
           alert('Не удалось сохранить настройки');
@@ -106,15 +151,48 @@ export class GroupSettings implements OnInit {
   }
 
   protected deleteGroup() {
-    const isConfirmed = window.confirm(
-      'Вы уверены, что хотите удалить эту игру?',
-    );
+    const isConfirmed = window.confirm('Вы уверены, что хотите удалить эту игру?');
 
     if (isConfirmed) {
       this.gameService.deleteGame(this.groupContext.gameData()?.id || -1).subscribe(() => {
-        this.router.navigate(['/']);
+        this.router.createUrlTree(['/']);
       });
     }
+  }
+
+  @HostListener('focusin', ['$event'])
+  onFocusIn(event: FocusEvent) {
+    if (this.isTextInput(event.target)) {
+      this.isInputFocused.set(true);
+    }
+  }
+
+  @HostListener('focusout')
+  onFocusOut() {
+    queueMicrotask(() => {
+      const active = document.activeElement;
+      this.isInputFocused.set(this.isTextInput(active));
+    });
+  }
+
+  private isTextInput(target: EventTarget | null): boolean {
+    if (!(target instanceof HTMLElement)) return false;
+    if (target.isContentEditable) return true;
+    if (target instanceof HTMLTextAreaElement) return true;
+    if (target instanceof HTMLInputElement) {
+      const nonTextTypes = [
+        'checkbox',
+        'radio',
+        'range',
+        'file',
+        'button',
+        'submit',
+        'reset',
+        'color',
+      ];
+      return !nonTextTypes.includes(target.type);
+    }
+    return false;
   }
 
   protected readonly String = String;

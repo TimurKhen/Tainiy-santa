@@ -4,7 +4,7 @@
       [name]="data.name"
       [money]="data.money"
       [icon]="setGroupIcon(data.icon)"
-      [canExit]="true"
+      [canExit]="!isOwner() && !isSelectedGifters() || data.is_ended"
       (exit)="onExit()" />
 
     @if (isOwner()) {
@@ -13,9 +13,11 @@
           👑 Вы организатор
         </span>
 
-        <button type="button" class="settings" routerLink="./settings">
-          ⚙️ Изменить настройки игры
-        </button>
+        @if (!data.is_ended) {
+          <button matRipple type="button" class="settings" routerLink="./settings">
+            ⚙️ Изменить настройки игры
+          </button>
+        }
       </div>
     }
 
@@ -23,7 +25,11 @@
       @if (whoGiftTo(); as giftingTo) {
         <div class="giftTo">
           <div class="info">
-            <p><img src="tgGifs/gift.webp"> Вы дарите подарок:</p>
+            @if (data.is_ended) {
+              <p><img src="tgGifs/gift.webp"> Вы дарили подарок:</p>
+            } @else {
+              <p><img src="tgGifs/gift.webp"> Вы дарите подарок:</p>
+            }
             <app-nickname [value]="giftingTo.first_name + ' ' + giftingTo.last_name" />
           </div>
 
@@ -33,6 +39,24 @@
         </div>
       }
     }
+
+    <div class="extra">
+      <span class="object">
+        <div class="info">
+          <div class="icon">📍</div>
+          <p>Место</p>
+        </div>
+        <app-nickname [value]="data.place" [align]="'right'" />
+      </span>
+      <hr>
+      <span class="object">
+        <div class="info">
+          <div class="icon">💰</div>
+          <p>Бюджет</p>
+        </div>
+        <p class="date">{{ data.money }} ₽</p>
+      </span>
+    </div>
 
     <div class="dates">
       <span class="date-object" [class.happened]="getDate(data.distribution_date) <= today()">
@@ -68,13 +92,14 @@
     <div class="members-container">
       <div class="members-header">
         <p>Участников: {{ data.users.length }}</p>
-        <button>Скопировать ссылку на группу</button>
+        <button matRipple (click)="copyToClipboard()">Скопировать ссылку на игру</button>
       </div>
       <div class="members">
         @for (member of data.users; track member.id ?? member) {
           <div class="member-row" [class.removing]="isRemoving(member.id)">
             <app-avatar
-              [isOwner]="isOwner() && !isSelectedGifters()"
+              [currentUserId]="currentUserId"
+              [isOwner]="isOwner() && !isSelectedGifters() && !data.is_ended"
               [user]="member"
               [isOpen]="activeMemberId() === member.id"
               (toggle)="onToggleMemberMenu(member.id)"
@@ -86,19 +111,27 @@
         }
       </div>
     </div>
+  } @else {
+    <app-skeleton></app-skeleton>
   }
 </div>
 
 <div class="bottom-buttons">
-  @if (isOwner() && !isSelectedGifters()) {
-    <button class="make-distribution" (click)="makeDistribution()">🎲 Провести жеребьёвку</button>
-  } @else {
-    @if (gameData(); as data) {
+  @if (gameData(); as data) {
+    @if (isOwner() && !isSelectedGifters()) {
+      @if (data.users.length >= 2) {
+        <button matRipple class="make-distribution" (click)="makeDistribution()">🎲 Провести жеребьёвку</button>
+      } @else {
+        <button>Одному сыграть не получится</button>
+      }
+    } @else {
       @if (isSelectedGifters()) {
         <button>🎁 Обмен {{ data.swap_date | date:"mediumDate" }}</button>
       } @else {
         <button>🎲 Жеребьёвка {{ data.distribution_date | date:"mediumDate" }}</button>
       }
     }
+  } @else {
+    <div class="skeleton-box skeleton-bottom-btn"></div>
   }
 </div>

@@ -1,16 +1,16 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { Group } from '../interfaces/group/group';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { GroupPreview } from './group-preview/group-preview';
 import { GroupPlaceholder } from './group-placeholder/group-placeholder';
 import { GroupsHeader } from './groups-header/groups-header';
 import { RouterLink } from '@angular/router';
 import { BackButton } from '../telegram/backButton/back-button';
 import { Game } from '../api/games/game';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { NgTemplateOutlet } from '@angular/common';
+import { MatRipple } from '@angular/material/core';
 
 @Component({
-  imports: [GroupPreview, GroupPlaceholder, GroupsHeader, RouterLink, NgTemplateOutlet],
+  imports: [GroupPreview, GroupPlaceholder, GroupsHeader, RouterLink, NgTemplateOutlet, MatRipple],
   selector: 'app-groups',
   styleUrl: './groups.scss',
   templateUrl: './groups.html',
@@ -18,14 +18,19 @@ import { NgTemplateOutlet } from '@angular/common';
 export class Groups implements OnInit {
   private backButton = inject(BackButton);
   private gameService = inject(Game);
+  treeLoaded = false;
 
   ngOnInit() {
     this.backButton.hide();
   }
 
-  private allGroups$ = this.gameService.getGames();
+  private groupsResource = rxResource({
+    stream: () => this.gameService.getGames(),
+  });
 
-  private groupsList = toSignal(this.allGroups$, { initialValue: [] as Group[] });
+  isLoading = this.groupsResource.isLoading;
+  private groupsList = computed(() => this.groupsResource.value() ?? []);
+
   groups = computed(() => this.groupsList().filter((g) => !g.is_ended));
   endedGroups = computed(() => this.groupsList().filter((g) => g.is_ended));
   haveGroups = computed(() => this.groupsList().length > 0);

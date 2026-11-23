@@ -54,19 +54,20 @@ export class Game {
   }
 
   changeSettings(group: Group) {
-    return this.http.put(this.apiUrl, group);
+    const payload = {
+      ...group,
+      group_id: group.id,
+    };
+
+    return this.http.put(`${this.apiUrl}/update`, payload);
   }
 
   deleteGame(id: number) {
-    return this.http.delete(`${this.apiUrl}/delete`, {
-      body: { group_id: id },
-    });
+    return this.http.delete(`${this.apiUrl}/delete/${id}`);
   }
 
   makeDistribution(id: number) {
-    return this.http.post(`${this.apiUrl}/distribution`, {
-      group_id: id,
-    });
+    return this.http.post(`${this.apiUrl}/distribution/${id}`, {}, {responseType: 'text'});
   }
 
   leave(id: number) {

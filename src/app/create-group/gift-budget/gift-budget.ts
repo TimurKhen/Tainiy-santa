@@ -1,8 +1,9 @@
 import { Component, ElementRef, input, model, signal, ViewChild } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
+import { MatRipple } from '@angular/material/core';
 
 @Component({
-  imports: [FormsModule],
+  imports: [FormsModule, MatRipple],
   selector: 'app-gift-budget',
   styleUrl: './gift-budget.scss',
   templateUrl: './gift-budget.html',
@@ -34,7 +35,7 @@ export class GiftBudget {
   validatePrice(event: Event) {
     const input = event.target as HTMLInputElement;
     let value = Number(input.value);
-    const max = 10 ** 12;
+    const max = 1_000_000;
 
     if (value > max) {
       this.userPrice.set(max);

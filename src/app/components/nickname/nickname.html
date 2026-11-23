@@ -1,4 +1,8 @@
-<span class="viewport" #viewport>
+<span
+  class="viewport"
+  #viewport
+  [class.align-right]="align() === 'right'"
+>
   <span
     class="text"
     #text

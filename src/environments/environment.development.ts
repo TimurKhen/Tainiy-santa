@@ -1,5 +1,5 @@
 export const environment = {
-  debugOwner: true,
+  debugOwner: false,
   isProduction: false,
   baseURL: 'https://www.kringeproduction.ru',
 };

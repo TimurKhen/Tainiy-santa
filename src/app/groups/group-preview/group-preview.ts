@@ -5,9 +5,10 @@ import { TypeDateService } from './type-date-service';
 import { RouterLink } from '@angular/router';
 import { ShortNumberPipe } from '../../pipes/short-number-pipe/short-number-pipe';
 import { environment } from '../../../environments/environment';
+import { Nickname } from '../../components/nickname/nickname';
 
 @Component({
-  imports: [DatePipe, NgPluralCase, NgPlural, RouterLink, ShortNumberPipe],
+  imports: [DatePipe, NgPluralCase, NgPlural, RouterLink, ShortNumberPipe, Nickname],
   selector: 'app-group-preview',
   templateUrl: './group-preview.html',
   styleUrl: './group-preview.scss',
@@ -19,10 +20,10 @@ export class GroupPreview implements OnInit {
   protected readonly isOwner = signal<boolean>(true);
 
   protected setIcon(icon: string): { isUserAvatar: boolean; icon: string } {
-    if (icon === 'snowflake' || icon === 'snowman' || icon === 'gift') {
+    if (icon === 'tree' || icon === 'snowman' || icon === 'nonoice') {
       return {
         isUserAvatar: false,
-        icon: `tgGifs/${icon}.webp`,
+        icon: `tgSvg/${icon}.svg`,
       };
     } else {
       return {
@@ -40,7 +41,7 @@ export class GroupPreview implements OnInit {
 
   getTypeDate() {
     const v = this.typeDateService.isDistributionEnded(this.data());
-    console.log(v)
-    return v
+    console.log(v);
+    return v;
   }
 }

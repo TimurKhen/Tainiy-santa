@@ -8,9 +8,13 @@ import { Header } from './header/header';
 import { MeResponse } from '../../../api/user/user';
 import { Game } from '../../../api/games/game';
 import { BackButton } from '../../../telegram/backButton/back-button';
+import { Telegram } from '../../../telegram/telegram';
+import { Skeleton } from './skeleton/skeleton';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { MatRippleModule } from '@angular/material/core';
 
 @Component({
-  imports: [Avatar, DatePipe, RouterLink, Nickname, Header],
+  imports: [Avatar, DatePipe, RouterLink, Nickname, Header, Skeleton, MatRippleModule],
   selector: 'app-group-overview',
   styleUrl: './group-overview.scss',
   templateUrl: './group-overview.html',
@@ -20,6 +24,8 @@ export class GroupOverview implements OnInit {
   private gameService = inject(Game);
   private router = inject(Router);
   private backButtonService = inject(BackButton);
+  private tgService = inject(Telegram);
+  private clipboard = inject(Clipboard);
 
   whoGiftTo = signal<MeResponse | null>(null);
   today = signal<Date>(new Date());
@@ -28,6 +34,7 @@ export class GroupOverview implements OnInit {
   gameData = this.groupContext.gameData;
   isSelectedGifters = computed(() => this.gameData()?.is_selected_gifters);
   isOwner = this.groupContext.isOwner;
+  currentUserId = this.tgService.user.id;
 
   constructor() {
     effect(() => {
@@ -38,7 +45,7 @@ export class GroupOverview implements OnInit {
   }
 
   ngOnInit() {
-    this.backButtonService.show()
+    this.backButtonService.show();
   }
 
   getDate(string: string): Date {
@@ -51,19 +58,24 @@ export class GroupOverview implements OnInit {
         this.router.createUrlTree(['/']);
       },
       error: (err) => {
-        alert(`Ошибка при выходе: ${err}`);
+        alert(`Ошибка при выходе: ${err.code}`);
       },
     });
   }
 
   makeDistribution() {
-    this.gameService.makeDistribution(this.gameData()?.id!).subscribe({
+    const groupId = this.gameData()?.id;
+    if (!groupId) return;
+
+    this.gameService.makeDistribution(groupId).subscribe({
       next: () => {
-        this.groupContext.clearCache();
-        this.groupContext.ensureLoaded(this.gameData()?.id!);
+        this.groupContext.ensureLoaded(groupId, true).subscribe({
+          error: (err) => console.error('Не удалось обновить данные группы:', err),
+        });
       },
       error: (err) => {
-        alert(`Ошибка при выходе: ${err}`);
+        console.error('Distribution error:', err);
+        alert(`Ошибка при жеребьёвке: ${err.code ?? err.message ?? err}`);
       },
     });
   }
@@ -87,8 +99,10 @@ export class GroupOverview implements OnInit {
 
     this.gameService.changeSettings(updatedGroup).subscribe({
       next: () => {
-        this.groupContext.clearCache();
-        this.groupContext.ensureLoaded(currentGame.id);
+        this.gameData.set(updatedGroup);
+        this.groupContext.ensureLoaded(currentGame.id, true).subscribe({
+          error: (err) => console.error('Не удалось обновить данные группы:', err),
+        });
       },
       error: () => {
         alert('Не удалось назначить организатором');
@@ -132,13 +146,18 @@ export class GroupOverview implements OnInit {
   }
 
   protected setGroupIcon(icon: string): string {
-    if (icon === 'snowflake' || icon === 'snowman' || icon === 'gift') {
-      return `tgGifs/${icon}.webp`;
+    if (icon === 'tree' || icon === 'snowman' || icon === 'nonoice') {
+      return `tgSvg/${icon}.svg`;
     }
     return icon;
   }
 
   protected getWhoGiftTo() {
     this.whoGiftTo.set(this.gameData()?.recipient!);
+  }
+
+  protected copyToClipboard() {
+    const string = `https://t.me/secret_santa_rubot?start=${this.gameData()?.id}`;
+    this.clipboard.copy(string);
   }
 }
