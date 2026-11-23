@@ -12,7 +12,6 @@
     </div>
 
     <div class="info">
-<!--      <h3 class="title">{{ data().name }}</h3>-->
       <app-nickname class="title" [value]="data().name" />
 
       <div class="main">
@@ -36,7 +35,6 @@
   @if (!data().is_ended && typeDate.type !== '') {
     <div class="tags">
       <span class="badge date-badge" [class]="typeDate.type">
-        <img src="tgGifs/gift.webp" alt="" />
         <span>
           @if (typeDate.type == 't') {
             Обмен сегодня в {{ typeDate.date | date:'HH:mm' }}

@@ -94,13 +94,6 @@
     padding-left: calc(56px + 0.85rem);
 
     .date-badge {
-      img {
-        flex-shrink: 0;
-        width: 16px;
-        height: 16px;
-        object-fit: contain;
-      }
-
       span {
         min-width: 0;
       }
