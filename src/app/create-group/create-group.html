@@ -13,8 +13,6 @@
           formControlName="name"
           #nameInput
           maxlength="20"
-          (focus)="onInputFocus(nameInput)"
-          (blur)="onInputBlur()"
           (keyup.enter)="nameInput.blur()"
           placeholder="Название вашей игры"
         >
@@ -40,8 +38,6 @@
           formControlName="place"
           #placeInput
           maxlength="20"
-          (focus)="onInputFocus(placeInput)"
-          (blur)="onInputBlur()"
           (keyup.enter)="placeInput.blur()"
           placeholder="Где будет проводиться обмен?"
         >
@@ -73,22 +69,20 @@
   </form>
 </div>
 
-@if (!isInputFocused()) {
-  <div class="bottom">
-    <button
-      [disabled]="!isValid() || isCreating()"
-      class="create-button"
-      matRipple
-      (click)="onCreate($event)">
-      @if (isValid()) {
-        @if (isCreating()) {
-          Создаём вашу игру
-        } @else {
-          Создать
-        }
+<div class="bottom">
+  <button
+    [disabled]="!isValid() || isCreating()"
+    class="create-button"
+    matRipple
+    (click)="onCreate($event)">
+    @if (isValid()) {
+      @if (isCreating())  {
+        Создаём вашу игру
       } @else {
-        Заполните все поля
+        Создать
       }
-    </button>
-  </div>
-}
+    } @else {
+      Заполните все поля
+    }
+  </button>
+</div>
