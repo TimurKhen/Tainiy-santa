@@ -19,8 +19,6 @@ export class GroupContext {
     const game = this.gameData();
     const user = this.tgService.user;
 
-    if (environment.debugOwner) return true;
-
     return !!game && !!user && game.admin_id === user.id;
   });
 

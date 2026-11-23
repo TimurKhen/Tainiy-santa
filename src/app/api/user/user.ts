@@ -17,8 +17,6 @@ export class UserService {
   private http = inject(HttpClient);
   private apiUrl = '/api/users';
 
-  // private me$?: Observable<MeResponse>;
-
   getMe(): Observable<MeResponse> {
     return this.http.get<MeResponse>(`${this.apiUrl}/me`);
   }
@@ -26,8 +24,4 @@ export class UserService {
   getGroups(): Observable<Group[]> {
     return this.getMe().pipe(map((response) => response.groups));
   }
-
-  // clearCache(): void {
-  //   this.me$ = undefined;
-  // }
 }

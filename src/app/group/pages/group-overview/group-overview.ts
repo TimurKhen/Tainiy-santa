@@ -56,14 +56,16 @@ export class GroupOverview implements OnInit {
   onExit() {
     this.gameService.leave(this.gameData()?.id!).subscribe({
       next: () => {
-        this.router.navigate(['/'], { replaceUrl: true }).then((ok) => {
-          console.log('navigate from', 'result:', ok);
-        });
+        this.goBack();
       },
       error: (err) => {
-        alert(`Ошибка при выходе: ${err.code}`);
+        this.goBack();
       },
     });
+  }
+
+  goBack() {
+    this.router.navigate(['/'], { replaceUrl: true }).then((ok) => {});
   }
 
   makeDistribution() {

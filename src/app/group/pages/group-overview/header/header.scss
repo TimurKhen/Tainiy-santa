@@ -42,7 +42,6 @@ $offset: calc(#{$topSafeArea} + #{$topContentSafeArea} + #{$gap});
   transform: translateY(calc(-1 * #{$topContentSafeArea} * var(--p)));
   will-change: transform;
 
-
   &::after {
     content: '';
     position: absolute;

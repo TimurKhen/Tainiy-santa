@@ -63,7 +63,7 @@ body {
   height: $viewportHeight;
   margin: 0;
 
-  padding: max(12px, calc($topSafeArea + $topContentSafeArea * 1.5)) max(4px, $rightSafeArea)
+  padding: max(12px, calc($topSafeArea + $topContentSafeArea * 1.2)) max(4px, $rightSafeArea)
     max(12px, calc($bottomSafeArea + $bottomContentSafeArea)) max(4px, $leftSafeArea);
 
   box-sizing: border-box;
