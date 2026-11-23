@@ -7,13 +7,18 @@
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  padding-bottom: 20dvh;
+  padding-bottom: 15dvh;
 
   .settings-container {
     width: 90%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 2rem;
+
+    h2 {
+      align-self: flex-start;
+    }
 
     .settings {
       @include tg-container;

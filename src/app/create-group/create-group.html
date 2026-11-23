@@ -76,7 +76,11 @@
     matRipple
     (click)="onCreate($event)">
     @if (isValid()) {
-      Создать и пригласить
+      @if (isCreating())  {
+        Создаём вашу игру
+      } @else {
+        Создать
+      }
     } @else {
       Заполните все поля
     }

@@ -25,6 +25,7 @@ export class App implements OnInit, OnDestroy {
   ngOnInit() {
     this.tgService.ready();
     this.tgService.expand();
+    this.tgService.tg.requestFullscreen();
     this.userService.getMe().subscribe()
 
     if (this.tgService.isAvailable) {

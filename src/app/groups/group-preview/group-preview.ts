@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { ShortNumberPipe } from '../../pipes/short-number-pipe/short-number-pipe';
 import { environment } from '../../../environments/environment';
 import { Nickname } from '../../components/nickname/nickname';
+import { Telegram } from '../../telegram/telegram';
 
 @Component({
   imports: [DatePipe, NgPluralCase, NgPlural, RouterLink, ShortNumberPipe, Nickname],
@@ -15,9 +16,10 @@ import { Nickname } from '../../components/nickname/nickname';
 })
 export class GroupPreview implements OnInit {
   typeDateService = inject(TypeDateService);
+  private tgService = inject(Telegram)
 
   data = input.required<Group>();
-  protected readonly isOwner = signal<boolean>(true);
+  protected readonly isOwner = signal<boolean>(false);
 
   protected setIcon(icon: string): { isUserAvatar: boolean; icon: string } {
     if (icon === 'tree' || icon === 'snowman' || icon === 'nonoice') {
@@ -37,7 +39,13 @@ export class GroupPreview implements OnInit {
     this.checkUser();
   }
 
-  checkUser() {}
+  checkUser() {
+    if (this.tgService.user.id === this.data().admin_id) {
+      this.isOwner.set(true);
+    } else {
+      this.isOwner.set(false);
+    }
+  }
 
   getTypeDate() {
     const v = this.typeDateService.isDistributionEnded(this.data());

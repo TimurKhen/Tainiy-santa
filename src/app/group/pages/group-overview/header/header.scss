@@ -72,7 +72,7 @@ $offset: calc(#{$topSafeArea} + #{$topContentSafeArea} + #{$gap});
   }
 
   .info {
-    flex: calc(1 - var(--p)) 1 auto;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     min-width: 0;

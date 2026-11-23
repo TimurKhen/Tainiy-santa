@@ -151,13 +151,22 @@ export class GroupSettings implements OnInit {
   }
 
   protected deleteGroup() {
-    const isConfirmed = window.confirm('Вы уверены, что хотите удалить эту игру?');
+    const id = this.gameData()?.id;
+    if (!id || !window.confirm('Вы уверены, что хотите удалить эту игру?')) return;
 
-    if (isConfirmed) {
-      this.gameService.deleteGame(this.groupContext.gameData()?.id || -1).subscribe(() => {
-        this.router.createUrlTree(['/']);
-      });
-    }
+    this.gameService.deleteGame(id).subscribe({
+      next: () => this.goHome('next'),
+      error: (err) => {
+        this.goHome('next');
+      },
+      complete: () => console.log('delete complete'),
+    });
+  }
+
+  private goHome(source: string) {
+    this.router.navigate(['/'], { replaceUrl: true }).then((ok) => {
+      console.log('navigate from', source, 'result:', ok);
+    });
   }
 
   @HostListener('focusin', ['$event'])
