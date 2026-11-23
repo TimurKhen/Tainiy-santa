@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { GroupPreview } from './group-preview/group-preview';
 import { GroupPlaceholder } from './group-placeholder/group-placeholder';
 import { GroupsHeader } from './groups-header/groups-header';
@@ -8,6 +8,7 @@ import { Game } from '../api/games/game';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NgTemplateOutlet } from '@angular/common';
 import { MatRipple } from '@angular/material/core';
+import { catchError, of, timeout } from 'rxjs';
 
 @Component({
   imports: [GroupPreview, GroupPlaceholder, GroupsHeader, RouterLink, NgTemplateOutlet, MatRipple],
@@ -18,14 +19,22 @@ import { MatRipple } from '@angular/material/core';
 export class Groups implements OnInit {
   private backButton = inject(BackButton);
   private gameService = inject(Game);
-  treeLoaded = false;
+
+  treeLoaded = signal(false);
 
   ngOnInit() {
     this.backButton.hide();
   }
 
   private groupsResource = rxResource({
-    stream: () => this.gameService.getGames(),
+    stream: () =>
+      this.gameService.getGames().pipe(
+        timeout({ each: 8000 }),
+        catchError((err) => {
+          console.error('Failed to load groups:', err);
+          return of([]);
+        }),
+      ),
   });
 
   isLoading = this.groupsResource.isLoading;

@@ -2,11 +2,11 @@
 
 <ng-template #noGroups let-title="title">
   <div class="no-groups">
-    <img *ngIf="!treeLoaded" src="tgSvg/tree.svg" alt="" />
+    <img *ngIf="!treeLoaded()" src="tgSvg/tree.svg" alt="" />
     <img
       [src]="'tgGifs/tree.webp'"
-      [style.display]="treeLoaded ? 'block' : 'none'"
-      (load)="treeLoaded = true"
+      [style.display]="treeLoaded() ? 'block' : 'none'"
+      (load)="treeLoaded.set(true)"
       alt=""
     />
     <h2>{{ title }}</h2>

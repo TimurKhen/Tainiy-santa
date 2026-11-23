@@ -1,6 +1,6 @@
 import { inject, Service } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { delay, map, Observable, of, shareReplay, throwError } from 'rxjs';
+import { catchError, delay, map, Observable, of, shareReplay, throwError, timeout } from 'rxjs';
 import { Group } from '../../interfaces/group/group';
 
 export interface MeResponse {
@@ -22,6 +22,13 @@ export class UserService {
   }
 
   getGroups(): Observable<Group[]> {
-    return this.getMe().pipe(map((response) => response.groups));
+    return this.getMe().pipe(
+      timeout({ each: 8000 }),
+      map((response) => response?.groups ?? []),
+      catchError((err) => {
+        console.error('Failed to load user groups:', err);
+        return of([]);
+      }),
+    );
   }
 }
