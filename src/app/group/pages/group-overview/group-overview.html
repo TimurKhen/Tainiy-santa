@@ -46,7 +46,7 @@
           <div class="icon">📍</div>
           <p>Место</p>
         </div>
-        <app-nickname [value]="data.place" [align]="'right'" />
+        <p class="date">{{ data.place }}</p>
       </span>
       <hr>
       <span class="object">
@@ -59,7 +59,7 @@
     </div>
 
     <div class="dates">
-      <span class="date-object" [class.happened]="getDate(data.distribution_date) <= today()">
+      <span class="date-object" [class.happened]="getDate(data.distribution_date) <= today() || data.is_selected_gifters">
         <div class="info">
           <div class="icon distribution-icon">🎲</div>
           <p>Распределение</p>
@@ -120,7 +120,7 @@
   @if (gameData(); as data) {
     @if (isOwner() && !isSelectedGifters()) {
       @if (data.users.length >= 2) {
-        <button matRipple class="make-distribution" (click)="makeDistribution()">🎲 Провести жеребьёвку</button>
+        <button [disabled]="isMakingDistribution()" matRipple class="make-distribution" (click)="makeDistribution()">🎲 Провести жеребьёвку</button>
       } @else {
         <button>Одному сыграть не получится</button>
       }

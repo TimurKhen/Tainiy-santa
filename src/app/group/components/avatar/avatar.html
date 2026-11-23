@@ -8,7 +8,13 @@
       (click)="onAvatarClick($event)"
     >
       <div class="avatar">
-        <img [src]="u.photo_url" [alt]="u.first_name">
+        @if (showImage()) {
+          <img [src]="u.photo_url" [alt]="u.first_name" (error)="onImageError()">
+        } @else {
+          <span class="placeholder" [style.background]="bgColor()" aria-hidden="true">
+            {{ initial() }}
+          </span>
+        }
       </div>
     </button>
 

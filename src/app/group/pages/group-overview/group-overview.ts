@@ -35,6 +35,7 @@ export class GroupOverview implements OnInit {
   isSelectedGifters = computed(() => this.gameData()?.is_selected_gifters);
   isOwner = this.groupContext.isOwner;
   currentUserId = this.tgService.user.id;
+  protected isMakingDistribution = signal<boolean>(false);
 
   constructor() {
     effect(() => {
@@ -55,21 +56,30 @@ export class GroupOverview implements OnInit {
   onExit() {
     this.gameService.leave(this.gameData()?.id!).subscribe({
       next: () => {
-        this.router.createUrlTree(['/']);
+        this.goBack();
       },
       error: (err) => {
-        alert(`Ошибка при выходе: ${err.code}`);
+        this.goBack();
       },
     });
+  }
+
+  goBack() {
+    this.router.navigate(['/'], { replaceUrl: true }).then((ok) => {});
   }
 
   makeDistribution() {
     const groupId = this.gameData()?.id;
     if (!groupId) return;
 
+    this.isMakingDistribution.set(true)
+
     this.gameService.makeDistribution(groupId).subscribe({
       next: () => {
         this.groupContext.ensureLoaded(groupId, true).subscribe({
+          next: () => {
+            this.isMakingDistribution.set(true)
+          },
           error: (err) => console.error('Не удалось обновить данные группы:', err),
         });
       },
@@ -97,10 +107,15 @@ export class GroupOverview implements OnInit {
       admin_id: member.id,
     };
 
+    console.log(updatedGroup)
+
     this.gameService.changeSettings(updatedGroup).subscribe({
       next: () => {
         this.gameData.set(updatedGroup);
         this.groupContext.ensureLoaded(currentGame.id, true).subscribe({
+          next: (v) => {
+            console.log(v);
+          },
           error: (err) => console.error('Не удалось обновить данные группы:', err),
         });
       },

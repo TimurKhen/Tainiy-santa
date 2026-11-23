@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const tgService = inject(Telegram);
-  if (environment.isProduction) {
+  if (tgService.tg !== null) {
     const initData = tgService.tg.initData;
 
     const modifiedReq = req.clone({

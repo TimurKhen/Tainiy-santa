@@ -36,6 +36,11 @@ export class TypeDateService {
 
   isDistributionEnded(data: Group): DistributionStageResult {
     const now = new Date();
+
+    if (data.is_ended) {
+      return { type: '', date: now };
+    }
+
     const distributionDate = this.parseDate(data.distribution_date);
     const swapDate = this.parseDate(data.swap_date);
 
@@ -47,22 +52,25 @@ export class TypeDateService {
     const distDay = this.toStartOfDayTimestamp(distributionDate);
     const swapDay = this.toStartOfDayTimestamp(swapDate);
 
-    // До дня жеребьёвки — ждём жеребьёвку
-    if (currentDay < distDay) {
-      return { type: 'd', date: distributionDate };
-    }
-
-    // День обмена наступил сегодня
     if (currentDay === swapDay) {
       return { type: 't', date: swapDate };
     }
 
-    // Уже в день жеребьёвки или после него, но до дня обмена — показываем дату обмена
+    if (data.is_selected_gifters) {
+      if (currentDay < swapDay) {
+        return { type: 's', date: swapDate };
+      }
+      return { type: '', date: now };
+    }
+
+    if (currentDay < distDay) {
+      return { type: 'd', date: distributionDate };
+    }
+
     if (currentDay >= distDay && currentDay < swapDay) {
       return { type: 's', date: swapDate };
     }
 
-    // Всё уже прошло
     return { type: '', date: now };
   }
 }
