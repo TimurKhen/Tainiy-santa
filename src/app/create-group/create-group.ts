@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IconSelect } from './icon-select/icon-select';
 import { GiftBudget } from './gift-budget/gift-budget';
@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
 import { MatRipple } from '@angular/material/core';
 
 @Component({
-  imports: [ReactiveFormsModule, IconSelect, GiftBudget, Dates, Dates, MatRipple],
+  imports: [ReactiveFormsModule, IconSelect, GiftBudget, Dates, MatRipple],
   selector: 'app-create-group',
   styleUrl: './create-group.scss',
   templateUrl: './create-group.html',
@@ -20,6 +20,11 @@ export class CreateGroup {
   private backButton = inject(BackButton);
   private gameService = inject(Game);
   private location = inject(Location);
+  private destroyRef = inject(DestroyRef);
+
+  private scrollTimeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  isInputFocused = signal<boolean>(false);
 
   createForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, Validators.maxLength(20)]),
@@ -39,6 +44,43 @@ export class CreateGroup {
   );
 
   isCreating = signal<boolean>(false);
+
+  constructor() {
+    this.destroyRef.onDestroy(() => {
+      if (this.scrollTimeoutId) {
+        clearTimeout(this.scrollTimeoutId);
+      }
+    });
+  }
+
+  onInputFocus(inputEl: HTMLElement) {
+    this.isInputFocused.set(true);
+
+    if (this.scrollTimeoutId) {
+      clearTimeout(this.scrollTimeoutId);
+    }
+
+    this.scrollTimeoutId = setTimeout(() => {
+      inputEl.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'nearest',
+      });
+    }, 250);
+  }
+
+  onInputBlur() {
+    if (this.scrollTimeoutId) {
+      clearTimeout(this.scrollTimeoutId);
+      this.scrollTimeoutId = null;
+    }
+
+    setTimeout(() => {
+      const active = document.activeElement;
+      const stillInInput = active?.tagName === 'INPUT' || active?.tagName === 'TEXTAREA';
+      this.isInputFocused.set(Boolean(stillInInput));
+    }, 50);
+  }
 
   onCreate(event: Event) {
     event.preventDefault();
@@ -60,7 +102,7 @@ export class CreateGroup {
     };
 
     this.gameService.createGame(values).subscribe({
-      next: (response) => {
+      next: () => {
         this.isCreating.set(false);
         this.location.back();
       },

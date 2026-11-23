@@ -54,6 +54,9 @@ export class GroupOverview implements OnInit {
   }
 
   onExit() {
+    const ok = window.confirm(`Вы уверены, что хотите выйти из игры ${this.gameData()?.name} `);
+    if (!ok) return;
+
     this.gameService.leave(this.gameData()?.id!).subscribe({
       next: () => {
         this.goBack();
