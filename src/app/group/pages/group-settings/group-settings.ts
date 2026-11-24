@@ -164,9 +164,7 @@ export class GroupSettings implements OnInit {
   }
 
   private goHome(source: string) {
-    this.router.navigate(['/'], { replaceUrl: true }).then((ok) => {
-      console.log('navigate from', source, 'result:', ok);
-    });
+    this.router.navigate(['/'], { replaceUrl: true }).then((ok) => {});
   }
 
   @HostListener('focusin', ['$event'])
