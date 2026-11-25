@@ -8,7 +8,7 @@ import { Game } from '../api/games/game';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NgTemplateOutlet } from '@angular/common';
 import { MatRipple } from '@angular/material/core';
-import { catchError, of, timeout } from 'rxjs';
+import { timeout } from 'rxjs';
 
 @Component({
   imports: [GroupPreview, GroupPlaceholder, GroupsHeader, RouterLink, NgTemplateOutlet, MatRipple],
@@ -27,18 +27,19 @@ export class Groups implements OnInit {
   }
 
   private groupsResource = rxResource({
-    stream: () =>
-      this.gameService.getGames().pipe(
-        timeout({ each: 8000 }),
-        catchError((err) => {
-          console.error('Failed to load groups:', err);
-          return of([]);
-        }),
-      ),
+    stream: () => this.gameService.getGames().pipe(timeout({ each: 8000 })),
   });
 
   isLoading = this.groupsResource.isLoading;
-  private groupsList = computed(() => this.groupsResource.value() ?? []);
+  hasError = computed(() => !this.isLoading() && !!this.groupsResource.error());
+  // hasError = computed(() => true);
+  private groupsList = computed(() =>
+    this.groupsResource.hasValue() ? this.groupsResource.value() : [],
+  );
+
+  retry() {
+    this.groupsResource.reload();
+  }
 
   groups = computed(() => this.groupsList().filter((g) => !g.is_ended));
   endedGroups = computed(() => this.groupsList().filter((g) => g.is_ended));

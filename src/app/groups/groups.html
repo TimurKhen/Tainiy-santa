@@ -23,9 +23,20 @@
   </div>
 </ng-template>
 
+<ng-template #serverOffline>
+  <div class="no-groups server-offline">
+    <img src="tgSvg/nonoice.svg" alt="" />
+    <h2>Сервер недоступен</h2>
+    <p>Не удалось загрузить игры. Попробуйте позже.</p>
+    <button matRipple class="retry" type="button" (click)="retry()">Повторить</button>
+  </div>
+</ng-template>
+
 <div class="container">
   @if (isLoading()) {
     <ng-container *ngTemplateOutlet="loadingState"></ng-container>
+  } @else if (hasError()) {
+    <ng-container *ngTemplateOutlet="serverOffline"></ng-container>
   } @else if (haveGroups()) {
     <app-groups-header [groupCount]="count"></app-groups-header>
 
