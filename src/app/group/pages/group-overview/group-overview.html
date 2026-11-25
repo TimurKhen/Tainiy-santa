@@ -59,7 +59,7 @@
     </div>
 
     <div class="dates">
-      <span class="date-object" [class.happened]=data.is_selected_gifters">
+      <span class="date-object" [class.happened]="data.is_selected_gifters">
         <div class="info">
           <div class="icon distribution-icon">🎲</div>
           <p>Распределение</p>
@@ -69,7 +69,7 @@
 
       <hr>
 
-      <span class="date-object" [class.happened]="getDate(data.swap_date) <= today()">
+      <span class="date-object" [class.happened]="data.is_ended">
         <div class="info">
           <div class="icon swap-icon">🎁</div>
           <p>Обмен</p>
