@@ -20,6 +20,24 @@
     }
   }
 
+  .server-offline {
+    text-align: center;
+    padding: 0 1rem;
+
+    .retry {
+      margin-top: 1rem;
+      height: 44px;
+      padding: 0 1.5rem;
+      border: none;
+      outline: none;
+      border-radius: 14px;
+      background: rgb(164, 38, 38);
+      color: rgb(255, 255, 255);
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+
   .groups, .endedGroups, .loading-state {
     display: flex;
     flex-direction: column;

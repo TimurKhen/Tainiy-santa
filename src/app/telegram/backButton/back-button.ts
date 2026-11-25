@@ -11,13 +11,11 @@ export class BackButton {
   }
 
   show(): this {
-    console.log('Show back button');
     this.backButton?.show();
     return this;
   }
 
   hide(): this {
-    console.log('Hide back button');
     this.backButton?.hide();
     return this;
   }

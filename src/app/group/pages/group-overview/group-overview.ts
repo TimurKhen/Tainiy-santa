@@ -110,15 +110,11 @@ export class GroupOverview implements OnInit {
       admin_id: member.id,
     };
 
-    console.log(updatedGroup)
-
     this.gameService.changeSettings(updatedGroup).subscribe({
       next: () => {
         this.gameData.set(updatedGroup);
         this.groupContext.ensureLoaded(currentGame.id, true).subscribe({
-          next: (v) => {
-            console.log(v);
-          },
+          next: (v) => {},
           error: (err) => console.error('Не удалось обновить данные группы:', err),
         });
       },
