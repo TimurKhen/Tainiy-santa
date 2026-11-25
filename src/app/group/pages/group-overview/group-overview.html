@@ -59,7 +59,7 @@
     </div>
 
     <div class="dates">
-      <span class="date-object" [class.happened]="getDate(data.distribution_date) <= today() || data.is_selected_gifters">
+      <span class="date-object" [class.happened]=data.is_selected_gifters">
         <div class="info">
           <div class="icon distribution-icon">🎲</div>
           <p>Распределение</p>
