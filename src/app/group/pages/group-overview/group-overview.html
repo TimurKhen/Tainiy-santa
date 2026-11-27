@@ -9,14 +9,9 @@
 
     @if (isOwner()) {
       <div class="owner-buttons">
-        <span class="owner">
-          👑 Вы организатор
-        </span>
-
+        <span class="owner">👑 Вы организатор</span>
         @if (!data.is_ended) {
-          <button matRipple type="button" class="settings" routerLink="./settings">
-            ⚙️ Изменить настройки игры
-          </button>
+          <button matRipple type="button" class="settings" routerLink="./settings">⚙️ Изменить настройки игры</button>
         }
       </div>
     }
@@ -32,59 +27,37 @@
             }
             <app-nickname [value]="giftingTo.first_name + ' ' + giftingTo.last_name" />
           </div>
-
-          <div class="avatar">
-            <img [src]="giftingTo.photo_url" [alt]="giftingTo.first_name">
-          </div>
+          <div class="avatar"><img [src]="giftingTo.photo_url" [alt]="giftingTo.first_name"></div>
         </div>
       }
     }
 
     <div class="extra">
       <span class="object">
-        <div class="info">
-          <div class="icon">📍</div>
-          <p>Место</p>
-        </div>
+        <div class="info"><div class="icon">📍</div><p>Место</p></div>
         <p class="date">{{ data.place }}</p>
       </span>
       <hr>
       <span class="object">
-        <div class="info">
-          <div class="icon">💰</div>
-          <p>Бюджет</p>
-        </div>
+        <div class="info"><div class="icon">💰</div><p>Бюджет</p></div>
         <p class="date">{{ data.money }} ₽</p>
       </span>
     </div>
 
     <div class="dates">
       <span class="date-object" [class.happened]="data.is_selected_gifters">
-        <div class="info">
-          <div class="icon distribution-icon">🎲</div>
-          <p>Распределение</p>
-        </div>
-        <p class="date">{{ data.distribution_date | date:"mediumDate" }}</p>
+        <div class="info"><div class="icon distribution-icon">🎲</div><p>Распределение</p></div>
+        <p class="date">{{ data.distribution_date | date:"d MMM yyyy, HH:mm":"":"ru" }}</p>
       </span>
-
       <hr>
-
       <span class="date-object" [class.happened]="data.is_ended">
-        <div class="info">
-          <div class="icon swap-icon">🎁</div>
-          <p>Обмен</p>
-        </div>
-        <p class="date">{{ data.swap_date | date:"mediumDate" }}</p>
+        <div class="info"><div class="icon swap-icon">🎁</div><p>Обмен</p></div>
+        <p class="date">{{ data.swap_date | date:"d MMM yyyy, HH:mm":"":"ru" }}</p>
       </span>
-
       @if (getDate(data.swap_date) <= today()) {
         <hr>
-
         <span class="date-object" animate.enter="enter">
-          <div class="info">
-            <div class="icon swap-icon">🎉</div>
-            <p>Ждём вас в следующем году</p>
-          </div>
+          <div class="info"><div class="icon swap-icon">🎉</div><p>Ждём вас в следующем году</p></div>
         </span>
       }
     </div>
@@ -126,9 +99,9 @@
       }
     } @else {
       @if (isSelectedGifters()) {
-        <button>🎁 Обмен {{ data.swap_date | date:"mediumDate" }}</button>
+        <button>🎁 Обмен {{ data.swap_date | date:"d MMM, HH:mm":"":"ru" }}</button>
       } @else {
-        <button>🎲 Жеребьёвка {{ data.distribution_date | date:"mediumDate" }}</button>
+        <button>🎲 Жеребьёвка {{ data.distribution_date | date:"d MMM, HH:mm":"":"ru" }}</button>
       }
     }
   } @else {
