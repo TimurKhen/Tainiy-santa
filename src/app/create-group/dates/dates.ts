@@ -14,7 +14,7 @@ export default class Dates {
 
   distributionDate = model<string | null>(null);
   swapDate = model<string | null>(null);
-  distributionTime = model('12:00');
+  distributionTime = model('06:00');
   swapTime = model('18:00');
 
   minDistributionDate = signal<string>(this.addDaysToLocalDate(new Date(), 1));

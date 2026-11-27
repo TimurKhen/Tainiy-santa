@@ -51,8 +51,7 @@ const toDateTimeIso = (date: string, time: string): string => {
 export class EditDateInput {
   icon = input<string>('');
   label = input<string>('');
-  first = input.required<SmallInput>();
-  second = input.required<SmallInput>();
+  first = input.required<SmallInput>();  second = input.required<SmallInput>();
   maxDate = input<string | null>(null);
   valueChange = output<{ first: SmallInput; second: SmallInput }>();
 
@@ -94,7 +93,13 @@ export class EditDateInput {
   protected isValid = computed(() => {
     const first = this.firstValue();
     const second = this.secondValue();
-    if (!first || !second || second < first || (second === first && this.secondTime() <= this.firstTime())) return false;
+    if (
+      !first ||
+      !second ||
+      second < first ||
+      (second === first && this.secondTime() <= this.firstTime())
+    )
+      return false;
     const minF = this.minFirst();
     const maxF = this.maxFirst();
     const minS = this.minSecond();
@@ -124,11 +129,20 @@ export class EditDateInput {
 
   protected newValue(event: Event) {
     event.stopPropagation();
+
     if (!this.isValid()) return;
+
     this.valueChange.emit({
-      first: { ...this.first(), value: toDateTimeIso(this.firstValue(), this.firstTime()) },
-      second: { ...this.second(), value: toDateTimeIso(this.secondValue(), this.secondTime()) },
+      first: {
+        ...this.first(),
+        value: toDateTimeIso(this.firstValue(), this.firstTime()),
+      },
+      second: {
+        ...this.second(),
+        value: toDateTimeIso(this.secondValue(), this.secondTime()),
+      },
     });
+
     this.isEditing.set(false);
   }
 

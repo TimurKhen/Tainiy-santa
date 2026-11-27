@@ -23,14 +23,14 @@
         gap: 0.4rem;
       }
 
-      .date {
+      .date, .time {
         position: relative;
         display: flex;
         align-items: center;
-        gap: 0.4rem;
+        gap: 0.7rem;
       }
 
-      .native-calendar {
+      .native-calendar, .native-time {
         position: absolute;
         inset: 0;
         width: 100%;
